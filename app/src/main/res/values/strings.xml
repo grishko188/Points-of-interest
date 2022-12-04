@@ -3,6 +3,7 @@
     <string name="screen_home">Home</string>
     <string name="screen_categories">Categories</string>
     <string name="screen_profile">Profile</string>
+    <string name="screen_create_poi">Create point of interest</string>
 
 
     <string name="title_ui_state_empty">Wow, it is so empty here</string>

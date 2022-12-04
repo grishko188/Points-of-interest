@@ -10,12 +10,14 @@ import androidx.navigation.compose.composable
 import com.grishko188.pointofinterest.features.categories.ui.CategoriesScreen
 import com.grishko188.pointofinterest.features.profile.ui.ProfileScreen
 import com.grishko188.pointofinterest.features.home.ui.HomeScreen
+import com.grishko188.pointofinterest.features.poi.create.CreatePoiScreen
 
 @Composable
-fun Navigation(navHostController: NavHostController, paddingValues: PaddingValues){
+fun Navigation(navHostController: NavHostController, paddingValues: PaddingValues) {
     NavHost(navHostController, startDestination = Screen.Home.route, Modifier.padding(paddingValues)) {
         composable(Screen.Home.route) { HomeScreen(navHostController) }
         composable(Screen.Categories.route) { CategoriesScreen(navHostController) }
         composable(Screen.Profile.route) { ProfileScreen(navHostController) }
+        composable(Screen.CreatePoi.route) { CreatePoiScreen(navHostController) }
     }
 }
