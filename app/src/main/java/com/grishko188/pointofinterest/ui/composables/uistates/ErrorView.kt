@@ -25,7 +25,7 @@ fun ErrorView(
     title: String = stringResource(id = R.string.title_ui_state_error),
     message: String? = null,
     icon: Int = R.drawable.ic_error,
-    color: Color = WarmGray400,
+    color: Color = DarkMainColor,
     textColor: Color = DarkMainColor,
     onRetryClick: (() -> Unit)? = null
 ) {
@@ -39,12 +39,13 @@ fun ErrorView(
     ) {
 
         Icon(
+            modifier = Modifier.size(112.dp),
             imageVector = ImageVector.vectorResource(id = icon),
             contentDescription = "Error icon",
             tint = color
         )
 
-        Spacer(Modifier.height(48.dp))
+        Spacer(Modifier.height(64.dp))
 
         Text(
             text = title,
@@ -54,7 +55,7 @@ fun ErrorView(
 
         if (message != null) {
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
 
             Text(
                 text = message,
