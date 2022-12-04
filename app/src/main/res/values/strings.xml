@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Point of interest</string>
+    <string name="screen_home">Home</string>
+    <string name="screen_categories">Categories</string>
+    <string name="screen_profile">Profile</string>
+
+
+    <string name="title_ui_state_empty">Wow, it is so empty here</string>
+    <string name="title_ui_state_error">Something went wrong</string>
+
+    <string name="message_ui_state_empty_main_screen">Add your first point of interest</string>
+    <string name="button_title_try_again">Try again</string>
+
+</resources>
