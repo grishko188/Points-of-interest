@@ -2,11 +2,13 @@ package com.grishko188.pointofinterest.ui.composables.uistates
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -15,9 +17,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.grishko188.pointofinterest.R
+import com.grishko188.pointofinterest.ui.composables.uikit.OutlineButton
 import com.grishko188.pointofinterest.ui.composables.uikit.PrimaryButton
-import com.grishko188.pointofinterest.ui.theme.DarkMainColor
-import com.grishko188.pointofinterest.ui.theme.WarmGray400
 
 @Composable
 fun ErrorView(
@@ -25,8 +26,7 @@ fun ErrorView(
     title: String = stringResource(id = R.string.title_ui_state_error),
     message: String? = null,
     icon: Int = R.drawable.ic_error,
-    color: Color = DarkMainColor,
-    textColor: Color = DarkMainColor,
+    textColor: Color = MaterialTheme.colorScheme.onBackground,
     onRetryClick: (() -> Unit)? = null
 ) {
     Column(
@@ -38,19 +38,30 @@ fun ErrorView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Icon(
-            modifier = Modifier.size(112.dp),
-            imageVector = ImageVector.vectorResource(id = icon),
-            contentDescription = "Error icon",
-            tint = color
-        )
+        Box(
+            modifier = Modifier
+                .size(150.dp)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.7f), CircleShape)
 
-        Spacer(Modifier.height(64.dp))
+        ) {
+
+            Icon(
+                modifier = Modifier
+                    .size(64.dp)
+                    .align(Center),
+                imageVector = ImageVector.vectorResource(id = icon),
+                contentDescription = "Error icon",
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+
+        Spacer(Modifier.height(32.dp))
 
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge,
-            color = textColor
+            color = textColor,
+            maxLines = 1
         )
 
         if (message != null) {
@@ -66,7 +77,7 @@ fun ErrorView(
 
         if (onRetryClick != null) {
 
-            Spacer(Modifier.height(48.dp))
+            Spacer(Modifier.height(64.dp))
 
             PrimaryButton(
                 text = stringResource(id = R.string.button_title_try_again),

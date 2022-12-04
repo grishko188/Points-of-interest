@@ -18,8 +18,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.grishko188.pointofinterest.navigation.Screen
-import com.grishko188.pointofinterest.ui.theme.OrangeMain
-import com.grishko188.pointofinterest.ui.theme.UnselectedColor
 
 @Composable
 fun BottomBar(navController: NavHostController, items: List<Screen>) {
@@ -37,18 +35,18 @@ fun BottomBar(navController: NavHostController, items: List<Screen>) {
                         imageVector = ImageVector.vectorResource(id = requireNotNull(screen.icon)),
                         modifier = Modifier.size(24.dp),
                         contentDescription = stringResource(screen.name),
-                        tint = if (isSelected) OrangeMain else UnselectedColor
+                        tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
                     )
                 },
                 label = {
                     Text(
                         text = stringResource(screen.name),
                         style = MaterialTheme.typography.labelSmall,
-                        color = if (isSelected) OrangeMain else UnselectedColor
+                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
                     )
                 },
-                selectedContentColor = OrangeMain,
-                unselectedContentColor = UnselectedColor,
+                selectedContentColor = MaterialTheme.colorScheme.primary,
+                unselectedContentColor = MaterialTheme.colorScheme.onBackground,
                 selected = isSelected,
                 onClick = {
                     navController.navigate(screen.route) {

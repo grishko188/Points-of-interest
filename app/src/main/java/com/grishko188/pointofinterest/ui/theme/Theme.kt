@@ -13,26 +13,32 @@ import androidx.core.view.ViewCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = OrangeMain,
-    secondary = OrangeLight,
+    onPrimary = White,
+    secondary = OrangeDark,
+    onSecondary = White,
     tertiary = OrangeSuperLight,
-    background = Dark
+    onTertiary = DarkMainColor,
+    background = Dark,
+    onBackground = White,
+    surface = Dark,
+    onSurface = White,
+    error = ErrorColor,
+    onError = White
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = OrangeMain,
-    secondary = OrangeLight,
+    onPrimary = White,
+    secondary = OrangeDark,
+    onSecondary = White,
     tertiary = OrangeSuperLight,
-    background = White
-
-    /* Other default colors to override
-,
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    onTertiary = DarkMainColor,
+    background = White,
+    onBackground = DarkMainColor,
+    surface = White,
+    onSurface = DarkMainColor,
+    error = ErrorColor,
+    onError = White
 )
 
 @Composable
@@ -54,7 +60,7 @@ fun PointOfInterestTheme(
     if (!view.isInEditMode) {
         SideEffect {
             (view.context as Activity).window.statusBarColor = colorScheme.background.toArgb()
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = true
+            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme.not()
         }
     }
 
