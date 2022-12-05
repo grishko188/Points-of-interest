@@ -1,5 +1,7 @@
 package com.grishko188.pointofinterest.features.home.ui.models
 
+import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
+
 data class PoiListItem(
     val id: String,
     val title: String,
@@ -8,5 +10,5 @@ data class PoiListItem(
     val imageUrl: String?,
     val modifiedDate: String,
     val notesCount: Int,
-    val categories: List<CategoryListItem>
+    val categories: List<CategoryUiModel>
 )

@@ -16,7 +16,8 @@ import androidx.navigation.NavHostController
 import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.features.home.ui.composable.CategoryFilterChips
 import com.grishko188.pointofinterest.features.home.ui.composable.PoiCard
-import com.grishko188.pointofinterest.features.home.ui.models.CategoryListItem
+import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
+import com.grishko188.pointofinterest.features.home.ui.composable.AddMoreButton
 import com.grishko188.pointofinterest.features.home.ui.models.PoiListItem
 import com.grishko188.pointofinterest.features.home.vm.HomeViewModel
 import com.grishko188.pointofinterest.navigation.Screen
@@ -43,7 +44,11 @@ fun HomeScreen(
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
-            HomeScreenFilterContent(selectedFilters = selectedFiltersState, categories = categoriesState) { filterId ->
+            HomeScreenFilterContent(
+                navigationController,
+                selectedFilters = selectedFiltersState,
+                categories = categoriesState
+            ) { filterId ->
                 selectedFiltersState = selectedFiltersState.toMutableList().apply {
                     if (filterId in selectedFiltersState) remove(filterId)
                     else add(filterId)
@@ -109,14 +114,15 @@ fun HomeScreenContent(
 
 @Composable
 fun HomeScreenFilterContent(
-    categories: List<CategoryListItem>,
+    navigationController: NavHostController,
+    categories: List<CategoryUiModel>,
     selectedFilters: List<String>,
     onClick: (String) -> Unit
 ) {
     Column {
 
         LazyRow {
-            categories.forEachIndexed { index, item ->
+            categories.forEach { item ->
                 item(key = item.hashCode()) {
                     CategoryFilterChips(
                         categoryListItem = item,
@@ -124,8 +130,12 @@ fun HomeScreenFilterContent(
                         isSelected = item.id in selectedFilters
                     )
                 }
-                if (index < categories.size - 1) {
-                    item { Spacer(modifier = Modifier.width(8.dp)) }
+                item { Spacer(modifier = Modifier.width(8.dp)) }
+            }
+
+            item {
+                AddMoreButton {
+                    navigationController.navigate(Screen.Categories.route)
                 }
             }
         }
@@ -134,4 +144,4 @@ fun HomeScreenFilterContent(
     }
 }
 
-private fun List<CategoryListItem>.containsId(id: String) = this.any { it.id == id }
+private fun List<CategoryUiModel>.containsId(id: String) = this.any { it.id == id }

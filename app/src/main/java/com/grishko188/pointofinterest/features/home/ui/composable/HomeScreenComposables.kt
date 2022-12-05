@@ -6,13 +6,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.internal.isLiveLiteralsEnabled
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -27,17 +27,41 @@ import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.flowlayout.FlowRow
 import com.grishko188.pointofinterest.R
-import com.grishko188.pointofinterest.features.home.ui.models.CategoryListItem
+import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
 import com.grishko188.pointofinterest.features.home.ui.models.PoiListItem
 import com.grishko188.pointofinterest.ui.composables.uikit.PulsingProgressBar
 import com.grishko188.pointofinterest.ui.theme.PointOfInterestTheme
 import com.grishko188.pointofinterest.ui.theme.WarmGray400
 
 @Composable
+fun AddMoreButton(onClick: () -> Unit) {
+    AssistChip(
+        colors = AssistChipDefaults.assistChipColors(
+            labelColor = MaterialTheme.colorScheme.onBackground,
+            disabledContainerColor = WarmGray400.copy(alpha = 0.2f),
+            disabledLabelColor = WarmGray400,
+        ),
+        shape = RoundedCornerShape(16.dp),
+        onClick = { onClick() },
+        label = {
+            Text(
+                text = stringResource(id = R.string.add_more),
+                fontSize = 11.sp
+            )
+        },
+        border = AssistChipDefaults.assistChipBorder(
+            borderColor = MaterialTheme.colorScheme.onBackground,
+            disabledBorderColor = WarmGray400.copy(alpha = 0.2f),
+            borderWidth = 1.dp
+        )
+    )
+}
+
+@Composable
 fun CategoryDisplayChips(
-    categoryListItem: CategoryListItem,
+    categoryListItem: CategoryUiModel,
     size: ChipSize = ChipSizeDefaults.basicChip(),
-    onClick: (CategoryListItem) -> Unit = {}
+    onClick: (CategoryUiModel) -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -57,11 +81,11 @@ fun CategoryDisplayChips(
 
 @Composable
 fun CategoryFilterChips(
-    categoryListItem: CategoryListItem,
+    categoryListItem: CategoryUiModel,
     isSelected: Boolean = false,
     size: ChipSize = ChipSizeDefaults.basicChip(),
     enabled: Boolean = true,
-    onClick: (CategoryListItem) -> Unit = {}
+    onClick: (CategoryUiModel) -> Unit = {}
 ) {
     FilterChip(
         enabled = enabled,
@@ -240,10 +264,10 @@ object ChipSizeDefaults {
 fun HomeScreenItemsPreview() {
     PointOfInterestTheme(dynamicColor = false, darkTheme = false) {
         val mockItems = arrayListOf(
-            CategoryListItem(id = "_ID", title = "Business", color = Color(0xFF2980B9)),
-            CategoryListItem(id = "_ID2", title = "Music", color = Color(0xFF009688)),
-            CategoryListItem(id = "_ID3", title = "High!", color = Color(0xFFD50000)),
-            CategoryListItem(id = "_ID4", title = "Rules", color = Color(0xFFFFEB3B)),
+            CategoryUiModel(id = "_ID", title = "Business", color = Color(0xFF2980B9)),
+            CategoryUiModel(id = "_ID2", title = "Music", color = Color(0xFF009688)),
+            CategoryUiModel(id = "_ID3", title = "High!", color = Color(0xFFD50000)),
+            CategoryUiModel(id = "_ID4", title = "Rules", color = Color(0xFFFFEB3B)),
         )
         val mockPoiItem = PoiListItem(
             id = "Some id",

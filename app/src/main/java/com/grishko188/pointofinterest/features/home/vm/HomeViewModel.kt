@@ -1,13 +1,11 @@
 package com.grishko188.pointofinterest.features.home.vm
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grishko188.pointofinterest.core.utils.RetryTrigger
 import com.grishko188.pointofinterest.core.utils.retryableFlow
-import com.grishko188.pointofinterest.features.home.ui.models.CategoryListItem
+import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
 import com.grishko188.pointofinterest.features.home.ui.models.PoiListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -45,7 +43,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         retryTrigger.retry()
     }
 
-    private fun collectCategories(): Flow<List<CategoryListItem>> = flow {
+    private fun collectCategories(): Flow<List<CategoryUiModel>> = flow {
         delay(1000)
         emit(mockCategories())
     }
@@ -55,16 +53,16 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         emit(mockPoi())
     }
 
-    private fun mockCategories(): List<CategoryListItem> = arrayListOf(
-        CategoryListItem(id = "_ID3", title = "High", color = Color(0xFFD50000)),
-        CategoryListItem(id = "_ID5", title = "Medium", color = Color(0xFFFF9800)),
-        CategoryListItem(id = "_ID6", title = "Low", color = Color(0xFF7CB342)),
-        CategoryListItem(id = "_ID", title = "Business", color = Color(0xFF2980B9)),
-        CategoryListItem(id = "_ID2", title = "Music", color = Color(0xFF9C27B0)),
-        CategoryListItem(id = "_ID7", title = "TV Shows", color = Color(0xFFC6FF00)),
-        CategoryListItem(id = "_ID8", title = "Home decor", color = Color(0xFF00897B)),
-        CategoryListItem(id = "_ID9", title = "Sport", color = Color(0xFFFFEB3B)),
-        CategoryListItem(id = "_ID10", title = "Android development", color = Color(0xFF76FF03)),
+    private fun mockCategories(): List<CategoryUiModel> = arrayListOf(
+        CategoryUiModel(id = "_ID3", title = "High", color = Color(0xFFD50000)),
+        CategoryUiModel(id = "_ID5", title = "Medium", color = Color(0xFFFF9800)),
+        CategoryUiModel(id = "_ID6", title = "Low", color = Color(0xFF7CB342)),
+        CategoryUiModel(id = "_ID", title = "Business", color = Color(0xFF2980B9)),
+        CategoryUiModel(id = "_ID2", title = "Music", color = Color(0xFF9C27B0)),
+        CategoryUiModel(id = "_ID7", title = "TV Shows", color = Color(0xFFC6FF00)),
+        CategoryUiModel(id = "_ID8", title = "Home decor", color = Color(0xFF00897B)),
+        CategoryUiModel(id = "_ID9", title = "Sport", color = Color(0xFFFFEB3B)),
+        CategoryUiModel(id = "_ID10", title = "Android development", color = Color(0xFF76FF03)),
     )
 
     private fun mockPoi(): List<PoiListItem> = arrayListOf<PoiListItem>().apply {
@@ -77,8 +75,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             notesCount = 1,
             modifiedDate = "29.10.2022",
             categories = arrayListOf(
-                CategoryListItem(id = "_ID5", title = "Medium", color = Color(0xFFFF9800)),
-                CategoryListItem(id = "_ID", title = "Business", color = Color(0xFF2980B9))
+                CategoryUiModel(id = "_ID5", title = "Medium", color = Color(0xFFFF9800)),
+                CategoryUiModel(id = "_ID", title = "Business", color = Color(0xFF2980B9))
             )
         )
 
@@ -91,8 +89,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             notesCount = 10,
             modifiedDate = "15.12.2022",
             categories = arrayListOf(
-                CategoryListItem(id = "_ID3", title = "High", color = Color(0xFFD50000)),
-                CategoryListItem(id = "_ID10", title = "Android development", color = Color(0xFF76FF03))
+                CategoryUiModel(id = "_ID3", title = "High", color = Color(0xFFD50000)),
+                CategoryUiModel(id = "_ID10", title = "Android development", color = Color(0xFF76FF03))
             )
         )
 
@@ -105,8 +103,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             notesCount = 0,
             modifiedDate = "5.06.2022",
             categories = arrayListOf(
-                CategoryListItem(id = "_ID6", title = "Low", color = Color(0xFF7CB342)),
-                CategoryListItem(id = "_ID2", title = "Music", color = Color(0xFF9C27B0))
+                CategoryUiModel(id = "_ID6", title = "Low", color = Color(0xFF7CB342)),
+                CategoryUiModel(id = "_ID2", title = "Music", color = Color(0xFF9C27B0))
             )
         )
     }
