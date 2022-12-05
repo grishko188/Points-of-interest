@@ -15,5 +15,6 @@
     <string name="add_more">Add more</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="button_create_new">Create</string>
 
 </resources>

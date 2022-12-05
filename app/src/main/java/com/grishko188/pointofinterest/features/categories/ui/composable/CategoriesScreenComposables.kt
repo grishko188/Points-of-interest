@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryAction
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
@@ -30,9 +31,11 @@ fun CategoryTypeHeader(type: String) {
         text = type,
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f))
-            .padding(vertical = 12.dp, horizontal = 16.dp),
-        style = MaterialTheme.typography.titleSmall
+            .background(MaterialTheme.colorScheme.tertiary.copy(alpha = 0.9f))
+            .padding(vertical = 4.dp, horizontal = 16.dp),
+        style = MaterialTheme.typography.titleSmall,
+        fontSize = 12.sp,
+        color = MaterialTheme.colorScheme.onTertiary
     )
 }
 
@@ -98,7 +101,8 @@ fun CategoryView(modifier: Modifier = Modifier, item: CategoryUiModel, onAction:
                         modifier = Modifier
                             .weight(1f)
                             .align(CenterVertically),
-                        style = MaterialTheme.typography.titleSmall
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
 
 

@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.grishko188.pointofinterest.R
+import com.grishko188.pointofinterest.core.utils.containsId
 import com.grishko188.pointofinterest.features.home.ui.composable.CategoryFilterChips
 import com.grishko188.pointofinterest.features.home.ui.composable.PoiCard
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
@@ -143,5 +144,3 @@ fun HomeScreenFilterContent(
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
-
-private fun List<CategoryUiModel>.containsId(id: String) = this.any { it.id == id }
