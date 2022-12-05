@@ -10,6 +10,7 @@
     <string name="title_ui_state_error">Something went wrong</string>
 
     <string name="message_ui_state_empty_main_screen">Add your first point of interest</string>
+    <string name="message_ui_state_empty_main_screen_no_filters">Items matching all selected filters were not found</string>
     <string name="button_title_try_again">Try again</string>
 
 </resources>

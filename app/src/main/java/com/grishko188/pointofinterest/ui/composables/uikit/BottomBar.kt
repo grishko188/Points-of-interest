@@ -1,6 +1,8 @@
 package com.grishko188.pointofinterest.ui.composables.uikit
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
@@ -22,8 +24,9 @@ import com.grishko188.pointofinterest.navigation.Screen
 
 @Composable
 fun BottomBar(navController: NavHostController, currentDestination: NavDestination?, items: List<Screen>) {
-    BottomNavigation(
+    BottomAppBar(
         backgroundColor = MaterialTheme.colorScheme.background,
+        cutoutShape = CircleShape,
         elevation = 4.dp
     ) {
         items.forEach { screen ->

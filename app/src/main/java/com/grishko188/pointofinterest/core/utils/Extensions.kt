@@ -6,6 +6,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
+import com.grishko188.pointofinterest.features.home.ui.models.CategoryListItem
 
 @Composable
 @ReadOnlyComposable

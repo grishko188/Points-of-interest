@@ -16,7 +16,7 @@ sealed class Screen(val route: String, @StringRes val name: Int, @DrawableRes va
     }
 }
 
-fun getMainScreens() = arrayListOf(Screen.Home, Screen.Categories, Screen.Profile)
+fun getMainScreens() = arrayListOf(Screen.Home, Screen.Profile)
 
 fun routeToScreen(route: String?): Screen? =
     Screen.all.find { it.route == route }

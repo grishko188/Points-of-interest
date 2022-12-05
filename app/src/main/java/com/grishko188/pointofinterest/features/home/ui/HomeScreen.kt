@@ -1,22 +1,25 @@
 package com.grishko188.pointofinterest.features.home.ui
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.grishko188.pointofinterest.R
-import com.grishko188.pointofinterest.core.models.UiState
+import com.grishko188.pointofinterest.features.home.ui.composable.CategoryFilterChips
+import com.grishko188.pointofinterest.features.home.ui.composable.PoiCard
+import com.grishko188.pointofinterest.features.home.ui.models.CategoryListItem
+import com.grishko188.pointofinterest.features.home.ui.models.PoiListItem
 import com.grishko188.pointofinterest.features.home.vm.HomeViewModel
+import com.grishko188.pointofinterest.navigation.Screen
 import com.grishko188.pointofinterest.ui.composables.uistates.EmptyView
 import com.grishko188.pointofinterest.ui.composables.uistates.ErrorView
 import com.grishko188.pointofinterest.ui.composables.uistates.ProgressView
@@ -26,33 +29,109 @@ fun HomeScreen(
     navigationController: NavHostController,
 ) {
     val viewModel = viewModel<HomeViewModel>()
-    val uiState by viewModel.uiState.collectAsState()
+    val homeContentState by viewModel.homeUiContentState.collectAsState()
+    val categoriesState by viewModel.categoriesState.collectAsState()
+    var selectedFiltersState by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
 
-    LaunchedEffect(key1 = Unit) {
-        viewModel.onLaunched()
-    }
-
-    when (uiState) {
-        UiState.Loading -> ProgressView()
-        UiState.Empty -> EmptyView(message = stringResource(id = R.string.message_ui_state_empty_main_screen))
-        is UiState.Error -> {
-            val errorState = uiState as UiState.Error
-            ErrorView(message = errorState.message) { viewModel.onRetry() }
-        }
-        else -> HomeScreenContent()
-    }
-}
-
-@Composable
-fun HomeScreenContent() {
-    Box(
+    Column(
         Modifier
             .padding(16.dp)
             .background(MaterialTheme.colorScheme.background)
     ) {
-        Text(
-            text = "Content",
-            style = MaterialTheme.typography.bodyLarge
-        )
+        AnimatedVisibility(
+            visible = categoriesState.isEmpty().not(),
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            HomeScreenFilterContent(selectedFilters = selectedFiltersState, categories = categoriesState) { filterId ->
+                selectedFiltersState = selectedFiltersState.toMutableList().apply {
+                    if (filterId in selectedFiltersState) remove(filterId)
+                    else add(filterId)
+                }
+            }
+        }
+        Box(modifier = Modifier.weight(1f)) {
+            when (homeContentState) {
+                HomeViewModel.HomeUiContentState.Loading -> ProgressView()
+
+                HomeViewModel.HomeUiContentState.Empty -> EmptyView(message = stringResource(id = R.string.message_ui_state_empty_main_screen))
+
+                is HomeViewModel.HomeUiContentState.Error -> {
+                    val errorState = homeContentState as HomeViewModel.HomeUiContentState.Error
+                    ErrorView(message = errorState.message) { viewModel.onRetry() }
+                }
+
+                is HomeViewModel.HomeUiContentState.Result -> {
+                    val filteredList = (homeContentState as HomeViewModel.HomeUiContentState.Result).poiList.filter { poi ->
+                        selectedFiltersState.isEmpty() || selectedFiltersState.all { filterId -> poi.categories.containsId(filterId) }
+                    }
+
+                    androidx.compose.animation.AnimatedVisibility(
+                        visible = filteredList.isEmpty(),
+                        enter = fadeIn(),
+                        exit = fadeOut(),
+                    ) {
+                        EmptyView(message = stringResource(id = R.string.message_ui_state_empty_main_screen_no_filters))
+                    }
+
+                    androidx.compose.animation.AnimatedVisibility(
+                        visible = categoriesState.isEmpty().not(),
+                        enter = fadeIn(),
+                        exit = fadeOut(),
+                    ) {
+                        HomeScreenContent(filteredList, navigationController)
+                    }
+
+                }
+            }
+        }
     }
 }
+
+@Composable
+fun HomeScreenContent(
+    poiItems: List<PoiListItem>,
+    navigationController: NavHostController
+) {
+    Column {
+        LazyColumn {
+            poiItems.forEachIndexed { index, item ->
+                item(key = item.hashCode()) {
+                    PoiCard(poiListItem = item, onClick = { navigationController.navigate(Screen.CreatePoi.route) })
+                }
+                if (index < poiItems.size - 1) {
+                    item { Spacer(modifier = Modifier.height(8.dp)) }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun HomeScreenFilterContent(
+    categories: List<CategoryListItem>,
+    selectedFilters: List<String>,
+    onClick: (String) -> Unit
+) {
+    Column {
+
+        LazyRow {
+            categories.forEachIndexed { index, item ->
+                item(key = item.hashCode()) {
+                    CategoryFilterChips(
+                        categoryListItem = item,
+                        onClick = { onClick(it.id) },
+                        isSelected = item.id in selectedFilters
+                    )
+                }
+                if (index < categories.size - 1) {
+                    item { Spacer(modifier = Modifier.width(8.dp)) }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+private fun List<CategoryListItem>.containsId(id: String) = this.any { it.id == id }

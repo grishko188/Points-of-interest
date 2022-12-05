@@ -7,10 +7,14 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
@@ -46,16 +50,17 @@ fun RootScreen() {
     val currentScreen = routeToScreen(currentDestination?.route)
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        floatingActionButtonPosition = FabPosition.End,
+        backgroundColor = MaterialTheme.colorScheme.background,
+        floatingActionButtonPosition = FabPosition.Center,
+        isFloatingActionButtonDocked = true,
         floatingActionButton = {
             AnimatedVisibility(
-                visible = currentScreen == Screen.Home,
+                visible = currentScreen?.isFullScreen == false,
                 enter = scaleIn(),
                 exit = scaleOut(),
             ) {
                 FloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.primary,
+                    backgroundColor = MaterialTheme.colorScheme.primary,
                     onClick = {
                         navController.navigate(Screen.CreatePoi.route)
                     }) {
