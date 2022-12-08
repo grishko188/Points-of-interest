@@ -1,5 +1,6 @@
 package com.grishko188.pointofinterest.features.home.vm
 
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,6 +42,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun onRetry() {
         retryTrigger.retry()
+    }
+
+    fun onSearch(query: String) {
     }
 
     private fun collectCategories(): Flow<List<CategoryUiModel>> = flow {

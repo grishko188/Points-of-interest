@@ -31,6 +31,6 @@ fun OutlineButton(
         onClick = onClick
     ) {
 
-        Text(text = text.uppercase(), color = textColor, style = MaterialTheme.typography.titleMedium)
+        Text(text = text.uppercase(), color = textColor, style = MaterialTheme.typography.titleSmall)
     }
 }

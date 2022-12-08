@@ -16,5 +16,7 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="button_create_new">Create</string>
+    <string name="message_snack_bar_category_deleted">Category #%1$s deleted</string>
+    <string name="action_undo">UNDO</string>
 
 </resources>

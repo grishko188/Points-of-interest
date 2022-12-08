@@ -1,5 +1,6 @@
 package com.grishko188.pointofinterest.features.home.ui
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -29,15 +31,21 @@ import com.grishko188.pointofinterest.ui.composables.uistates.ProgressView
 @Composable
 fun HomeScreen(
     navigationController: NavHostController,
+    searchState: MutableState<TextFieldValue>,
+    viewModel: HomeViewModel = viewModel()
 ) {
-    val viewModel = viewModel<HomeViewModel>()
+
     val homeContentState by viewModel.homeUiContentState.collectAsState()
     val categoriesState by viewModel.categoriesState.collectAsState()
     var selectedFiltersState by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
 
+    LaunchedEffect(key1 = searchState.value) {
+        viewModel.onSearch(searchState.value.text)
+    }
+
     Column(
         Modifier
-            .padding(16.dp)
+            .padding(PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp))
             .background(MaterialTheme.colorScheme.background)
     ) {
         AnimatedVisibility(
@@ -121,7 +129,6 @@ fun HomeScreenFilterContent(
     onClick: (String) -> Unit
 ) {
     Column {
-
         LazyRow {
             categories.forEach { item ->
                 item(key = item.hashCode()) {
@@ -133,14 +140,12 @@ fun HomeScreenFilterContent(
                 }
                 item { Spacer(modifier = Modifier.width(8.dp)) }
             }
-
             item {
                 AddMoreButton {
                     navigationController.navigate(Screen.Categories.route)
                 }
             }
         }
-
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
