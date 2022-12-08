@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -62,18 +61,19 @@ fun CategoryView(
         modifier = modifier,
         state = dismissStateWrapper.dismissState,
         directions = setOf(DismissDirection.EndToStart),
+        dismissThresholds = { FractionalThreshold(0.4f) },
         background = {
             val color by animateColorAsState(
                 when (dismissStateWrapper.dismissState.targetValue) {
-                    DismissValue.Default -> MaterialTheme.colorScheme.background
+                    DismissValue.Default -> MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
                     else -> MaterialTheme.colorScheme.error
                 }
             )
             Box(
                 Modifier
                     .fillMaxSize()
-                    .background(color.copy(alpha = 0.5f))
-                    .padding(horizontal = 20.dp),
+                    .background(color)
+                    .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Icon(
