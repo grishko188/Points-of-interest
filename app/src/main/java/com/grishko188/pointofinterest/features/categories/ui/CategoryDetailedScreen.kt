@@ -52,8 +52,10 @@ fun CategoriesDetailedScreen(
 
     LaunchedEffect(key1 = uiState) {
         if (uiState is DetailedCategoriesUiState.Success) {
-            val categoryName = (uiState as DetailedCategoriesUiState.Success).categoryUiModel?.title ?: ""
-            textFieldState = textFieldState.copy(categoryName, selection = TextRange(categoryName.length))
+            val model = (uiState as DetailedCategoriesUiState.Success).categoryUiModel
+            val name = model?.title ?: ""
+            textFieldState = textFieldState.copy(name, selection = TextRange(name.length))
+            selectedColorState = model?.color ?: Color.Transparent
         }
     }
 
@@ -173,7 +175,8 @@ fun CategoriesDetailedContent(
         }
 
         val isEnabled = if (selectedCategory != null) {
-            (textFieldValue.text != selectedCategory.title || selectedColor != selectedCategory.color) && textFieldValue.text.isNotEmpty()
+            (textFieldValue.text != selectedCategory.title || (selectedColor != Color.Transparent && selectedColor != selectedCategory.color))
+                    && textFieldValue.text.isNotEmpty()
         } else {
             textFieldValue.text.isNotEmpty() && selectedColor != Color.Transparent
         }
