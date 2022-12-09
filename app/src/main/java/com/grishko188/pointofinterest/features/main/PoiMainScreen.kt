@@ -1,5 +1,6 @@
 package com.grishko188.pointofinterest.features.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.grishko188.pointofinterest.R
@@ -25,6 +27,15 @@ import com.grishko188.pointofinterest.ui.theme.PointOfInterestTheme
 fun PoiMainScreen(
     appState: PoiAppState = rememberPoiAppState()
 ) {
+
+    BackHandler(appState.showSearchBarState) {
+        appState.showSearchBarState = false
+    }
+
+    LaunchedEffect(key1 = appState.currentScreen != Screen.Home && appState.showSearchBarState) {
+        appState.showSearchBarState = false
+    }
+
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
         floatingActionButtonPosition = FabPosition.Center,

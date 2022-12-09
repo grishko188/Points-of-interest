@@ -1,6 +1,7 @@
 package com.grishko188.pointofinterest.features.home.ui
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

@@ -1,43 +1,38 @@
 package com.grishko188.pointofinterest.features.categories.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.features.categories.ui.composable.CategoryTypeHeader
 import com.grishko188.pointofinterest.features.categories.ui.composable.CategoryView
+import com.grishko188.pointofinterest.features.categories.ui.composable.EditableCategoryView
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryAction
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
 import com.grishko188.pointofinterest.features.categories.vm.CategoriesViewModel
-import com.grishko188.pointofinterest.ui.composables.uikit.PrimaryButton
+import com.grishko188.pointofinterest.features.main.PoiAppState
+import com.grishko188.pointofinterest.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
 
 import kotlinx.coroutines.launch
 
 @Composable
 fun CategoriesScreen(
-    navHostController: NavHostController,
+    appState: PoiAppState,
     snackbarHostState: SnackbarHostState,
-    coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
+    viewModel: CategoriesViewModel
 ) {
-    val viewModel = viewModel<CategoriesViewModel>()
+
     val categoriesState by viewModel.categoriesState.collectAsState()
     val itemToDelete by viewModel.itemsToDelete.collectAsState()
 
@@ -46,7 +41,7 @@ fun CategoriesScreen(
             viewModel = viewModel,
             coroutineScope = coroutineScope,
             snackbarHostState = snackbarHostState,
-            navigationController = navHostController,
+            appState = appState,
             categories = categoriesState,
             itemsToDelete = itemToDelete
         )
@@ -56,14 +51,13 @@ fun CategoriesScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CategoriesContent(
+    appState: PoiAppState,
     viewModel: CategoriesViewModel,
     coroutineScope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
-    navigationController: NavHostController,
     categories: Map<String, List<CategoryUiModel>>,
     itemsToDelete: List<String>
 ) {
-    val context = LocalContext.current
 
     Column {
         LazyColumn(Modifier.weight(1f)) {
@@ -77,26 +71,33 @@ fun CategoriesContent(
                     )
                 }
                 items(group.value.filter { it.id !in itemsToDelete }, { it.hashCode() }) { item ->
-                    CategoryView(Modifier.animateItemPlacement(), item) { action, model, displayData ->
-                        when (action) {
-                            CategoryAction.DELETE -> {
-                                viewModel.onDeleteItem(item.id)
-                                displayData?.let { snackbarDisplayData ->
-                                    coroutineScope.launch {
-                                        val snackBarResult = snackbarHostState.showSnackbar(
-                                            message = snackbarDisplayData.message,
-                                            actionLabel = snackbarDisplayData.action,
-                                            duration = SnackbarDuration.Short
-                                        )
-                                        when (snackBarResult) {
-                                            SnackbarResult.Dismissed -> viewModel.onCommitDeleteItem(model.id)
-                                            SnackbarResult.ActionPerformed -> viewModel.onUndoDeleteItem(model.id)
+                    if (item.isMutableCategory) {
+                        EditableCategoryView(Modifier.animateItemPlacement(), item) { action, model, displayData ->
+                            when (action) {
+                                CategoryAction.DELETE -> {
+                                    viewModel.onDeleteItem(item.id)
+                                    displayData?.let { snackbarDisplayData ->
+                                        coroutineScope.launch {
+                                            val snackBarResult = snackbarHostState.showSnackbar(
+                                                message = snackbarDisplayData.message,
+                                                actionLabel = snackbarDisplayData.action,
+                                                duration = SnackbarDuration.Short
+                                            )
+                                            when (snackBarResult) {
+                                                SnackbarResult.Dismissed -> viewModel.onCommitDeleteItem(model.id)
+                                                SnackbarResult.ActionPerformed -> viewModel.onUndoDeleteItem(model.id)
+                                            }
                                         }
                                     }
                                 }
+                                CategoryAction.EDIT -> appState.navigateTo(
+                                    Screen.CategoriesDetailed,
+                                    listOf(Screen.CategoriesDetailed.ARG_CATEGORY_ID to model.id)
+                                )
                             }
-                            CategoryAction.EDIT -> Toast.makeText(context, "Edit ${model.id}", Toast.LENGTH_SHORT).show()
                         }
+                    } else {
+                        CategoryView(Modifier.animateItemPlacement(), item = item)
                     }
                     Divider(
                         modifier = Modifier.animateItemPlacement(),
@@ -105,22 +106,6 @@ fun CategoriesContent(
                     )
                 }
             }
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Surface(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.background),
-            shape = RoundedCornerShape(16.dp),
-            shadowElevation = 8.dp
-        ) {
-            PrimaryButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                text = stringResource(R.string.button_create_new),
-                onClick = { Toast.makeText(context, "Create new category", Toast.LENGTH_SHORT).show() }
-            )
         }
     }
 }

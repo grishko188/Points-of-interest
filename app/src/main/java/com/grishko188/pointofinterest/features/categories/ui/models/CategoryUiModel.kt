@@ -5,5 +5,6 @@ import androidx.compose.ui.graphics.Color
 data class CategoryUiModel(
     val id: String,
     val color: Color,
-    val title: String
+    val title: String,
+    val isMutableCategory: Boolean = false
 )

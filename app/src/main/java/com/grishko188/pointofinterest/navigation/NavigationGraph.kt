@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.grishko188.pointofinterest.features.categories.categoriesGraph
 import com.grishko188.pointofinterest.features.categories.ui.CategoriesScreen
 import com.grishko188.pointofinterest.features.profile.ui.ProfileScreen
 import com.grishko188.pointofinterest.features.home.ui.HomeScreen
@@ -17,7 +18,7 @@ import com.grishko188.pointofinterest.features.poi.create.CreatePoiScreen
 fun Navigation(appState: PoiAppState, paddingValues: PaddingValues) {
     NavHost(appState.navController, startDestination = Screen.Home.route, Modifier.padding(paddingValues)) {
         composable(Screen.Home.route) { HomeScreen(appState.navController, appState.searchState) }
-        composable(Screen.Categories.route) { CategoriesScreen(appState.navController, appState.snackBarHostState, appState.coroutineScope) }
+        categoriesGraph(appState)
         composable(Screen.Profile.route) { ProfileScreen(appState.navController) }
         composable(Screen.CreatePoi.route) { CreatePoiScreen(appState.navController) }
     }
