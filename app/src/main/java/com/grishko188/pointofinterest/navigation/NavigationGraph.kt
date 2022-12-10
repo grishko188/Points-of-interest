@@ -17,7 +17,14 @@ import com.grishko188.pointofinterest.features.poi.create.CreatePoiScreen
 @Composable
 fun Navigation(appState: PoiAppState, paddingValues: PaddingValues) {
     NavHost(appState.navController, startDestination = Screen.Home.route, Modifier.padding(paddingValues)) {
-        composable(Screen.Home.route) { HomeScreen(appState.navController, appState.searchState) }
+        composable(Screen.Home.route) {
+            HomeScreen(
+                appState.navController,
+                appState.searchState,
+                appState.showSortDialog,
+                { appState.showSortDialog = false }
+            )
+        }
         categoriesGraph(appState)
         composable(Screen.Profile.route) { ProfileScreen(appState.navController) }
         composable(Screen.CreatePoi.route) { CreatePoiScreen(appState.navController) }

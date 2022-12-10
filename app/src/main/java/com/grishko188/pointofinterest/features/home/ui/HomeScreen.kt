@@ -1,19 +1,23 @@
 package com.grishko188.pointofinterest.features.home.ui
 
-import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.grishko188.pointofinterest.R
@@ -23,8 +27,11 @@ import com.grishko188.pointofinterest.features.home.ui.composable.PoiCard
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
 import com.grishko188.pointofinterest.features.home.ui.composable.AddMoreButton
 import com.grishko188.pointofinterest.features.home.ui.models.PoiListItem
+import com.grishko188.pointofinterest.features.home.ui.models.PoiSortByOption
+import com.grishko188.pointofinterest.features.home.ui.models.toTitle
 import com.grishko188.pointofinterest.features.home.vm.HomeViewModel
 import com.grishko188.pointofinterest.navigation.Screen
+import com.grishko188.pointofinterest.ui.composables.uikit.ActionButton
 import com.grishko188.pointofinterest.ui.composables.uistates.EmptyView
 import com.grishko188.pointofinterest.ui.composables.uistates.ErrorView
 import com.grishko188.pointofinterest.ui.composables.uistates.ProgressView
@@ -33,12 +40,15 @@ import com.grishko188.pointofinterest.ui.composables.uistates.ProgressView
 fun HomeScreen(
     navigationController: NavHostController,
     searchState: MutableState<TextFieldValue>,
+    showSortDialogState: Boolean,
+    onCloseSortDialog: () -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
 
     val homeContentState by viewModel.homeUiContentState.collectAsState()
     val categoriesState by viewModel.categoriesState.collectAsState()
     var selectedFiltersState by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+    var selectedSortByOption by remember { mutableStateOf(PoiSortByOption.NONE) }
 
     LaunchedEffect(key1 = searchState.value) {
         viewModel.onSearch(searchState.value.text)
@@ -98,6 +108,82 @@ fun HomeScreen(
                     }
 
                 }
+            }
+
+            if (showSortDialogState) {
+                Dialog(
+                    onDismissRequest = onCloseSortDialog,
+                    content = {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(1f),
+                            shape = RoundedCornerShape(8.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.background,
+                                contentColor = MaterialTheme.colorScheme.onBackground
+                            )
+                        ) {
+
+                            Column {
+                                Text(
+                                    modifier = Modifier.padding(24.dp),
+                                    text = stringResource(id = R.string.title_dialog_sort_by),
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+
+                                PoiSortByOption.values().filter { it != PoiSortByOption.NONE }.forEach { option ->
+                                    Row(modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { selectedSortByOption = option }) {
+                                        RadioButton(
+                                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
+                                            selected = (option == selectedSortByOption),
+                                            onClick = null,
+                                            colors = RadioButtonDefaults.colors(
+                                                selectedColor = MaterialTheme.colorScheme.secondary,
+                                                unselectedColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+                                            )
+                                        )
+
+                                        Text(
+                                            modifier = Modifier.padding(end = 24.dp, top = 12.dp, bottom = 12.dp),
+                                            text = stringResource(id = option.toTitle()),
+                                            style = MaterialTheme.typography.bodyLarge,
+                                            fontSize = 18.sp
+                                        )
+
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.size(8.dp))
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 24.dp, end = 8.dp, bottom = 8.dp),
+                                    horizontalArrangement = Arrangement.End,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    ActionButton(
+                                        text = stringResource(id = R.string.cancel),
+                                        onClick = { onCloseSortDialog() }
+                                    )
+                                    ActionButton(
+                                        text = stringResource(id = R.string.apply),
+                                        onClick = {
+                                            viewModel.onApplySortBy(selectedSortByOption)
+                                            onCloseSortDialog()
+                                        },
+                                        enabled = selectedSortByOption != PoiSortByOption.NONE
+                                    )
+                                }
+                            }
+                        }
+                    },
+                    properties = DialogProperties(
+                        dismissOnBackPress = true,
+                        dismissOnClickOutside = true
+                    )
+                )
             }
         }
     }

@@ -21,5 +21,12 @@
     <string name="message_snack_bar_category_deleted">Category #%1$s deleted</string>
     <string name="action_undo">UNDO</string>
     <string name="title_category_name">Category name</string>
+    <string name="title_sort_by_severity">Severity</string>
+    <string name="title_sort_by_date">Creation date</string>
+    <string name="title_sort_by_title">Title</string>
+    <string name="title_dialog_sort_by">Sort by:</string>
+    <string name="empty" />
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
 
 </resources>

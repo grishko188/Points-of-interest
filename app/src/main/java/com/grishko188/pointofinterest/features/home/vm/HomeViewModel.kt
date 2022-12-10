@@ -1,6 +1,5 @@
 package com.grishko188.pointofinterest.features.home.vm
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +7,7 @@ import com.grishko188.pointofinterest.core.utils.RetryTrigger
 import com.grishko188.pointofinterest.core.utils.retryableFlow
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
 import com.grishko188.pointofinterest.features.home.ui.models.PoiListItem
+import com.grishko188.pointofinterest.features.home.ui.models.PoiSortByOption
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
@@ -46,6 +46,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun onSearch(query: String) {
     }
+
+    fun onApplySortBy(option: PoiSortByOption) {}
 
     private fun collectCategories(): Flow<List<CategoryUiModel>> = flow {
         delay(1000)

@@ -51,6 +51,8 @@ class PoiAppState(
 
     var showSearchBarState by mutableStateOf(false)
 
+    var showSortDialog by mutableStateOf(false)
+
     fun navigateToRoot(screen: Screen) {
         navController.navigate(screen.route) {
             popUpTo(navController.graph.findStartDestination().id) {
@@ -79,6 +81,7 @@ class PoiAppState(
             MenuActionType.BACK -> onBackClick()
             MenuActionType.SEARCH -> showSearchBarState = true
             MenuActionType.ADD -> navigateTo(Screen.CategoriesDetailed)
+            MenuActionType.SORT -> showSortDialog = true
         }
     }
 }

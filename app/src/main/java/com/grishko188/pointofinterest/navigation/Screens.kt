@@ -16,7 +16,7 @@ sealed class Screen(
         route = "screen_home",
         R.string.screen_home,
         R.drawable.ic_home,
-        menuItems = arrayListOf(MenuItem.Search)
+        menuItems = arrayListOf(MenuItem.Search, MenuItem.SortBy)
     )
 
     object Profile : Screen(route = "screen_profile", R.string.screen_profile, R.drawable.ic_profile)
