@@ -1,17 +1,15 @@
 plugins {
-    id 'kotlin-kapt'
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.dagger.hilt.android'
 }
 
 android {
-    namespace 'com.grishko188.domain'
-    compileSdk 33
+    namespace 'com.grishko188.data'
+    compileSdk 32
 
     defaultConfig {
         minSdk 24
-        targetSdk 33
+        targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -30,19 +28,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-    kapt {
-        correctErrorTypes = true
-    }
 }
 
 dependencies {
-
+    implementation(project(":domain"))
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'

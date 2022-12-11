@@ -33,6 +33,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.grishko188.domain.features.categories.models.CategoryType
 import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.core.utils.MaterialColors
 import com.grishko188.pointofinterest.core.utils.SnackbarDisplayObject
@@ -273,7 +274,7 @@ fun CategoriesScreenComposablesPreview() {
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            val model = CategoryUiModel(id = "_ID3", title = "High!", color = Color(0xFFD50000))
+            val model = CategoryUiModel(id = "_ID3", title = "High!", color = Color(0xFFD50000), categoryType = CategoryType.SEVERITY)
 
             CategoryView(item = model)
 

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.flowlayout.FlowRow
+import com.grishko188.domain.features.categories.models.CategoryType
 import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
 import com.grishko188.pointofinterest.features.home.ui.models.PoiListItem
@@ -277,10 +278,10 @@ object ChipSizeDefaults {
 fun HomeScreenItemsPreview() {
     PointOfInterestTheme(dynamicColor = false, darkTheme = true) {
         val mockItems = arrayListOf(
-            CategoryUiModel(id = "_ID", title = "Business", color = Color(0xFF2980B9)),
-            CategoryUiModel(id = "_ID2", title = "Music", color = Color(0xFF009688)),
-            CategoryUiModel(id = "_ID3", title = "High!", color = Color(0xFFD50000)),
-            CategoryUiModel(id = "_ID4", title = "Rules", color = Color(0xFFFFEB3B)),
+            CategoryUiModel(id = "_ID", title = "Business", color = Color(0xFF2980B9), categoryType = CategoryType.GLOBAL),
+            CategoryUiModel(id = "_ID2", title = "Music", color = Color(0xFF009688), categoryType = CategoryType.GLOBAL),
+            CategoryUiModel(id = "_ID3", title = "High!", color = Color(0xFFD50000), categoryType = CategoryType.SEVERITY),
+            CategoryUiModel(id = "_ID4", title = "Rules", color = Color(0xFFFFEB3B), categoryType = CategoryType.PERSONAL),
         )
         val mockPoiItem = PoiListItem(
             id = "Some id",
