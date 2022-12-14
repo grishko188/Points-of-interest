@@ -7,11 +7,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface CategoriesRepository {
 
+    suspend fun sync()
+
     fun getCategories(): Flow<List<Category>>
 
     fun getCategories(type: CategoryType): Flow<List<Category>>
 
-    suspend fun getCategory(id: String): Category
+    fun getCategory(id: String): Flow<Category>
 
     suspend fun addCategory(payload: CreateCategoryPayload)
 

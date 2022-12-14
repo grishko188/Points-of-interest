@@ -3,6 +3,7 @@ package com.grishko188.pointofinterest.features.categories.vm
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.grishko188.domain.features.categories.interactor.*
 import com.grishko188.domain.features.categories.models.CategoryType
 import com.grishko188.pointofinterest.core.utils.containsId
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
@@ -14,7 +15,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoriesViewModel @Inject constructor() : ViewModel() {
+class CategoriesViewModel @Inject constructor(
+    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getCategoryUseCase: GetCategoryUseCase,
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
+    private val updateCategoryUseCase: UpdateCategoryUseCase,
+    private val addCategoryUseCase: AddCategoryUseCase
+) : ViewModel() {
 
     val detailedCategoriesUiState = MutableStateFlow<DetailedCategoriesUiState>(DetailedCategoriesUiState.Loading)
     val categoriesState = MutableStateFlow<Map<String, List<CategoryUiModel>>>(emptyMap())

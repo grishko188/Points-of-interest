@@ -2,13 +2,15 @@
 <resources>
     <style name="Theme.PointOfInterest" parent="android:Theme.Material.Light.NoActionBar" />
 
+    <!-- Splash Screen Theme. -->
     <style name="Theme.AppSplash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenBackground">@color/dark</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="postSplashScreenTheme">@style/Theme.PointOfInterest</item>
+
         <!-- Status bar and Nav bar configs -->
-        <item name="android:statusBarColor" >@color/white</item>
-        <item name="android:navigationBarColor">@color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor" >@color/dark</item>
+        <item name="android:navigationBarColor">@color/dark</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>
