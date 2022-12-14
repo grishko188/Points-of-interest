@@ -13,7 +13,7 @@ interface CategoriesRepository {
 
     fun getCategories(type: CategoryType): Flow<List<Category>>
 
-    fun getCategory(id: String): Flow<Category>
+    suspend fun getCategory(id: String): Category
 
     suspend fun addCategory(payload: CreateCategoryPayload)
 

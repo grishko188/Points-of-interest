@@ -1,3 +1,3 @@
 package com.grishko188.data.core
 
-const val UNSPECIFIED_ID = -1
+const val UNSPECIFIED_ID = 0

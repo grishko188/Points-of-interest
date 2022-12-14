@@ -5,15 +5,19 @@ import com.grishko188.domain.features.categories.models.Category
 import com.grishko188.domain.features.categories.models.CategoryType
 import com.grishko188.domain.features.categories.models.CreateCategoryPayload
 
-data class CategoryDto(
+data class CategoryDataModel(
     val id: Int,
     val title: String,
     val color: Int,
     val type: String,
     val isMutable: Boolean
-)
+) {
+    companion object {
+        val EMPTY = CategoryDataModel(-1, "", 0, "", false)
+    }
+}
 
-fun CategoryDto.toDomain() = Category(
+fun CategoryDataModel.toDomain() = Category(
     id = id.toString(),
     title = title,
     color = color,
@@ -21,7 +25,7 @@ fun CategoryDto.toDomain() = Category(
     isMutable = isMutable
 )
 
-fun Category.toDto() = CategoryDto(
+fun Category.toDataModel() = CategoryDataModel(
     id = id.toInt(),
     title = title,
     color = color,
@@ -29,7 +33,7 @@ fun Category.toDto() = CategoryDto(
     isMutable = isMutable
 )
 
-fun CreateCategoryPayload.toDto() = CategoryDto(
+fun CreateCategoryPayload.toDataModel() = CategoryDataModel(
     id = UNSPECIFIED_ID,
     title = title,
     color = color,

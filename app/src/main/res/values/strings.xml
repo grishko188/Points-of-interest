@@ -28,5 +28,8 @@
     <string name="empty" />
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
+    <string name="title_severity">Severity</string>
+    <string name="title_global">Global</string>
+    <string name="title_personal">Personal</string>
 
 </resources>

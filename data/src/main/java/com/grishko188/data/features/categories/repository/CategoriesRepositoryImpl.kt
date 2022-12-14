@@ -3,9 +3,9 @@ package com.grishko188.data.features.categories.repository
 import com.grishko188.data.core.Local
 import com.grishko188.data.core.Remote
 import com.grishko188.data.features.categories.datasource.CategoriesDataSource
-import com.grishko188.data.features.categories.model.CategoryDto
+import com.grishko188.data.features.categories.model.CategoryDataModel
 import com.grishko188.data.features.categories.model.toDomain
-import com.grishko188.data.features.categories.model.toDto
+import com.grishko188.data.features.categories.model.toDataModel
 import com.grishko188.domain.features.categories.models.Category
 import com.grishko188.domain.features.categories.models.CategoryType
 import com.grishko188.domain.features.categories.models.CreateCategoryPayload
@@ -33,21 +33,21 @@ class CategoriesRepositoryImpl @Inject constructor(
     override fun getCategories(type: CategoryType): Flow<List<Category>> =
         localDataSource.getCategories(type.name).mapToDomain()
 
-    override fun getCategory(id: String): Flow<Category> =
-        localDataSource.getCategory(id.toInt()).map { it.toDomain() }
+    override suspend fun getCategory(id: String): Category =
+        localDataSource.getCategory(id.toInt()).toDomain()
 
     override suspend fun addCategory(payload: CreateCategoryPayload) {
-        localDataSource.addCategory(payload.toDto())
+        localDataSource.addCategory(payload.toDataModel())
     }
 
     override suspend fun updateCategory(category: Category) {
-        localDataSource.updateCategory(category.toDto())
+        localDataSource.updateCategory(category.toDataModel())
     }
 
     override suspend fun deleteCategory(categoryId: String) {
         localDataSource.deleteCategory(categoryId.toInt())
     }
 
-    private fun Flow<List<CategoryDto>>.mapToDomain() =
+    private fun Flow<List<CategoryDataModel>>.mapToDomain() =
         this.map { list -> list.map { it.toDomain() } }
 }

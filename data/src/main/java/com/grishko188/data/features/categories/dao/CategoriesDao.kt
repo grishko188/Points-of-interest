@@ -15,7 +15,7 @@ interface CategoriesDao {
     fun getCategories(type: String): Flow<List<CategoryEntity>>
 
     @Query(value = "SELECT * FROM table_categories WHERE id = :categoryId")
-    fun getCategory(categoryId: Int): Flow<CategoryEntity>
+    suspend fun getCategory(categoryId: Int): CategoryEntity
 
     @Query("SELECT COUNT(*) FROM table_categories")
     suspend fun count(): Int

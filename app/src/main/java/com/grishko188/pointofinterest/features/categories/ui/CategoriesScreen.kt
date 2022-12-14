@@ -12,6 +12,7 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.grishko188.pointofinterest.features.categories.ui.composable.CategoryTypeHeader
 import com.grishko188.pointofinterest.features.categories.ui.composable.CategoryView
@@ -55,7 +56,7 @@ fun CategoriesContent(
     viewModel: CategoriesViewModel,
     coroutineScope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
-    categories: Map<String, List<CategoryUiModel>>,
+    categories: Map<Int, List<CategoryUiModel>>,
     itemsToDelete: List<String>
 ) {
 
@@ -63,7 +64,7 @@ fun CategoriesContent(
         LazyColumn(Modifier.weight(1f)) {
             categories.entries.forEach { group ->
                 stickyHeader {
-                    CategoryTypeHeader(type = group.key)
+                    CategoryTypeHeader(type = stringResource(id = group.key))
                     Divider(
                         modifier = Modifier.animateItemPlacement(),
                         thickness = 0.5.dp,

@@ -18,9 +18,9 @@ data class CategoryEntity(
     var id: Int = UNSPECIFIED_ID
 }
 
-fun CategoryEntity.toDto() = CategoryDto(id, title, color, type, isMutable)
+fun CategoryEntity.toDataModel() = CategoryDataModel(id, title, color, type, isMutable)
 
-fun CategoryDto.toEntity(): CategoryEntity {
+fun CategoryDataModel.toEntity(): CategoryEntity {
     val entity = CategoryEntity(title, color, type, isMutable)
     if (this.id != UNSPECIFIED_ID) {
         entity.id = id

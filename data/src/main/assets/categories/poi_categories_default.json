@@ -1,0 +1,102 @@
+[
+  {
+    "title": "High",
+    "color": "#B71C1C",
+    "type": "SEVERITY"
+  },
+  {
+    "title": "Medium",
+    "color": "#FF6F00",
+    "type": "SEVERITY"
+  },
+  {
+    "title": "Normal",
+    "color": "#1B5E20",
+    "type": "SEVERITY"
+  },
+  {
+    "title": "Low",
+    "color": "#01579B",
+    "type": "SEVERITY"
+  },
+  {
+    "title": "Business",
+    "color": "#00B8D4",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Music",
+    "color": "#E65100",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Work",
+    "color": "#D50000",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "News",
+    "color": "#1B5E20",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Movies",
+    "color": "#827717",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "TV shows",
+    "color": "#880E4F",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Hi-Tech",
+    "color": "#311B92",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "World",
+    "color": "#006064",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Medicine",
+    "color": "#64DD17",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Events",
+    "color": "#827717",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Real estate",
+    "color": "#1A237E",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Nature",
+    "color": "#00B8D4",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Sport",
+    "color": "#DD2C00",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Politics",
+    "color": "#FF8A80",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Religion",
+    "color": "#607D8B",
+    "type": "GLOBAL"
+  },
+  {
+    "title": "Art",
+    "color": "#F57F17",
+    "type": "GLOBAL"
+  }
+]

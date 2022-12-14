@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.grishko188.domain.features.categories.models.Category
 import com.grishko188.domain.features.categories.models.CategoryType
+import com.grishko188.pointofinterest.R
 
 data class CategoryUiModel(
     val id: String,
@@ -28,3 +29,10 @@ fun CategoryUiModel.toDomainModel() = Category(
     isMutable = isMutableCategory,
     categoryType = categoryType
 )
+
+fun CategoryType.toTitle() =
+    when (this) {
+        CategoryType.SEVERITY -> R.string.title_severity
+        CategoryType.GLOBAL -> R.string.title_global
+        CategoryType.PERSONAL -> R.string.title_personal
+    }
