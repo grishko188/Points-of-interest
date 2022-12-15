@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grishko188.domain.features.categories.interactor.SyncCategoriesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class MainViewModel @Inject constructor(
 
     override fun onCreate(owner: LifecycleOwner) {
         viewModelScope.launch {
+            delay(500)
             syncCategoriesUseCase(Unit)
             _uiState.value = MainUiState.Success
         }

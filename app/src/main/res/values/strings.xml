@@ -32,4 +32,17 @@
     <string name="title_global">Global</string>
     <string name="title_personal">Personal</string>
 
+    <!--- Profile -->
+    <string name="profile_unauthorized_user_name">Unauthorized user</string>
+    <string name="button_authorize">Sign in</string>
+    <string name="profile_section_title_categories">Categories</string>
+    <string name="profile_section_title_stats">Personal statistics</string>
+    <string name="profile_section_title_system_theme">Use system theme</string>
+    <string name="profile_section_subtitle_system_theme">Application will match system theme</string>
+    <string name="profile_section_title_dark_theme">Dark theme</string>
+    <string name="profile_section_title_gc">Garbage collector</string>
+    <string name="profile_section_subtitle_gc">Allow application to delete old and unused content</string>
+    <string name="profile_section_title_about_app">About app</string>
+
+
 </resources>

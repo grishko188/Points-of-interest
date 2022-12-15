@@ -3,8 +3,8 @@
     <style name="Theme.PointOfInterest" parent="android:Theme.Material.Light.NoActionBar" />
 
     <style name="Theme.AppSplash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenBackground">@color/main_orange</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_poi_splash_icon</item>
         <item name="postSplashScreenTheme">@style/Theme.PointOfInterest</item>
         <!-- Status bar and Nav bar configs -->
         <item name="android:statusBarColor" >@color/white</item>
