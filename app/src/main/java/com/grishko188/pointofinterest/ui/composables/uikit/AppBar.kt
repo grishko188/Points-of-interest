@@ -1,5 +1,6 @@
 package com.grishko188.pointofinterest.ui.composables.uikit
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +30,7 @@ import com.grishko188.pointofinterest.core.utils.stringFromResource
 import com.grishko188.pointofinterest.features.main.PoiAppState
 import com.grishko188.pointofinterest.navigation.MenuActionType
 import com.grishko188.pointofinterest.navigation.MenuItem
+import com.grishko188.pointofinterest.navigation.getMainScreens
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

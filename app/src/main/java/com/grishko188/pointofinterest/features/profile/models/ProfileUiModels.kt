@@ -56,7 +56,7 @@ fun ProfileSectionType.toIcon(): Int =
     when (this) {
         ProfileSectionType.ACCOUNT -> -1
         ProfileSectionType.STATISTICS -> R.drawable.ic_stats
-        ProfileSectionType.CATEGORIES -> R.drawable.ic_hash_tag
+        ProfileSectionType.CATEGORIES -> R.drawable.ic_categories_filled
         ProfileSectionType.SYSTEM_THEME -> R.drawable.ic_system_settings
         ProfileSectionType.DARK_THEME -> R.drawable.ic_dark_mode
         ProfileSectionType.GARBAGE_COLLECTOR -> R.drawable.ic_auto_gc

@@ -106,7 +106,7 @@ fun BooleanSettingsSection(
             enabled = item.isEnabled,
             colors = SwitchDefaults.colors(
                 checkedTrackColor = MaterialTheme.colorScheme.secondary,
-                uncheckedTrackColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f),
+                uncheckedTrackColor = MaterialTheme.colorScheme.background,
                 uncheckedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
                 uncheckedThumbColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
             )
