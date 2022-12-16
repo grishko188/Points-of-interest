@@ -21,6 +21,8 @@ sealed class Screen(
 
     object Profile : Screen(route = "screen_profile", R.string.screen_profile, R.drawable.ic_profile)
 
+    object About : Screen(route = "screen_about", R.string.screen_about, isFullScreen = true)
+
     object Categories : Screen(
         route = "screen_categories",
         R.string.screen_categories,
@@ -47,7 +49,7 @@ sealed class Screen(
     object CreatePoi : Screen(route = "screen_create_poi", R.string.screen_create_poi, isFullScreen = true)
 
     companion object {
-        val all = arrayListOf(Home, Categories, Profile, CreatePoi, CategoriesList, CategoriesDetailed)
+        val all = arrayListOf(Home, Categories, Profile, CreatePoi, CategoriesList, CategoriesDetailed, About)
     }
 }
 

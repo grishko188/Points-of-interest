@@ -2,12 +2,13 @@ package com.grishko188.pointofinterest.features.profile.ui
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -67,6 +68,9 @@ fun ProfileScreen(
     val onNavigate: (ProfileSectionType) -> Unit = { type ->
         if (type == ProfileSectionType.CATEGORIES) {
             navigationController.navigate(Screen.Categories.route)
+        }
+        if (type == ProfileSectionType.ABOUT) {
+            navigationController.navigate(Screen.About.route)
         }
     }
 
@@ -164,6 +168,7 @@ fun NavigationSection(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AccountSection(
     userInfo: UserInfo?,
@@ -177,88 +182,92 @@ fun AccountSection(
             .padding(start = 16.dp, end = 16.dp),
         contentAlignment = Alignment.Center
     ) {
-        if (userInfo == null) {
-            ElevatedButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 48.dp, vertical = 16.dp),
-                shape = RoundedCornerShape(6.dp),
-                elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 2.dp),
-                colors = ButtonDefaults.elevatedButtonColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    contentColor = MaterialTheme.colorScheme.onBackground,
-                    disabledContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
-                    disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-                ),
-                onClick = { onSignInClicked() }
-            ) {
 
-                Image(
-                    modifier = Modifier.size(20.dp),
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_google_icon),
-                    contentDescription = ""
-                )
-                Text(
-                    modifier = Modifier.padding(6.dp),
-                    text = stringResource(id = R.string.button_signin_with_google),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 16.sp
-                )
-            }
-        } else {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SubcomposeAsyncImage(
+        AnimatedContent(
+            targetState = userInfo == null
+        ) { targetState ->
+            if (targetState) {
+                ElevatedButton(
                     modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape),
-                    model = userInfo.avatarUrl,
-                    contentDescription = "User image",
-                    loading = { PulsingProgressBar() },
-                    error = {
-                        Icon(
-                            modifier = Modifier.size(80.dp),
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_account_placeholder),
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                )
-                Spacer(modifier = Modifier.size(24.dp))
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.Start,
+                        .fillMaxWidth()
+                        .padding(horizontal = 48.dp, vertical = 16.dp),
+                    shape = RoundedCornerShape(6.dp),
+                    elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 2.dp),
+                    colors = ButtonDefaults.elevatedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                        contentColor = MaterialTheme.colorScheme.onBackground,
+                        disabledContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
+                        disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    ),
+                    onClick = { onSignInClicked() }
                 ) {
-                    Text(
-                        text = userInfo.fullName,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onBackground
+                    Image(
+                        modifier = Modifier.size(20.dp),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_google_icon),
+                        contentDescription = ""
                     )
                     Text(
-                        text = userInfo.email,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onBackground
+                        modifier = Modifier.padding(6.dp),
+                        text = stringResource(id = R.string.button_signin_with_google),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 16.sp
                     )
                 }
-
-                Spacer(modifier = Modifier.size(24.dp))
-
-                IconButton(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape),
-                    onClick = onSignOutClicked
+            } else if (userInfo != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_exit),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onBackground
+                    SubcomposeAsyncImage(
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(CircleShape),
+                        model = userInfo.avatarUrl,
+                        contentDescription = "User image",
+                        loading = { PulsingProgressBar() },
+                        error = {
+                            Icon(
+                                modifier = Modifier.size(80.dp),
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_account_placeholder),
+                                contentDescription = "",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
                     )
+                    Spacer(modifier = Modifier.size(24.dp))
+
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.Start,
+                    ) {
+                        Text(
+                            text = userInfo.fullName,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        Text(
+                            text = userInfo.email,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.size(24.dp))
+
+                    IconButton(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape),
+                        onClick = onSignOutClicked
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(24.dp),
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_exit),
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
                 }
             }
         }

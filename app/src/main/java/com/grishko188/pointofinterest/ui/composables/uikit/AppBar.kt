@@ -1,6 +1,5 @@
 package com.grishko188.pointofinterest.ui.composables.uikit
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
@@ -32,7 +30,7 @@ import com.grishko188.pointofinterest.navigation.MenuActionType
 import com.grishko188.pointofinterest.navigation.MenuItem
 import com.grishko188.pointofinterest.navigation.getMainScreens
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun AppBar(
     title: String,
@@ -47,55 +45,46 @@ fun AppBar(
         else keyboardController?.hide()
     }
 
-    AnimatedVisibility(
-        visible = appState.showSearchBarState,
-        exit = fadeOut(),
-        enter = fadeIn()
-    ) {
-        SearchView(appState, appState.searchState.value, focusRequester, keyboardController) { updateState ->
-            appState.searchState.value = updateState
-        }
-    }
-
-    AnimatedVisibility(
-        visible = appState.showSearchBarState.not(),
-        exit = fadeOut(),
-        enter = fadeIn()
-    ) {
-        TopAppBar(
-            title = {
-                Text(text = screenTitle, color = MaterialTheme.colorScheme.onBackground)
-            },
-            colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                titleContentColor = MaterialTheme.colorScheme.onBackground
-            ),
-            navigationIcon = {
-                if (appState.navController.previousBackStackEntry != null && !appState.isRootScreen) {
-                    with(MenuItem.Back) {
+    AnimatedContent(targetState = appState.showSearchBarState) { targetState ->
+        if (targetState) {
+            SearchView(appState, appState.searchState.value, focusRequester, keyboardController) { updateState ->
+                appState.searchState.value = updateState
+            }
+        } else {
+            TopAppBar(
+                title = {
+                    Text(text = screenTitle, color = MaterialTheme.colorScheme.onBackground)
+                },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground
+                ),
+                navigationIcon = {
+                    if (appState.navController.previousBackStackEntry != null && !appState.isRootScreen) {
+                        with(MenuItem.Back) {
+                            TopAppBarAction(
+                                actionType = action,
+                                imageVector = ImageVector.vectorResource(id = icon),
+                                contentDescription = action.name,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                action = { appState.onBackClick() }
+                            )
+                        }
+                    }
+                },
+                actions = {
+                    appState.currentScreen?.menuItems?.forEach {
                         TopAppBarAction(
-                            actionType = action,
-                            imageVector = ImageVector.vectorResource(id = icon),
-                            contentDescription = action.name,
+                            actionType = it.action,
+                            imageVector = ImageVector.vectorResource(id = it.icon),
+                            contentDescription = it.action.name,
                             color = MaterialTheme.colorScheme.onBackground,
-                            action = { appState.onBackClick() }
+                            action = { action -> appState.onMenuItemClicked(action) }
                         )
                     }
                 }
-            },
-            actions = {
-                appState.currentScreen?.menuItems?.forEach {
-                    TopAppBarAction(
-                        actionType = it.action,
-                        imageVector = ImageVector.vectorResource(id = it.icon),
-                        contentDescription = it.action.name,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        action = { action -> appState.onMenuItemClicked(action) }
-                    )
-                }
-            }
-        )
-
+            )
+        }
     }
 }
 
