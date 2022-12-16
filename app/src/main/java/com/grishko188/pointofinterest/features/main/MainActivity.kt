@@ -5,11 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.grishko188.pointofinterest.features.main.vm.MainUiState
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.grishko188.pointofinterest.features.main.vm.MainScreenState
+import com.grishko188.pointofinterest.features.main.vm.SyncStateState
 import com.grishko188.pointofinterest.features.main.vm.MainViewModel
 import com.grishko188.pointofinterest.ui.theme.PointOfInterestTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -20,16 +30,32 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        splashScreen.setKeepOnScreenCondition {
-            when (mainViewModel.uiState.value) {
-                MainUiState.Loading -> true
-                else -> false
+        var mainState: MainScreenState by mutableStateOf(MainScreenState.Loading)
+        // Update the uiState
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                mainViewModel.mainScreenState
+                    .onEach {
+                        mainState = it
+                    }
+                    .collect()
             }
         }
+
+        splashScreen.setKeepOnScreenCondition {
+            mainViewModel.syncState.value == SyncStateState.Loading && mainState == MainScreenState.Loading
+        }
+
         lifecycle.addObserver(mainViewModel)
 
         setContent {
-            PointOfInterestTheme(dynamicColor = false) { PoiMainScreen() }
+            PointOfInterestTheme(
+                useSystemTheme = mainState.userSettings()?.isUseSystemTheme ?: true,
+                darkTheme = mainState.userSettings()?.isDarkMode ?: true
+            ) { PoiMainScreen() }
         }
     }
+
+    private fun MainScreenState.userSettings() = if (this is MainScreenState.Result) userSettings else null
 }

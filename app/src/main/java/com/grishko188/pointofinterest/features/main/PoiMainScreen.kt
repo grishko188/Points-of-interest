@@ -72,5 +72,5 @@ fun PoiMainScreen(
 @Composable
 @ExperimentalAnimationApi
 fun RootScreenPreview() {
-    PointOfInterestTheme(dynamicColor = false) { PoiMainScreen() }
+    PointOfInterestTheme() { PoiMainScreen() }
 }

@@ -264,7 +264,7 @@ fun ColorPaletteItem(modifier: Modifier, color: Color, isSelected: Boolean, onCo
 @Preview
 @Composable
 fun CategoriesScreenComposablesPreview() {
-    PointOfInterestTheme(dynamicColor = false, darkTheme = false) {
+    PointOfInterestTheme(darkTheme = false) {
         Column(
             Modifier
                 .background(MaterialTheme.colorScheme.background)

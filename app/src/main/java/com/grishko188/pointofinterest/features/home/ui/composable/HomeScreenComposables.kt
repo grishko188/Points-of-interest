@@ -276,7 +276,7 @@ object ChipSizeDefaults {
 @Preview
 @Composable
 fun HomeScreenItemsPreview() {
-    PointOfInterestTheme(dynamicColor = false, darkTheme = true) {
+    PointOfInterestTheme(darkTheme = true) {
         val mockItems = arrayListOf(
             CategoryUiModel(id = "_ID", title = "Business", color = Color(0xFF2980B9), categoryType = CategoryType.GLOBAL),
             CategoryUiModel(id = "_ID2", title = "Music", color = Color(0xFF009688), categoryType = CategoryType.GLOBAL),

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.grishko188.pointofinterest.ui.theme.PointOfInterestTheme
 
 @Composable
@@ -46,7 +45,7 @@ fun PrimaryButton(
 @Composable
 @Preview
 fun PrimaryButtonPreview() {
-    PointOfInterestTheme(dynamicColor = false, darkTheme = true) {
+    PointOfInterestTheme(darkTheme = true) {
         Box(modifier = Modifier.background(MaterialTheme.colorScheme.background).padding(16.dp)) {
             PrimaryButton(text = "Try again", onClick = { /*TODO*/ })
         }
