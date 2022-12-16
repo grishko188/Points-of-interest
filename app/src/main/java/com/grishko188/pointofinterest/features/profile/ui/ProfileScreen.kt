@@ -1,5 +1,11 @@
 package com.grishko188.pointofinterest.features.profile.ui
 
+import android.app.Activity
+import android.content.Context
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -18,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +33,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.SubcomposeAsyncImage
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.features.profile.models.ProfileSectionItem
 import com.grishko188.pointofinterest.features.profile.models.ProfileSectionType
@@ -40,6 +50,17 @@ fun ProfileScreen(
     navigationController: NavHostController,
     vm: ProfileVm = hiltViewModel()
 ) {
+    val context = LocalContext.current
+
+    val startForResult =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                if (result.data != null) {
+                    vm.onUserSignedIn(GoogleSignIn.getSignedInAccountFromIntent(intent))
+                }
+            }
+        }
 
     val profileSectionsState by vm.profileState.collectAsState()
 
@@ -49,11 +70,15 @@ fun ProfileScreen(
         }
     }
 
+    val onSignInClicked: () -> Unit = {
+        startForResult.launch(getGoogleLoginAuth(context).signInIntent)
+    }
+
     LazyColumn {
         profileSectionsState.forEach { item ->
             item(item.type) {
                 if (item is ProfileSectionItem.AccountSectionItem) {
-                    AccountSection(userInfo = item.userInfo, vm::onSignInClicked)
+                    AccountSection(userInfo = item.userInfo, onSignInClicked)
                 }
                 if (item is ProfileSectionItem.NavigationItem) {
                     NavigationSection(item = item, onNavigationClicked = onNavigate)
@@ -301,4 +326,14 @@ fun ProfileScreenPreview() {
             )
         }
     }
+}
+
+private fun getGoogleLoginAuth(context: Context): GoogleSignInClient {
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestEmail()
+        .requestIdToken("TODO")
+        .requestId()
+        .requestProfile()
+        .build()
+    return GoogleSignIn.getClient(context, gso)
 }

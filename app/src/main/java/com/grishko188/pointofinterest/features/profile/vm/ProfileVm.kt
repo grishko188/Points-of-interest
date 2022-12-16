@@ -2,12 +2,15 @@ package com.grishko188.pointofinterest.features.profile.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.tasks.Task
 import com.grishko188.domain.features.profile.interactor.DeleteUseProfileUseCase
 import com.grishko188.domain.features.profile.interactor.GetProfileUseCase
 import com.grishko188.domain.features.profile.interactor.SetUserProfileUseCase
 import com.grishko188.domain.features.profile.interactor.SetUserSettingStateUseCase
 import com.grishko188.domain.features.profile.model.ManualSettings
 import com.grishko188.domain.features.profile.model.Profile
+import com.grishko188.domain.features.profile.model.UserProfile
 import com.grishko188.pointofinterest.features.profile.models.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -39,8 +42,17 @@ class ProfileVm @Inject constructor(
         }
     }
 
-    fun onSignInClicked() {
-
+    fun onUserSignedIn(task: Task<GoogleSignInAccount>) {
+        viewModelScope.launch {
+            val account = task.result
+            val userProfile = UserProfile(
+                authToken = account.idToken,
+                name = account.displayName,
+                email = account.email,
+                image = account.photoUrl.toString()
+            )
+            setUserProfileUseCase(SetUserProfileUseCase.Params(userProfile))
+        }
     }
 
     fun onSignOutClicked() {
@@ -48,6 +60,7 @@ class ProfileVm @Inject constructor(
             deleteUseProfileUseCase(Unit)
         }
     }
+
 
     private fun ProfileSectionType.toManualSetting() = when (this) {
         ProfileSectionType.GARBAGE_COLLECTOR -> ManualSettings.UseAutoGc
