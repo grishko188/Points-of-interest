@@ -2,6 +2,7 @@ package com.grishko188.pointofinterest.ui.composables.uikit
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
@@ -26,6 +27,7 @@ fun OutlineButton(
             disabledContainerColor = MaterialTheme.colorScheme.background,
             disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
         ),
+        shape = RoundedCornerShape(8.dp),
         border = BorderStroke(2.dp, borderColor),
         enabled = enabled,
         onClick = onClick

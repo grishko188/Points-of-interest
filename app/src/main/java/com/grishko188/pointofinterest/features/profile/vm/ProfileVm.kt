@@ -2,52 +2,95 @@ package com.grishko188.pointofinterest.features.profile.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.grishko188.domain.features.profile.interactor.DeleteUseProfileUseCase
+import com.grishko188.domain.features.profile.interactor.GetProfileUseCase
+import com.grishko188.domain.features.profile.interactor.SetUserProfileUseCase
+import com.grishko188.domain.features.profile.interactor.SetUserSettingStateUseCase
+import com.grishko188.domain.features.profile.model.ManualSettings
+import com.grishko188.domain.features.profile.model.Profile
 import com.grishko188.pointofinterest.features.profile.models.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileVm @Inject constructor() : ViewModel() {
+class ProfileVm @Inject constructor(
+    getProfileUseCase: GetProfileUseCase,
+    private val setUserSettingStateUseCase: SetUserSettingStateUseCase,
+    private val setUserProfileUseCase: SetUserProfileUseCase,
+    private val deleteUseProfileUseCase: DeleteUseProfileUseCase
+) : ViewModel() {
 
-    val profileScreenUiState = collectProfileSections()
+    val profileState = getProfileUseCase(Unit).map {
+        it.toProfileUiModels()
+    }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = emptyList()
         )
 
-    fun onSettingsToggled(type: ProfileSectionType) {}
-
-    fun onSignInClicked() {}
-
-    private fun collectProfileSections(): Flow<List<ProfileSectionItem>> = flow {
-        emit(createMockProfileItems())
+    fun onSettingsToggled(type: ProfileSectionType, currentState: Boolean) {
+        type.toManualSetting()?.let { setting ->
+            viewModelScope.launch {
+                setUserSettingStateUseCase(SetUserSettingStateUseCase.Params(setting, currentState.not()))
+            }
+        }
     }
 
-    private fun createMockProfileItems(): List<ProfileSectionItem> = arrayListOf<ProfileSectionItem>().apply {
-        ProfileSectionType.values().forEach {
-            val title = it.toTitle()
-            val subtitle = it.toSubTitle()
-            val icon = it.toIcon()
-            this += when (it) {
-                ProfileSectionType.CATEGORIES,
-                ProfileSectionType.ABOUT,
-                ProfileSectionType.STATISTICS ->
-                    ProfileSectionItem.NavigationItem(icon, title, subtitle, true, it)
+    fun onSignInClicked() {
 
-                ProfileSectionType.GARBAGE_COLLECTOR,
-                ProfileSectionType.SYSTEM_THEME,
-                ProfileSectionType.DARK_THEME ->
-                    ProfileSectionItem.BooleanSettingsItem(icon, title, subtitle, false, true, it)
-                ProfileSectionType.ACCOUNT -> ProfileSectionItem.AccountSectionItem(
-                    UserInfo(
-                        avatarUrl = "https://yt3.ggpht.com/yti/AJo0G0nl_cf5tYETOT3uT5KwTQKwpat0a9T6k5AnQwa29g=s88-c-k-c0x00ffffff-no-rj-mo",
-                        fullName = "Nikita Grishko",
-                        email = "grishko188@gmail.com"
-                    )
+    }
+
+    fun onSignOutClicked() {
+        viewModelScope.launch {
+            deleteUseProfileUseCase(Unit)
+        }
+    }
+
+    private fun ProfileSectionType.toManualSetting() = when (this) {
+        ProfileSectionType.GARBAGE_COLLECTOR -> ManualSettings.UseAutoGc
+        ProfileSectionType.SYSTEM_THEME -> ManualSettings.UseSystemTheme
+        ProfileSectionType.DARK_THEME -> ManualSettings.UseDarkTheme
+        else -> null
+    }
+
+    private fun Profile.toProfileUiModels(): List<ProfileSectionItem> = ProfileSectionType.values().map {
+        val title = it.toTitle()
+        val subtitle = it.toSubTitle()
+        val icon = it.toIcon()
+
+        when (it) {
+            ProfileSectionType.CATEGORIES,
+            ProfileSectionType.ABOUT,
+            ProfileSectionType.STATISTICS ->
+                ProfileSectionItem.NavigationItem(icon, title, subtitle, true, it)
+
+            ProfileSectionType.GARBAGE_COLLECTOR ->
+                ProfileSectionItem.BooleanSettingsItem(icon, title, subtitle, userSettings.isAutoGcEnabled, false, it)
+            ProfileSectionType.SYSTEM_THEME ->
+                ProfileSectionItem.BooleanSettingsItem(icon, title, subtitle, userSettings.isUseSystemTheme, true, it)
+            ProfileSectionType.DARK_THEME ->
+                ProfileSectionItem.BooleanSettingsItem(
+                    icon,
+                    title,
+                    subtitle,
+                    userSettings.isDarkMode,
+                    userSettings.isUseSystemTheme.not(),
+                    it
                 )
-            }
+
+            ProfileSectionType.ACCOUNT -> ProfileSectionItem.AccountSectionItem(
+                userInfo = if (userProfile.isAuthorized)
+                    UserInfo(
+                        avatarUrl = userProfile.image,
+                        fullName = requireNotNull(userProfile.name),
+                        email = requireNotNull(userProfile.email)
+                    )
+                else
+                    null
+            )
         }
     }
 }
