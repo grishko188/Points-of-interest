@@ -3,6 +3,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.dagger.hilt.android'
+    id "com.google.protobuf" version "0.8.12"
 }
 
 android {
@@ -32,6 +33,25 @@ android {
     }
 }
 
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.21.9"
+    }
+
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option 'lite'
+                }
+                kotlin {
+                    option 'lite'
+                }
+            }
+        }
+    }
+}
+
 dependencies {
     implementation(project(":domain"))
     implementation 'androidx.core:core-ktx:1.9.0'
@@ -51,6 +71,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10'
 
     implementation 'org.jsoup:jsoup:1.15.3'
+
+    implementation "androidx.datastore:datastore:1.0.0"
+    implementation "com.google.protobuf:protobuf-kotlin-lite:3.21.9"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

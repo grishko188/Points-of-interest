@@ -1,7 +1,7 @@
 package com.grishko188.domain.features.profile.repo
 
-import com.grishko188.domain.features.profile.module.UserProfile
-import com.grishko188.domain.features.profile.module.UserSettings
+import com.grishko188.domain.features.profile.model.UserProfile
+import com.grishko188.domain.features.profile.model.UserSettings
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {

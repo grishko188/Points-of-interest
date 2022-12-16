@@ -1,4 +1,4 @@
-package com.grishko188.domain.features.profile.module
+package com.grishko188.domain.features.profile.model
 
 sealed class ManualSettings {
     object UseSystemTheme : ManualSettings()

@@ -1,0 +1,10 @@
+syntax = "proto3";
+option java_package = "com.grishko188.data.features.profile.datastore";
+option java_multiple_files = true;
+
+message UserProfileProto {
+  optional string auth_token = 1;
+  optional string name = 2;
+  optional string email = 3;
+  optional string profile_image = 4;
+}

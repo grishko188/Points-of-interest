@@ -1,7 +1,7 @@
 package com.grishko188.domain.features.profile.interactor
 
 import com.grishko188.domain.core.FlowUseCase
-import com.grishko188.domain.features.profile.module.UserSettings
+import com.grishko188.domain.features.profile.model.UserSettings
 import com.grishko188.domain.features.profile.repo.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

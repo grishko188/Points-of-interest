@@ -1,0 +1,10 @@
+syntax = "proto3";
+option java_package = "com.grishko188.data.features.profile.datastore";
+option java_multiple_files = true;
+
+message UserSettingsProto {
+  bool use_custom_theme = 1;
+  bool use_dark_theme = 2;
+  bool use_auto_gc = 3;
+  bool onboarding_was_shown = 4;
+}

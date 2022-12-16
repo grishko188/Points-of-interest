@@ -1,7 +1,7 @@
 package com.grishko188.domain.features.profile.interactor
 
 import com.grishko188.domain.core.UseCase
-import com.grishko188.domain.features.profile.module.ManualSettings
+import com.grishko188.domain.features.profile.model.ManualSettings
 import com.grishko188.domain.features.profile.repo.ProfileRepository
 import javax.inject.Inject
 

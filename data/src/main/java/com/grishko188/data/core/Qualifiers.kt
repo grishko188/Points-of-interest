@@ -26,3 +26,13 @@ annotation class NetworkInterceptors
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ServerUrl
+
+@Qualifier
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+annotation class UserSettings
+
+@Qualifier
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+annotation class UserProfile
