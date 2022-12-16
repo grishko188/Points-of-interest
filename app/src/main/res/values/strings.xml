@@ -43,6 +43,7 @@
     <string name="profile_section_title_gc">Garbage collector</string>
     <string name="profile_section_subtitle_gc">Allow application to delete old and unused content</string>
     <string name="profile_section_title_about_app">About app</string>
+    <string name="gcp_id">939550501755-cm966cn4knfivjcaaj0pno9q80nr3bbr.apps.googleusercontent.com</string>
 
 
 </resources>

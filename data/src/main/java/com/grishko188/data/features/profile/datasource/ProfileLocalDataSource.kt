@@ -29,8 +29,8 @@ class ProfileLocalDataSource @Inject constructor(
                 it.copy {
                     authToken = userProfileDataModel.token ?: ""
                     name = userProfileDataModel.name ?: ""
-                    email = userProfileDataModel.token ?: ""
-                    profileImage = userProfileDataModel.token ?: ""
+                    email = userProfileDataModel.email ?: ""
+                    profileImage = userProfileDataModel.profileImage ?: ""
                 }
             }
         } catch (ioException: IOException) {

@@ -74,11 +74,16 @@ fun ProfileScreen(
         startForResult.launch(getGoogleLoginAuth(context).signInIntent)
     }
 
+    val onSignOutClicked: () -> Unit = {
+        vm.onSignOutClicked()
+        getGoogleLoginAuth(context).signOut()
+    }
+
     LazyColumn {
         profileSectionsState.forEach { item ->
             item(item.type) {
                 if (item is ProfileSectionItem.AccountSectionItem) {
-                    AccountSection(userInfo = item.userInfo, onSignInClicked)
+                    AccountSection(userInfo = item.userInfo, onSignInClicked, onSignOutClicked)
                 }
                 if (item is ProfileSectionItem.NavigationItem) {
                     NavigationSection(item = item, onNavigationClicked = onNavigate)
@@ -162,7 +167,8 @@ fun NavigationSection(
 @Composable
 fun AccountSection(
     userInfo: UserInfo?,
-    onSignInClicked: () -> Unit
+    onSignInClicked: () -> Unit,
+    onSignOutClicked: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -236,6 +242,22 @@ fun AccountSection(
                         text = userInfo.email,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+
+                Spacer(modifier = Modifier.size(24.dp))
+
+                IconButton(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape),
+                    onClick = onSignOutClicked
+                ) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_exit),
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
@@ -331,7 +353,7 @@ fun ProfileScreenPreview() {
 private fun getGoogleLoginAuth(context: Context): GoogleSignInClient {
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestEmail()
-        .requestIdToken("TODO")
+        .requestIdToken(context.getString(R.string.gcp_id))
         .requestId()
         .requestProfile()
         .build()
