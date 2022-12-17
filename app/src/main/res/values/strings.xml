@@ -46,6 +46,10 @@
     <string name="gcp_id">939550501755-cm966cn4knfivjcaaj0pno9q80nr3bbr.apps.googleusercontent.com</string>
     <string name="screen_about">About</string>
     <string name="about_screen_descriprion">Collect and organize all valuable resources in a single place</string>
+    <string name="author_name">grishko188</string>
+    <string name="title_developed_by">Developed by</string>
+    <string name="title_app_version">Version %s (%s)</string>
+    <string name="ulr_github_profile">https://github.com/grishko188</string>
 
 
 </resources>
