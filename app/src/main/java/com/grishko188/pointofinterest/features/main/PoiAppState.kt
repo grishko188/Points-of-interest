@@ -1,6 +1,5 @@
 package com.grishko188.pointofinterest.features.main
 
-import android.util.Log
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.TextFieldValue
