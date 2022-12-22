@@ -8,13 +8,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.grishko188.pointofinterest.features.poi.vm.PoiViewModel
 
 @Composable
-fun CreatePoiScreen(navController: NavHostController) {
+fun CreatePoiScreen(
+    navController: NavHostController,
+    viewModel: PoiViewModel = hiltViewModel()
+) {
     Surface(
         Modifier.padding(16.dp)
     ) {
         Text(text = "This is Create article screen", Modifier.fillMaxSize(), textAlign = TextAlign.Center)
     }
+}
+
+@Composable
+fun CreatePoiWizardScreen(
+
+) {
 }

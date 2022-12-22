@@ -11,3 +11,8 @@ data class Category(
 enum class CategoryType {
     SEVERITY, GLOBAL, PERSONAL
 }
+
+const val SEVERITY_HIGH = "High"
+const val SEVERITY_MEDIUM = "Medium"
+const val SEVERITY_NORMAL = "Normal"
+const val SEVERITY_LOW = "Low"

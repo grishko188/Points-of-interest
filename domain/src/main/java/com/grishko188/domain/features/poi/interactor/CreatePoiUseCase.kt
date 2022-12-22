@@ -7,10 +7,11 @@ import javax.inject.Inject
 
 class CreatePoiUseCase @Inject constructor(
     private val repository: PoiRepository
-) : UseCase<CreatePoiUseCase.Params, String>() {
+) : UseCase<CreatePoiUseCase.Params, Unit>() {
 
-    override suspend fun operation(params: Params): String {
-        return repository.createPoi(params.payload)
+    override suspend fun operation(params: Params) {
+        repository.createPoi(params.payload)
     }
+
     data class Params(val payload: PoiCreationPayload)
 }

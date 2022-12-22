@@ -30,6 +30,9 @@ class CategoriesRepositoryImpl @Inject constructor(
     override fun getCategories(): Flow<List<Category>> =
         localDataSource.getCategories().mapToDomain()
 
+    override fun getCategories(ids: List<Int>): Flow<List<Category>> =
+        localDataSource.getCategories(ids).mapToDomain()
+
     override fun getCategories(type: CategoryType): Flow<List<Category>> =
         localDataSource.getCategories(type.name).mapToDomain()
 

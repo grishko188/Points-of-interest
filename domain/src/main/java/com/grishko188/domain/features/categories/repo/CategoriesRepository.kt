@@ -11,6 +11,8 @@ interface CategoriesRepository {
 
     fun getCategories(): Flow<List<Category>>
 
+    fun getCategories(ids: List<Int>): Flow<List<Category>>
+
     fun getCategories(type: CategoryType): Flow<List<Category>>
 
     suspend fun getCategory(id: String): Category

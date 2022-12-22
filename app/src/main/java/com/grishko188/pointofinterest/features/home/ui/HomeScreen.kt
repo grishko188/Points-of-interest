@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.core.utils.containsId
@@ -27,7 +27,7 @@ import com.grishko188.pointofinterest.features.home.ui.composable.PoiCard
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
 import com.grishko188.pointofinterest.features.home.ui.composable.AddMoreButton
 import com.grishko188.pointofinterest.features.home.ui.models.PoiListItem
-import com.grishko188.pointofinterest.features.home.ui.models.PoiSortByOption
+import com.grishko188.pointofinterest.features.home.ui.models.PoiSortByUiOption
 import com.grishko188.pointofinterest.features.home.ui.models.toTitle
 import com.grishko188.pointofinterest.features.home.vm.HomeViewModel
 import com.grishko188.pointofinterest.navigation.Screen
@@ -43,13 +43,13 @@ fun HomeScreen(
     searchState: MutableState<TextFieldValue>,
     showSortDialogState: Boolean,
     onCloseSortDialog: () -> Unit,
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
 
     val homeContentState by viewModel.homeUiContentState.collectAsState()
     val categoriesState by viewModel.categoriesState.collectAsState()
     var selectedFiltersState by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
-    var selectedSortByOption by remember { mutableStateOf(PoiSortByOption.NONE) }
+    var selectedSortByOption by remember { mutableStateOf(PoiSortByUiOption.NONE) }
 
     LaunchedEffect(key1 = searchState.value) {
         viewModel.onSearch(searchState.value.text)
@@ -121,7 +121,7 @@ fun HomeScreen(
                                     style = MaterialTheme.typography.titleMedium
                                 )
 
-                                PoiSortByOption.values().filter { it != PoiSortByOption.NONE }.forEach { option ->
+                                PoiSortByUiOption.values().filter { it != PoiSortByUiOption.NONE }.forEach { option ->
                                     Row(modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { selectedSortByOption = option }) {
@@ -164,7 +164,7 @@ fun HomeScreen(
                                             viewModel.onApplySortBy(selectedSortByOption)
                                             onCloseSortDialog()
                                         },
-                                        enabled = selectedSortByOption != PoiSortByOption.NONE
+                                        enabled = selectedSortByOption != PoiSortByUiOption.NONE
                                     )
                                 }
                             }

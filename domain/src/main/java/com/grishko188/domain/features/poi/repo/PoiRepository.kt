@@ -5,15 +5,21 @@ import kotlinx.coroutines.flow.Flow
 
 interface PoiRepository {
 
-    fun getPoiList(): Flow<List<PoiSnapshotModel>>
+    fun getPoiList(sortOption: PoiSortOption?): Flow<List<PoiModel>>
 
-    suspend fun getDetailedPoi(id: String): PoiDetailedModel
+    fun getUsedCategories(): Flow<List<Int>>
 
-    suspend fun createPoi(payload: PoiCreationPayload): String
+    suspend fun getDetailedPoi(id: String): PoiModel
+
+    suspend fun createPoi(payload: PoiCreationPayload)
 
     suspend fun deletePoi(id: String)
 
     suspend fun addComment(targetId: String, payload: PoiCommentPayload)
+
+    fun getComments(targetId: String): Flow<List<PoiComment>>
+
+    suspend fun deleteComment(id: String)
 
     suspend fun getWizardSuggestion(contentUrl: String): WizardSuggestion
 }

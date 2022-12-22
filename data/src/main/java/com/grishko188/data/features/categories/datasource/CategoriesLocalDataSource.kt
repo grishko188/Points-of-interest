@@ -14,31 +14,34 @@ class CategoriesLocalDataSource @Inject constructor(
 ) : CategoriesDataSource {
 
     override fun getCategories(): Flow<List<CategoryDataModel>> =
-        dao.getCategories().mapToDto()
+        dao.getCategories().mapToDataModels()
 
     override fun getCategories(type: String): Flow<List<CategoryDataModel>> =
-        dao.getCategories(type).mapToDto()
+        dao.getCategories(type).mapToDataModels()
+
+    override fun getCategories(ids: List<Int>): Flow<List<CategoryDataModel>> =
+        dao.getCategories(ids).mapToDataModels()
 
     override suspend fun getCategory(id: Int): CategoryDataModel =
         dao.getCategory(id).toDataModel()
 
     override suspend fun count(): Int = dao.count()
 
-    override suspend fun addCategories(categoryDto: List<CategoryDataModel>) {
-        dao.insertCategories(categoryDto.map { it.toEntity() })
+    override suspend fun addCategories(models: List<CategoryDataModel>) {
+        dao.insertCategories(models.map { it.toEntity() })
     }
 
-    override suspend fun addCategory(categoryDto: CategoryDataModel) {
-        dao.insertCategory(categoryDto.toEntity())
+    override suspend fun addCategory(model: CategoryDataModel) {
+        dao.insertCategory(model.toEntity())
     }
 
     override suspend fun deleteCategory(categoryId: Int) {
         dao.deleteCategory(categoryId)
     }
 
-    override suspend fun updateCategory(categoryDataModel: CategoryDataModel) {
-        dao.updateCategory(categoryDataModel.toEntity())
+    override suspend fun updateCategory(model: CategoryDataModel) {
+        dao.updateCategory(model.toEntity())
     }
 
-    private fun Flow<List<CategoryEntity>>.mapToDto() = this.map { list -> list.map { it.toDataModel() } }
+    private fun Flow<List<CategoryEntity>>.mapToDataModels() = this.map { list -> list.map { it.toDataModel() } }
 }
