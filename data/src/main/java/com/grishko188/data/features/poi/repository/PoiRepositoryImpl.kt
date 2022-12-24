@@ -1,7 +1,9 @@
 package com.grishko188.data.features.poi.repository
 
 import com.grishko188.data.core.Local
+import com.grishko188.data.features.poi.datasource.LocalImageDataSource
 import com.grishko188.data.features.poi.datasource.PoiDataSource
+import com.grishko188.data.features.poi.datasource.WizardRemoteDataSource
 import com.grishko188.data.features.poi.model.creationDataModel
 import com.grishko188.data.features.poi.model.toDomain
 import com.grishko188.data.features.poi.model.toOrderBy
@@ -12,7 +14,9 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class PoiRepositoryImpl @Inject constructor(
-    @Local private val localDataSource: PoiDataSource
+    @Local private val localDataSource: PoiDataSource,
+    private val imageDataSource: LocalImageDataSource,
+    private val wizardRemoteDataSource: WizardRemoteDataSource,
 ) : PoiRepository {
 
     override fun getPoiList(sortOption: PoiSortOption?): Flow<List<PoiModel>> =
@@ -26,7 +30,13 @@ class PoiRepositoryImpl @Inject constructor(
         localDataSource.getPoi(id).toDomain()
 
     override suspend fun createPoi(payload: PoiCreationPayload) {
-        localDataSource.insertPoi(payload.creationDataModel())
+        val finalPayload: PoiCreationPayload = if (payload.imageUrl?.startsWith(CONTENT_URI_PREFIX) == true) {
+            val internalImageUri = imageDataSource.copyLocalImage(requireNotNull(payload.imageUrl))
+            payload.copy(imageUrl = internalImageUri)
+        } else {
+            payload
+        }
+        localDataSource.insertPoi(finalPayload.creationDataModel())
     }
 
     override suspend fun deletePoi(id: String) {
@@ -44,7 +54,10 @@ class PoiRepositoryImpl @Inject constructor(
         localDataSource.deleteComment(id)
     }
 
-    override suspend fun getWizardSuggestion(contentUrl: String): WizardSuggestion {
-        TODO("Not yet implemented")
+    override suspend fun getWizardSuggestion(contentUrl: String): WizardSuggestion =
+        wizardRemoteDataSource.getWizardSuggestion(contentUrl).toDomain()
+
+    companion object {
+        private const val CONTENT_URI_PREFIX = "content://"
     }
 }

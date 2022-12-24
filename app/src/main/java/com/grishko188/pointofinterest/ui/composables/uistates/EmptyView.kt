@@ -26,8 +26,7 @@ fun EmptyView(
     title: String = stringResource(id = R.string.title_ui_state_empty),
     message: String? = null,
     icon: Int = R.drawable.ic_empty,
-    color: Color = DarkMainColor,
-    textColor: Color = DarkMainColor
+    textColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
     Column(
         modifier = Modifier

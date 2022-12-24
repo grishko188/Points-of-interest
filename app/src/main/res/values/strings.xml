@@ -3,7 +3,7 @@
     <string name="screen_home">Home</string>
     <string name="screen_categories">Categories</string>
     <string name="screen_profile">Profile</string>
-    <string name="screen_create_poi">Create point of interest</string>
+    <string name="screen_create_poi">Point of interest</string>
 
 
     <string name="title_ui_state_empty">Wow, it is so empty here</string>
@@ -51,5 +51,11 @@
     <string name="title_app_version">Version %s (%s)</string>
     <string name="ulr_github_profile">https://github.com/grishko188</string>
 
+
+    <string name="title_wizard_link_title">Content link</string>
+    <string name="title_wizard_link_hint">Paste link here</string>
+    <string name="button_skip">SKIP</string>
+    <string name="button_apply">APPLY</string>
+    <string name="error_url_not_valid">Please, enter valid url address</string>
 
 </resources>
