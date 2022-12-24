@@ -40,7 +40,8 @@ object OkHttpClientFactory {
                 connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
                 readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
                 writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-
+                followRedirects(true)
+                followSslRedirects(true)
                 if (authenticator != null) {
                     authenticator(authenticator)
                 }
@@ -50,11 +51,10 @@ object OkHttpClientFactory {
     fun create(
         @Interceptors interceptors: List<Interceptor>,
         @NetworkInterceptors networkInterceptors: List<Interceptor>
-    ): OkHttpClient =
-        OkHttpClientFactory.create(
-            cacheFolder = null,
-            interceptors = interceptors,
-            networkInterceptors = networkInterceptors,
-            authenticator = null
-        )
+    ): OkHttpClient = create(
+        cacheFolder = null,
+        interceptors = interceptors,
+        networkInterceptors = networkInterceptors,
+        authenticator = null
+    )
 }

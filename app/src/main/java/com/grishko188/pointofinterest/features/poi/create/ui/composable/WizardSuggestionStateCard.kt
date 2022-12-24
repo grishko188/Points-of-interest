@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
 import com.google.accompanist.flowlayout.FlowRow
 import com.grishko188.pointofinterest.R
+import com.grishko188.pointofinterest.core.utils.ErrorDisplayObject
 import com.grishko188.pointofinterest.features.poi.create.models.WizardSuggestionUiModel
 import com.grishko188.pointofinterest.features.poi.create.vm.WizardSuggestionUiState
 import com.grishko188.pointofinterest.ui.composables.uikit.PulsingProgressBar
@@ -34,7 +35,7 @@ fun WizardSuggestionStateCard(
     AnimatedContent(targetState = wizardSuggestionUiState, modifier = Modifier.padding(16.dp)) { state ->
         when (state) {
             is WizardSuggestionUiState.Loading -> WizardSuggestionLoading()
-            is WizardSuggestionUiState.Error -> WizardSuggestionError(message = state.message)
+            is WizardSuggestionUiState.Error -> WizardSuggestionError(displayObject = state.displayObject)
             is WizardSuggestionUiState.Success -> WizardSuggestionContentPreview(suggestion = state.wizardSuggestionUiModel)
             is WizardSuggestionUiState.None -> WizardEmptyState()
         }
@@ -65,7 +66,7 @@ fun WizardSuggestionLoading() {
 }
 
 @Composable
-fun WizardSuggestionError(message: String) {
+fun WizardSuggestionError(displayObject: ErrorDisplayObject) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -93,7 +94,7 @@ fun WizardSuggestionError(message: String) {
                 maxLines = 1
             )
             Text(
-                text = message,
+                text = stringResource(id = displayObject.errorMessage),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onError,
             )
@@ -106,7 +107,9 @@ fun WizardSuggestionError(message: String) {
 fun WizardSuggestionContentPreview(suggestion: WizardSuggestionUiModel) {
     ElevatedCard(
         onClick = {},
-        modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth(),
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxWidth(),
         elevation = CardDefaults.elevatedCardElevation(),
         enabled = false,
         colors = CardDefaults.elevatedCardColors(
@@ -118,7 +121,43 @@ fun WizardSuggestionContentPreview(suggestion: WizardSuggestionUiModel) {
 
     ) {
 
-        if (suggestion.isSingleImageSuggestion()) {
+        if (suggestion.isEmpty()) {
+
+            Row(
+                modifier = Modifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Icon(
+                    modifier = Modifier
+                        .size(64.dp),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_empty),
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Column {
+                    Text(
+                        text = stringResource(id = R.string.title_wizard_suggestion_not_available),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        lineHeight = 18.sp
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Text(
+                        text = stringResource(id = R.string.subtitle_wizard_suggestion_not_available),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        maxLines = 4,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+
+        } else if (suggestion.isSingleImageSuggestion()) {
 
             SubcomposeAsyncImage(
                 modifier = Modifier
@@ -127,8 +166,16 @@ fun WizardSuggestionContentPreview(suggestion: WizardSuggestionUiModel) {
                     .clip(RoundedCornerShape(8.dp)),
                 model = suggestion.imageUrl,
                 contentScale = ContentScale.Crop,
-                contentDescription = "",
-                loading = { PulsingProgressBar() }
+                contentDescription = "Wizard suggestion image preview",
+                loading = { PulsingProgressBar() },
+                error = {
+                    Icon(
+                        modifier = Modifier.size(64.dp),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_image_loading_failed),
+                        contentDescription = "Wizard suggestion image preview - error",
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+                    )
+                }
             )
 
         } else {
@@ -140,13 +187,23 @@ fun WizardSuggestionContentPreview(suggestion: WizardSuggestionUiModel) {
                 ) {
                     if (suggestion.imageUrl.isNullOrEmpty().not()) {
                         SubcomposeAsyncImage(
-                            modifier = Modifier.size(112.dp).clip(RoundedCornerShape(8.dp)),
+                            modifier = Modifier
+                                .size(112.dp)
+                                .clip(RoundedCornerShape(8.dp)),
                             model = suggestion.imageUrl,
                             contentScale = ContentScale.Crop,
-                            contentDescription = "",
-                            loading = { PulsingProgressBar() }
+                            contentDescription = "Wizard suggestion image preview",
+                            loading = { PulsingProgressBar() },
+                            error = {
+                                Icon(
+                                    modifier = Modifier.size(32.dp),
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_image_loading_failed),
+                                    contentDescription = "Wizard suggestion image preview - error",
+                                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+                                )
+                            }
                         )
-                        Spacer(modifier = Modifier.size(8.dp))
+                        Spacer(modifier = Modifier.size(16.dp))
                     }
                     Column {
                         if (suggestion.title != null) {
@@ -194,7 +251,7 @@ fun WizardSuggestionContentPreview(suggestion: WizardSuggestionUiModel) {
 @Composable
 fun WizardSuggestionStateCardPreview() {
     PointOfInterestTheme {
-        WizardSuggestionError(message = "Network failed")
+        WizardSuggestionError(displayObject = ErrorDisplayObject.GenericError)
 
         Spacer(modifier = Modifier.size(16.dp))
 

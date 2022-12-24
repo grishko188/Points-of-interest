@@ -57,5 +57,7 @@
     <string name="button_skip">SKIP</string>
     <string name="button_apply">APPLY</string>
     <string name="error_url_not_valid">Please, enter valid url address</string>
+    <string name="title_wizard_suggestion_not_available">No suggestions</string>
+    <string name="subtitle_wizard_suggestion_not_available">We were unable to parse the content of your link, please go ahead and fill in the details manually.</string>
 
 </resources>

@@ -12,6 +12,8 @@ data class WizardSuggestionUiModel(
 
     fun isSingleImageSuggestion() = imageUrl != null && title == null && body == null
 
+    fun isEmpty() = title.isNullOrEmpty() && body.isNullOrEmpty() && imageUrl.isNullOrEmpty()
+
     companion object {
         val EMPTY = WizardSuggestionUiModel()
     }

@@ -8,11 +8,12 @@ import androidx.navigation.NavController
 import com.grishko188.domain.features.categories.interactor.GetCategoriesUseCase
 import com.grishko188.domain.features.poi.interactor.CreatePoiUseCase
 import com.grishko188.domain.features.poi.interactor.GetWizardSuggestionUseCase
+import com.grishko188.pointofinterest.core.utils.ErrorDisplayObject
+import com.grishko188.pointofinterest.core.utils.toDisplayObject
 import com.grishko188.pointofinterest.features.poi.create.models.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,9 +40,10 @@ class CreatePoiViewModel @Inject constructor(
                 send(getWizardSuggestionUseCase(GetWizardSuggestionUseCase.Params(url)))
             }.onStart {
                 wizardSuggestionState.value = WizardSuggestionUiState.Loading
+            }.catch {
+                wizardSuggestionState.value = WizardSuggestionUiState.Error(it.toDisplayObject())
             }
         }
-        .catch { wizardSuggestionState.value = WizardSuggestionUiState.Error(it.message ?: "") }
         .onEach {
             wizardSuggestionState.value = WizardSuggestionUiState.Success(it.toUiModel())
         }
@@ -67,7 +69,9 @@ class CreatePoiViewModel @Inject constructor(
         )
 
     fun onApplyWizardSuggestion() {
-
+        (wizardSuggestionState.value as? WizardSuggestionUiState.Success)?.wizardSuggestionUiModel?.let { suggestionModel ->
+            screenState.value = CreatePoiScreenState.Form(suggestionModel)
+        }
     }
 
     fun onSkip() {
@@ -99,5 +103,5 @@ sealed class WizardSuggestionUiState {
     data class Success(val wizardSuggestionUiModel: WizardSuggestionUiModel) : WizardSuggestionUiState()
     object Loading : WizardSuggestionUiState()
     object None : WizardSuggestionUiState()
-    data class Error(val message: String) : WizardSuggestionUiState()
+    data class Error(val displayObject: ErrorDisplayObject) : WizardSuggestionUiState()
 }
