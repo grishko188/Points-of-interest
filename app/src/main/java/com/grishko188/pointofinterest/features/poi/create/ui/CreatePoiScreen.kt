@@ -401,9 +401,7 @@ fun CategoriesSelectionBottomSheet(
                         }
                     }
                 }
-
             }
         }
-
     }
 }

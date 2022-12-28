@@ -169,12 +169,14 @@ fun WizardSuggestionContentPreview(suggestion: WizardSuggestionUiModel) {
                 contentDescription = "Wizard suggestion image preview",
                 loading = { PulsingProgressBar() },
                 error = {
-                    Icon(
-                        modifier = Modifier.size(64.dp),
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_image_loading_failed),
-                        contentDescription = "Wizard suggestion image preview - error",
-                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
-                    )
+                    Box {
+                        Icon(
+                            modifier = Modifier.size(128.dp).align(Alignment.Center),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_image_loading_failed),
+                            contentDescription = "Wizard suggestion image preview - error",
+                            tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+                        )
+                    }
                 }
             )
 
@@ -195,12 +197,14 @@ fun WizardSuggestionContentPreview(suggestion: WizardSuggestionUiModel) {
                             contentDescription = "Wizard suggestion image preview",
                             loading = { PulsingProgressBar() },
                             error = {
-                                Icon(
-                                    modifier = Modifier.size(32.dp),
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_image_loading_failed),
-                                    contentDescription = "Wizard suggestion image preview - error",
-                                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
-                                )
+                                Box {
+                                    Icon(
+                                        modifier = Modifier.size(64.dp).align(Alignment.Center),
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_image_loading_failed),
+                                        contentDescription = "Wizard suggestion image preview - error",
+                                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+                                    )
+                                }
                             }
                         )
                         Spacer(modifier = Modifier.size(16.dp))

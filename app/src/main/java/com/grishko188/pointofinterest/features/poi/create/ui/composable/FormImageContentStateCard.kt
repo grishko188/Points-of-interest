@@ -104,7 +104,7 @@ fun DisplayImageState(
             error = {
                 Box {
                     Icon(
-                        modifier = Modifier.size(64.dp),
+                        modifier = Modifier.size(128.dp).align(Alignment.Center),
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_image_loading_failed),
                         contentDescription = "Wizard suggestion image preview - error",
                         tint = MaterialTheme.colorScheme.error.copy(alpha = 0.2f)

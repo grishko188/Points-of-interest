@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.core.utils.containsId
@@ -36,7 +38,7 @@ import com.grishko188.pointofinterest.ui.composables.uistates.EmptyView
 import com.grishko188.pointofinterest.ui.composables.uistates.ErrorView
 import com.grishko188.pointofinterest.ui.composables.uistates.ProgressView
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalLifecycleComposeApi::class)
 @Composable
 fun HomeScreen(
     navigationController: NavHostController,
@@ -46,8 +48,8 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
-    val homeContentState by viewModel.homeUiContentState.collectAsState()
-    val categoriesState by viewModel.categoriesState.collectAsState()
+    val homeContentState by viewModel.homeUiContentState.collectAsStateWithLifecycle()
+    val categoriesState by viewModel.categoriesState.collectAsStateWithLifecycle()
     var selectedFiltersState by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
     var selectedSortByOption by remember { mutableStateOf(PoiSortByUiOption.NONE) }
 
