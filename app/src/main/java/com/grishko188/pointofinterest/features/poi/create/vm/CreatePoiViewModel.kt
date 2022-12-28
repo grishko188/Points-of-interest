@@ -8,12 +8,17 @@ import androidx.navigation.NavController
 import com.grishko188.domain.features.categories.interactor.GetCategoriesUseCase
 import com.grishko188.domain.features.poi.interactor.CreatePoiUseCase
 import com.grishko188.domain.features.poi.interactor.GetWizardSuggestionUseCase
+import com.grishko188.domain.features.poi.models.PoiCreationPayload
 import com.grishko188.pointofinterest.core.utils.ErrorDisplayObject
 import com.grishko188.pointofinterest.core.utils.toDisplayObject
+import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
+import com.grishko188.pointofinterest.features.categories.ui.models.toDomainModel
+import com.grishko188.pointofinterest.features.categories.ui.models.toUiModel
 import com.grishko188.pointofinterest.features.poi.create.models.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,16 +26,25 @@ class CreatePoiViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getWizardSuggestionUseCase: GetWizardSuggestionUseCase,
     private val createPoiUseCase: CreatePoiUseCase,
-    private val getCategoriesUseCase: GetCategoriesUseCase
+    getCategoriesUseCase: GetCategoriesUseCase
 ) : ViewModel() {
 
+    val finishScreen = MutableStateFlow(false)
     val screenState = MutableStateFlow<CreatePoiScreenState>(CreatePoiScreenState.Loading)
     val wizardSuggestionState = MutableStateFlow<WizardSuggestionUiState>(WizardSuggestionUiState.None)
+
+    val categoriesState = getCategoriesUseCase(Unit)
+        .map { list -> list.map { it.toUiModel() }.groupBy { it.categoryType } }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyMap()
+        )
 
     private val queryState = MutableStateFlow("")
 
     @OptIn(FlowPreview::class)
-    val searchState = queryState
+    private val searchState = queryState
         .onEach { if (it.isEmpty()) wizardSuggestionState.value = WizardSuggestionUiState.None }
         .filter { it.isNotEmpty() }
         .debounce(500L)
@@ -53,7 +67,7 @@ class CreatePoiViewModel @Inject constructor(
             initialValue = ""
         )
 
-    val sharedContentState = savedStateHandle.getStateFlow(NavController.KEY_DEEP_LINK_INTENT, Intent())
+    private val sharedContentState = savedStateHandle.getStateFlow(NavController.KEY_DEEP_LINK_INTENT, Intent())
         .map { intent -> intent.fetchSharedContent() }
         .onEach {
             if (it.contentType == ContentType.MANUAL || it.contentType == ContentType.URL) {
@@ -68,6 +82,11 @@ class CreatePoiViewModel @Inject constructor(
             initialValue = SharedContent.EMPTY
         )
 
+    init {
+        sharedContentState.launchIn(viewModelScope)
+        searchState.launchIn(viewModelScope)
+    }
+
     fun onApplyWizardSuggestion() {
         (wizardSuggestionState.value as? WizardSuggestionUiState.Success)?.wizardSuggestionUiModel?.let { suggestionModel ->
             screenState.value = CreatePoiScreenState.Form(suggestionModel)
@@ -79,7 +98,26 @@ class CreatePoiViewModel @Inject constructor(
         screenState.value = CreatePoiScreenState.Form(WizardSuggestionUiModel(url = sharedContent.content))
     }
 
-    fun onSave() {
+    fun onSave(
+        contentUrl: String?,
+        title: String,
+        body: String?,
+        imageState: FormImageState,
+        categories: List<CategoryUiModel>
+    ) {
+        viewModelScope.launch {
+            val payload = PoiCreationPayload(
+                contentLink = contentUrl,
+                title = title,
+                body = body,
+                imageUrl = imageState.takeIf { imageState.isFailedImage.not() }?.imagePath,
+                categories = categories.map { it.toDomainModel() }
+            )
+
+            createPoiUseCase(CreatePoiUseCase.Params(payload))
+
+            finishScreen.value = true
+        }
     }
 
     fun onFetchWizardSuggestion(url: String) {

@@ -37,7 +37,7 @@ import com.grishko188.pointofinterest.ui.theme.PointOfInterestTheme
 import com.grishko188.pointofinterest.ui.theme.WarmGray400
 
 @Composable
-fun AddMoreButton(onClick: () -> Unit) {
+fun AddMoreButton(text: String? = null, onClick: () -> Unit) {
     AssistChip(
         colors = AssistChipDefaults.assistChipColors(
             labelColor = MaterialTheme.colorScheme.onBackground,
@@ -48,7 +48,7 @@ fun AddMoreButton(onClick: () -> Unit) {
         onClick = { onClick() },
         label = {
             Text(
-                text = stringResource(id = R.string.add_more),
+                text = text ?: stringResource(id = R.string.add_more),
                 fontSize = 12.sp,
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Medium

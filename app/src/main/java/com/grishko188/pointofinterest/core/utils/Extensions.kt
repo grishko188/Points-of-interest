@@ -38,3 +38,9 @@ fun chromeTabsIntent(): CustomTabsIntent {
 fun CustomTabsIntent.launch(context: Context, url: String) {
     launchUrl(context, Uri.parse(url))
 }
+
+fun String.isLocalImageUri() = this.startsWith("content://")
+
+fun String.isRemoteImageUri() = this.startsWith("http")
+
+fun String.extractSource(): String? = Uri.parse(this).host

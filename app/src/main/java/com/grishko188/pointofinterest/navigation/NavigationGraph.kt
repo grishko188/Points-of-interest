@@ -42,7 +42,7 @@ fun Navigation(appState: PoiAppState, paddingValues: PaddingValues) {
                 }
             )
         ) {
-            CreatePoiScreen(appState.navController)
+            CreatePoiScreen(onCloseScreen = appState::onBackClick)
         }
     }
 }

@@ -60,4 +60,16 @@
     <string name="title_wizard_suggestion_not_available">No suggestions</string>
     <string name="subtitle_wizard_suggestion_not_available">We were unable to parse the content of your link, please go ahead and fill in the details manually.</string>
 
+    <string name="title_form_title">Title</string>
+    <string name="title_form_body">Description</string>
+
+    <string name="title_form_remote_image_url">Remote image</string>
+    <string name="title_form_or">or</string>
+    <string name="button_pick_local_image">Pick local image</string>
+    <string name="title_form_select_image">Add image</string>
+    <string name="title_source_local_image">Source: Local image</string>
+    <string name="title_source_remote_image">Source: %s</string>
+    <string name="title_form_tags">Tags: </string>
+    <string name="button_add_categories">Select categories</string>
+
 </resources>
