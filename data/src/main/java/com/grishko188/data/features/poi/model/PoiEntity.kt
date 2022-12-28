@@ -30,7 +30,7 @@ enum class OrderByColumns(val columnName: String) {
 }
 
 fun PoiSortOption.toOrderBy() =
-    when(this){
+    when (this) {
         PoiSortOption.DATE -> OrderByColumns.DATE
         PoiSortOption.SEVERITY -> OrderByColumns.SEVERITY
         PoiSortOption.TITLE -> OrderByColumns.TITLE

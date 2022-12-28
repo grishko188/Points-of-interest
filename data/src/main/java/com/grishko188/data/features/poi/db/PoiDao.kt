@@ -12,8 +12,16 @@ import kotlinx.coroutines.flow.Flow
 interface PoiDao {
 
     @Transaction
-    @Query(value = "SELECT * FROM table_poi ORDER BY :orderBy DESC")
-    fun getPoiList(orderBy: String): Flow<List<PoiWithCategoriesEntity>>
+    @Query(
+        value = """
+               SELECT * FROM table_poi 
+               ORDER BY
+               CASE WHEN :column = 'creation_date_time' THEN creation_date_time END DESC,
+               CASE WHEN :column = 'severity' THEN severity END ASC,
+               CASE WHEN :column = 'title' THEN title END ASC
+    """
+    )
+    fun getPoiList(column: String): Flow<List<PoiWithCategoriesEntity>>
 
     @Query(value = "SELECT DISTINCT category_id FROM table_poi_to_category")
     fun getUsedCategoriesIds(): Flow<List<Int>>

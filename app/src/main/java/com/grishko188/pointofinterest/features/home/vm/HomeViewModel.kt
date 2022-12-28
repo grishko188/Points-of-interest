@@ -1,5 +1,6 @@
 package com.grishko188.pointofinterest.features.home.vm
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grishko188.domain.features.categories.interactor.GetCategoriesByIdsUseCase
@@ -21,7 +22,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     getUsedCategoriesUseCase: GetUsedCategoriesUseCase,
     private val getCategoriesUseCase: GetCategoriesByIdsUseCase,
-    private val getPoiListUseCase: GetPoiListUseCase
+    getPoiListUseCase: GetPoiListUseCase
 ) : ViewModel() {
 
     val categoriesState = getUsedCategoriesUseCase(Unit).flatMapConcat { ids ->
@@ -35,16 +36,15 @@ class HomeViewModel @Inject constructor(
 
     private val retryTrigger by lazy { RetryTrigger() }
 
-    val homeUiContentState = retryableFlow(retryTrigger) {
-        getPoiListUseCase(null)
-            .map { list -> list.map { it.toListUiModel() } }
-            .map {
-                if (it.isEmpty()) HomeUiContentState.Empty
-                else HomeUiContentState.Result(it)
-            }
-            .catch { emit(HomeUiContentState.Error(it.message ?: "null")) }
-            .onStart { emit(HomeUiContentState.Loading) }
-    }
+    val homeUiContentState = getPoiListUseCase(null)
+        .onEach { Log.d("AAA", "Updated") }
+        .map { list -> list.map { it.toListUiModel() } }
+        .map {
+            if (it.isEmpty()) HomeUiContentState.Empty
+            else HomeUiContentState.Result(it)
+        }
+        .catch { emit(HomeUiContentState.Error(it.message ?: "null")) }
+        .onStart { emit(HomeUiContentState.Loading) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
