@@ -17,14 +17,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.grishko188.pointofinterest.R
-import com.grishko188.pointofinterest.ui.composables.uikit.OutlineButton
+import com.grishko188.pointofinterest.core.utils.ErrorDisplayObject
 import com.grishko188.pointofinterest.ui.composables.uikit.PrimaryButton
 
 @Composable
 fun ErrorView(
     background: Color = MaterialTheme.colorScheme.background,
     title: String = stringResource(id = R.string.title_ui_state_error),
-    message: String? = null,
+    displayObject: ErrorDisplayObject? = null,
     icon: Int = R.drawable.ic_error,
     textColor: Color = MaterialTheme.colorScheme.onBackground,
     onRetryClick: (() -> Unit)? = null
@@ -41,7 +41,7 @@ fun ErrorView(
         Box(
             modifier = Modifier
                 .size(150.dp)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.7f), CircleShape)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.4f), CircleShape)
 
         ) {
 
@@ -59,19 +59,19 @@ fun ErrorView(
 
         Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge,
-            color = textColor,
+            style = MaterialTheme.typography.titleMedium,
+            color = textColor.copy(alpha = 0.5f),
             maxLines = 1
         )
 
-        if (message != null) {
+        if (displayObject != null) {
 
             Spacer(Modifier.height(4.dp))
 
             Text(
-                text = message,
+                text = stringResource(id = displayObject.errorMessage),
                 style = MaterialTheme.typography.bodyMedium,
-                color = textColor
+                color = textColor.copy(alpha = 0.5f)
             )
         }
 
@@ -81,7 +81,8 @@ fun ErrorView(
 
             PrimaryButton(
                 text = stringResource(id = R.string.button_title_try_again),
-                onClick = onRetryClick
+                onClick = onRetryClick,
+                paddingsVertical = 8.dp
             )
         }
     }
@@ -91,6 +92,6 @@ fun ErrorView(
 @Composable
 fun ErrorStatePreview() {
     ErrorView(
-        message = "Network connection issue", onRetryClick = {}
+        displayObject = ErrorDisplayObject.GenericError, onRetryClick = {}
     )
 }

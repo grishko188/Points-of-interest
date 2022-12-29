@@ -141,10 +141,10 @@ fun CategoryFilterChips(
 @Composable
 fun PoiCard(
     poiListItem: PoiListItem,
-    onClick: (PoiListItem) -> Unit
+    onClick: (String) -> Unit
 ) {
     ElevatedCard(
-        onClick = { onClick(poiListItem) },
+        onClick = { onClick(poiListItem.id) },
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         elevation = CardDefaults.elevatedCardElevation(),
         colors = CardDefaults.elevatedCardColors(

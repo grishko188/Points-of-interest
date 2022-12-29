@@ -17,8 +17,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.grishko188.pointofinterest.R
-import com.grishko188.pointofinterest.ui.theme.DarkMainColor
-import com.grishko188.pointofinterest.ui.theme.WarmGray400
 
 @Composable
 fun EmptyView(
@@ -40,7 +38,7 @@ fun EmptyView(
         Box(
             modifier = Modifier
                 .size(150.dp)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.7f), CircleShape)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.4f), CircleShape)
 
         ) {
 
@@ -56,8 +54,8 @@ fun EmptyView(
 
         Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge,
-            color = textColor,
+            style = MaterialTheme.typography.titleMedium,
+            color = textColor.copy(alpha = 0.5f),
             maxLines = 1
         )
 
@@ -68,7 +66,7 @@ fun EmptyView(
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = textColor
+                color = textColor.copy(alpha = 0.5f)
             )
         }
     }

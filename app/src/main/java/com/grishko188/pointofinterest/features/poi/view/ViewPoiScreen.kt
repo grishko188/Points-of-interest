@@ -11,7 +11,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun ViewPoiScreen(navController: NavHostController) {
+fun ViewPoiScreen(
+    poiId: String,
+    navController: NavHostController
+) {
     Surface(
         Modifier.padding(16.dp)
     ) {

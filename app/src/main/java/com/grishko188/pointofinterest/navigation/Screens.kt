@@ -46,7 +46,16 @@ sealed class Screen(
         const val ARG_CATEGORY_ID = "categoryId"
     }
 
-    object CreatePoi : Screen(route = "screen_create_poi", R.string.screen_create_poi, isFullScreen = true)
+    object CreatePoi : Screen(route = "screen_create_poi", R.string.screen_poi, isFullScreen = true)
+
+    object ViewPoiDetailed : Screen(
+        route = "screen_poi_detailed?poiId={poiId}",
+        routePath = "screen_poi_detailed",
+        name = R.string.screen_poi,
+        isFullScreen = true,
+    ) {
+        const val ARG_POI_ID = "poiId"
+    }
 
     companion object {
         val all = arrayListOf(Home, Categories, Profile, CreatePoi, CategoriesList, CategoriesDetailed, About)

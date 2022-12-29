@@ -3,7 +3,7 @@
     <string name="screen_home">Home</string>
     <string name="screen_categories">Categories</string>
     <string name="screen_profile">Profile</string>
-    <string name="screen_create_poi">Point of interest</string>
+    <string name="screen_poi">Point of interest</string>
 
 
     <string name="title_ui_state_empty">Wow, it is so empty here</string>
@@ -22,7 +22,7 @@
     <string name="action_undo">UNDO</string>
     <string name="title_category_name">Category name</string>
     <string name="title_sort_by_severity">Severity</string>
-    <string name="title_sort_by_date">Creation date</string>
+    <string name="title_sort_by_date">Date</string>
     <string name="title_sort_by_title">Title</string>
     <string name="title_dialog_sort_by">Sort by:</string>
     <string name="empty" />
@@ -71,5 +71,8 @@
     <string name="title_source_remote_image">Source: %s</string>
     <string name="title_form_tags">Tags: </string>
     <string name="button_add_categories">Select categories</string>
+    <string name="subtitle_sort_by_severity">from highest to lowest</string>
+    <string name="subtitle_sort_by_date">from newest to oldest</string>
+    <string name="subtitle_sort_by_title">alphabetical order</string>
 
 </resources>
