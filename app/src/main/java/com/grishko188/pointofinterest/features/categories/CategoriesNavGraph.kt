@@ -2,7 +2,6 @@ package com.grishko188.pointofinterest.features.categories
 
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -19,7 +18,7 @@ fun NavGraphBuilder.categoriesGraph(appState: PoiAppState) {
     navigation(startDestination = Screen.CategoriesList.route, route = Screen.Categories.route) {
         composable(Screen.CategoriesList.route) {
             val viewModel = hiltViewModel<CategoriesViewModel>()
-            CategoriesScreen(appState, appState.snackBarHostState, appState.coroutineScope, viewModel)
+            CategoriesScreen(appState.snackBarHostState, appState.coroutineScope, viewModel, appState::navigateTo)
         }
         composable(
             Screen.CategoriesDetailed.route,

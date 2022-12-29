@@ -23,14 +23,13 @@ fun Navigation(appState: PoiAppState, paddingValues: PaddingValues) {
     NavHost(appState.navController, startDestination = Screen.Home.route, Modifier.padding(paddingValues)) {
         composable(Screen.Home.route) {
             HomeScreen(
-                appState.navController,
-                appState.showSortDialog,
-                { appState.showSortDialog = false },
-                { screen, args -> appState.navigateTo(screen, args) }
+                showSortDialogState = appState.showSortDialog,
+                onCloseSortDialog = { appState.showSortDialog = false },
+                onNavigate = { screen, args -> appState.navigateTo(screen, args) }
             )
         }
         categoriesGraph(appState)
-        composable(Screen.Profile.route) { ProfileScreen(appState.navController) }
+        composable(Screen.Profile.route) { ProfileScreen { appState.navigateTo(it) } }
         composable(Screen.About.route) { AboutScreen() }
         composable(
             Screen.CreatePoi.route,

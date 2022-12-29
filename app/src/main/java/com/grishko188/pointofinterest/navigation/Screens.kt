@@ -58,7 +58,7 @@ sealed class Screen(
     }
 
     companion object {
-        val all = arrayListOf(Home, Categories, Profile, CreatePoi, CategoriesList, CategoriesDetailed, About)
+        val all = arrayListOf(Home, Categories, Profile, CreatePoi, ViewPoiDetailed, CategoriesList, CategoriesDetailed, About)
     }
 }
 

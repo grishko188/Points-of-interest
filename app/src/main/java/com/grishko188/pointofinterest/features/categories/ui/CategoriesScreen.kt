@@ -20,7 +20,6 @@ import com.grishko188.pointofinterest.features.categories.ui.composable.Editable
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryAction
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
 import com.grishko188.pointofinterest.features.categories.vm.CategoriesViewModel
-import com.grishko188.pointofinterest.features.main.PoiAppState
 import com.grishko188.pointofinterest.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
 
@@ -28,10 +27,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CategoriesScreen(
-    appState: PoiAppState,
     snackbarHostState: SnackbarHostState,
     coroutineScope: CoroutineScope,
-    viewModel: CategoriesViewModel
+    viewModel: CategoriesViewModel,
+    onNavigate: (Screen, List<Pair<String, Any>>) -> Unit
 ) {
 
     val categoriesState by viewModel.categoriesState.collectAsState()
@@ -42,7 +41,7 @@ fun CategoriesScreen(
             viewModel = viewModel,
             coroutineScope = coroutineScope,
             snackbarHostState = snackbarHostState,
-            appState = appState,
+            onNavigate = onNavigate,
             categories = categoriesState,
             itemsToDelete = itemToDelete
         )
@@ -52,7 +51,7 @@ fun CategoriesScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CategoriesContent(
-    appState: PoiAppState,
+    onNavigate: (Screen, List<Pair<String, Any>>) -> Unit,
     viewModel: CategoriesViewModel,
     coroutineScope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
@@ -63,7 +62,7 @@ fun CategoriesContent(
     Column {
         LazyColumn(Modifier.weight(1f)) {
             categories.entries.forEach { group ->
-                stickyHeader {
+                stickyHeader(key = group.key) {
                     CategoryTypeHeader(type = stringResource(id = group.key))
                     Divider(
                         modifier = Modifier.animateItemPlacement(),
@@ -91,7 +90,7 @@ fun CategoriesContent(
                                         }
                                     }
                                 }
-                                CategoryAction.EDIT -> appState.navigateTo(
+                                CategoryAction.EDIT -> onNavigate(
                                     Screen.CategoriesDetailed,
                                     listOf(Screen.CategoriesDetailed.ARG_CATEGORY_ID to model.id)
                                 )

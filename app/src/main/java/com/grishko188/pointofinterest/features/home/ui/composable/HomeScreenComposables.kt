@@ -1,7 +1,6 @@
 package com.grishko188.pointofinterest.features.home.ui.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -14,13 +13,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -65,14 +61,12 @@ fun AddMoreButton(text: String? = null, onClick: () -> Unit) {
 @Composable
 fun CategoryDisplayChips(
     categoryListItem: CategoryUiModel,
-    size: ChipSize = ChipSizeDefaults.basicChip(),
-    onClick: (CategoryUiModel) -> Unit = {}
+    size: ChipSize = ChipSizeDefaults.basicChip()
 ) {
     Box(
         modifier = Modifier
             .background(categoryListItem.color.copy(alpha = 0.4f), shape = RoundedCornerShape(8.dp))
             .padding(size.paddingHorizontal, size.paddingVertical)
-            .clickable { onClick(categoryListItem) }
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
@@ -90,7 +84,7 @@ fun CategoryFilterChips(
     isSelected: Boolean = false,
     size: ChipSize = ChipSizeDefaults.basicChip(),
     enabled: Boolean = true,
-    onClick: (CategoryUiModel) -> Unit = {}
+    onClick: (String) -> Unit = {}
 ) {
     FilterChip(
         enabled = enabled,
@@ -109,7 +103,7 @@ fun CategoryFilterChips(
             selectedTrailingIconColor = MaterialTheme.colorScheme.onBackground
         ),
         shape = RoundedCornerShape(16.dp),
-        onClick = { onClick(categoryListItem) },
+        onClick = { onClick(categoryListItem.id) },
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(10.dp),
@@ -202,19 +196,15 @@ fun PoiCard(
             }
 
             Row(Modifier.padding(16.dp)) {
-                val source = poiListItem.source.takeIf { it.isNullOrEmpty().not() } ?: ""
-                val text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(textDecoration = TextDecoration.Underline)) {
-                        append(source)
-                    }
-                }
+
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = text,
+                    text = poiListItem.source.takeIf { it.isNullOrEmpty().not() } ?: "",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
                     textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    textDecoration = TextDecoration.Underline
                 )
 
                 Spacer(modifier = Modifier.size(8.dp))
