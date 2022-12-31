@@ -4,9 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,7 +18,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.core.utils.containsId
 import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiModel
@@ -54,7 +51,6 @@ fun HomeScreen(
 
     Column(
         Modifier
-            .padding(PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp))
             .background(MaterialTheme.colorScheme.background)
     ) {
         AnimatedVisibility(
@@ -71,7 +67,11 @@ fun HomeScreen(
                 else selectedFiltersState.add(filterId)
             }
         }
-        Box(modifier = Modifier.weight(1f)) {
+        Box(
+            modifier = Modifier
+                .padding(PaddingValues(start = 16.dp, end = 16.dp))
+                .weight(1f)
+        ) {
             when (homeContentState) {
                 is HomeViewModel.HomeUiContentState.Loading -> ProgressView()
 
@@ -216,7 +216,9 @@ fun HomeScreenFilterContent(
 ) {
     Column {
         LazyRow {
-            items(categories, key = { item -> item.id }) { item ->
+            itemsIndexed(categories, key = { _, item -> item.id }) { index, item ->
+                if (index == 0) Spacer(modifier = Modifier.width(16.dp))
+
                 CategoryFilterChips(
                     categoryListItem = item,
                     onClick = onClick,
@@ -228,6 +230,6 @@ fun HomeScreenFilterContent(
                 AddMoreButton(onClick = onAddCategories)
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
