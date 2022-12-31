@@ -53,6 +53,7 @@ sealed class Screen(
         routePath = "screen_poi_detailed",
         name = R.string.screen_poi,
         isFullScreen = true,
+        menuItems = arrayListOf(MenuItem.Delete)
     ) {
         const val ARG_POI_ID = "poiId"
     }

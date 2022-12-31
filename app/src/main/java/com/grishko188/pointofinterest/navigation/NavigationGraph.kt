@@ -16,7 +16,7 @@ import com.grishko188.pointofinterest.features.profile.ui.ProfileScreen
 import com.grishko188.pointofinterest.features.home.ui.HomeScreen
 import com.grishko188.pointofinterest.features.main.PoiAppState
 import com.grishko188.pointofinterest.features.poi.create.ui.CreatePoiScreen
-import com.grishko188.pointofinterest.features.poi.view.ViewPoiScreen
+import com.grishko188.pointofinterest.features.poi.view.ui.ViewPoiScreen
 
 @Composable
 fun Navigation(appState: PoiAppState, paddingValues: PaddingValues) {
@@ -52,10 +52,8 @@ fun Navigation(appState: PoiAppState, paddingValues: PaddingValues) {
                 type = NavType.StringType
                 nullable = false
             })
-        ) { backStackEntry ->
-            val poiId = backStackEntry.arguments?.getString(Screen.ViewPoiDetailed.ARG_POI_ID)
-
-            ViewPoiScreen(poiId = requireNotNull(poiId), appState.navController)
+        ) {
+            ViewPoiScreen(appState, onCloseScreen = appState::onBackClick)
         }
     }
 }

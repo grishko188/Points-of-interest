@@ -74,5 +74,10 @@
     <string name="subtitle_sort_by_severity">from highest to lowest</string>
     <string name="subtitle_sort_by_date">from newest to oldest</string>
     <string name="subtitle_sort_by_title">alphabetical order</string>
+    <string name="confirm">Confirm</string>
+    <string name="title_dialog_delete">Delete</string>
+    <string name="message_dialog_delete_poi">Are you sure you want to delete this poin of interest?</string>
+    <string name="title_comments_count">Comments</string>
+    <string name="title_add_comment">Comment</string>
 
 </resources>

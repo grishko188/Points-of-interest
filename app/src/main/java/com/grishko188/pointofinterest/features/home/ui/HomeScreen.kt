@@ -1,6 +1,7 @@
 package com.grishko188.pointofinterest.features.home.ui
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -116,7 +117,7 @@ fun HomeScreen(
 
                             Column(
                                 modifier = Modifier.background(
-                                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f),
+                                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.3f),
                                     shape = RoundedCornerShape(8.dp)
                                 )
                             ) {
@@ -192,14 +193,15 @@ fun HomeScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenContent(
     poiItems: List<PoiListItem>,
     onPoiSelected: (String) -> Unit
 ) {
-    Column {
-        LazyColumn {
-            items(poiItems, key = { item -> item.id }) { item ->
+    LazyColumn {
+        items(poiItems, key = { item -> item.id }) { item ->
+            Column(modifier = Modifier.animateItemPlacement()) {
                 PoiCard(poiListItem = item, onClick = onPoiSelected)
                 Spacer(modifier = Modifier.height(8.dp))
             }
