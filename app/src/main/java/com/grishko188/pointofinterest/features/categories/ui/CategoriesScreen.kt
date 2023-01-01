@@ -14,6 +14,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.grishko188.pointofinterest.features.categories.ui.composable.CategoryTypeHeader
 import com.grishko188.pointofinterest.features.categories.ui.composable.CategoryView
 import com.grishko188.pointofinterest.features.categories.ui.composable.EditableCategoryView
@@ -25,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun CategoriesScreen(
     snackbarHostState: SnackbarHostState,
@@ -33,8 +36,8 @@ fun CategoriesScreen(
     onNavigate: (Screen, List<Pair<String, Any>>) -> Unit
 ) {
 
-    val categoriesState by viewModel.categoriesState.collectAsState()
-    val itemToDelete by viewModel.itemsToDelete.collectAsState()
+    val categoriesState by viewModel.categoriesState.collectAsStateWithLifecycle()
+    val itemToDelete by viewModel.itemsToDelete.collectAsStateWithLifecycle()
 
     Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         CategoriesContent(

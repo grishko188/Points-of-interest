@@ -80,4 +80,6 @@
     <string name="title_comments_count">Comments</string>
     <string name="title_add_comment">Comment</string>
 
+    <string name="message_snack_bar_comment_deleted">Comment deleted</string>
+
 </resources>

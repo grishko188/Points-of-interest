@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -56,6 +58,9 @@ fun ViewPoiScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
     val lazyColumnsState = rememberLazyListState()
+    val onLinkClicked: (String) -> Unit = { link ->
+        chromeTabsIntent.launch(context, link)
+    }
 
     LaunchedEffect(key1 = finishScreenState) {
         if (finishScreenState) {
@@ -75,23 +80,23 @@ fun ViewPoiScreen(
     }
 
     val mainUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val itemsToDeleteState by viewModel.itemToDeleteState.collectAsStateWithLifecycle()
+
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             state = lazyColumnsState,
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp)
         ) {
-            items(mainUiState, key = { item -> item.uniqueKey }) { item ->
+            items(mainUiState.filter { it.uniqueKey !in itemsToDeleteState }, key = { item -> item.uniqueKey }) { item ->
                 when (item) {
                     is PoiDetailListItem.TitleItem -> PoiTitle(title = item.text)
                     is PoiDetailListItem.ImageItem -> PoiDetailedImage(imagePath = item.imageUrl)
                     is PoiDetailListItem.MetadataItem -> PoiMetadata(dataTime = item.dateTime)
                     is PoiDetailListItem.CategoriesItem -> PoiCategories(categories = item.categoryUiModel)
-                    is PoiDetailListItem.BodyItem -> PoiDescription(body = item.text)
+                    is PoiDetailListItem.BodyItem -> PoiDescription(body = item.text, onLinkClicked)
                     is PoiDetailListItem.ContentUrl -> {
-                        PoiContentLink(source = item.source, contentLink = item.url, onClick = {
-                            chromeTabsIntent.launch(context, it)
-                        })
+                        PoiContentLink(source = item.source, contentLink = item.url, onClick = onLinkClicked)
                     }
                     is PoiDetailListItem.CommentsCount -> {
                         PoiCommentsCount(count = item.count)
@@ -102,8 +107,25 @@ fun ViewPoiScreen(
                             id = item.id,
                             message = item.body,
                             dateTime = item.dateTime,
-                            shouldShowDivider = item.shouldShowDivider
-                        ) {}
+                            shouldShowDivider = item.shouldShowDivider,
+                            onLinkClicked = onLinkClicked,
+                            onDeleteComment = { id, displayObject ->
+                                viewModel.onDeleteComment(id)
+                                displayObject.let { snackbarDisplayData ->
+                                    appState.coroutineScope.launch {
+                                        val snackBarResult = appState.snackBarHostState.showSnackbar(
+                                            message = snackbarDisplayData.message,
+                                            actionLabel = snackbarDisplayData.action,
+                                            duration = SnackbarDuration.Short
+                                        )
+                                        when (snackBarResult) {
+                                            SnackbarResult.Dismissed -> viewModel.onCommitCommentDelete(id)
+                                            SnackbarResult.ActionPerformed -> viewModel.onUndoDeleteComment(id)
+                                        }
+                                    }
+                                }
+                            }
+                        )
                     }
                 }
             }

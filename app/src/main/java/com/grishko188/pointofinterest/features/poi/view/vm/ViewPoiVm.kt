@@ -25,8 +25,7 @@ class ViewPoiVm @Inject constructor(
     private val deleteCommentUseCase: DeleteCommentUseCase
 ) : ViewModel() {
 
-    private val _idState = MutableStateFlow("")
-    val idState = _idState.asStateFlow()
+    private val idState = MutableStateFlow("")
 
     private val _finishScreenState = MutableStateFlow(false)
     val finishScreenState = _finishScreenState.asStateFlow()
@@ -34,10 +33,13 @@ class ViewPoiVm @Inject constructor(
     private val _uiState = MutableStateFlow<List<PoiDetailListItem>>(emptyList())
     val uiState = _uiState.asStateFlow()
 
+    private val _itemToDeleteState = MutableStateFlow<List<String>>(emptyList())
+    val itemToDeleteState = _itemToDeleteState.asStateFlow()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private val mainState = savedStateHandle.getStateFlow(Screen.ViewPoiDetailed.ARG_POI_ID, "")
         .filter { it.isNotEmpty() }
-        .onEach { id -> _idState.value = id }
+        .onEach { id -> idState.value = id }
         .map { getDetailedPoiUseCase(GetDetailedPoiUseCase.Params(it)) }
         .flatMapLatest { poi ->
             getCommentsUseCase(GetCommentsUseCase.Params(poi.id))
@@ -57,6 +59,18 @@ class ViewPoiVm @Inject constructor(
     }
 
     fun onDeleteComment(id: String) {
+        val updatedList = _itemToDeleteState.value.toMutableList()
+        updatedList.add(id)
+        _itemToDeleteState.value = updatedList
+    }
+
+    fun onUndoDeleteComment(id: String) {
+        val updatedList = _itemToDeleteState.value.toMutableList()
+        updatedList.remove(id)
+        _itemToDeleteState.value = updatedList
+    }
+
+    fun onCommitCommentDelete(id: String) {
         viewModelScope.launch {
             deleteCommentUseCase(DeleteCommentUseCase.Params(id))
         }
@@ -64,7 +78,7 @@ class ViewPoiVm @Inject constructor(
 
     fun onDeletePoi() {
         viewModelScope.launch {
-            val id = _idState.value
+            val id = idState.value
             deletePoiUseCase(DeletePoiUseCase.Params(id))
             _finishScreenState.update { true }
         }

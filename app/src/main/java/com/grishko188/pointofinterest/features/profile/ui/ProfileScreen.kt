@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -46,6 +47,7 @@ import com.grishko188.pointofinterest.navigation.Screen
 import com.grishko188.pointofinterest.ui.composables.uikit.PulsingProgressBar
 import com.grishko188.pointofinterest.ui.theme.PointOfInterestTheme
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ProfileScreen(
     vm: ProfileVm = hiltViewModel(),
@@ -63,7 +65,7 @@ fun ProfileScreen(
             }
         }
 
-    val profileSectionsState by vm.profileState.collectAsState()
+    val profileSectionsState by vm.profileState.collectAsStateWithLifecycle()
 
     val onNavigateInternal: (ProfileSectionType) -> Unit = { type ->
         if (type == ProfileSectionType.CATEGORIES) {
