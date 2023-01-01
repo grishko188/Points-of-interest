@@ -81,5 +81,7 @@
     <string name="title_add_comment">Comment</string>
 
     <string name="message_snack_bar_comment_deleted">Comment deleted</string>
+    <string name="message_enter_search_request">Start typing your search request</string>
+    <string name="message_search_empty_result">Nothing found</string>
 
 </resources>

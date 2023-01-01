@@ -19,6 +19,12 @@ sealed class Screen(
         menuItems = arrayListOf(MenuItem.Search, MenuItem.SortBy)
     )
 
+    object Search : Screen(
+        route = "screen_search",
+        R.string.screen_home,
+        isFullScreen = true
+    )
+
     object Profile : Screen(route = "screen_profile", R.string.screen_profile, R.drawable.ic_profile)
 
     object About : Screen(route = "screen_about", R.string.screen_about, isFullScreen = true)
@@ -59,7 +65,17 @@ sealed class Screen(
     }
 
     companion object {
-        val all = arrayListOf(Home, Categories, Profile, CreatePoi, ViewPoiDetailed, CategoriesList, CategoriesDetailed, About)
+        val all = arrayListOf(
+            Home,
+            Search,
+            Categories,
+            Profile,
+            CreatePoi,
+            ViewPoiDetailed,
+            CategoriesList,
+            CategoriesDetailed,
+            About
+        )
     }
 }
 

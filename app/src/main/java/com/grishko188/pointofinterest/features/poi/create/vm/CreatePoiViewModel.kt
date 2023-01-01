@@ -29,9 +29,14 @@ class CreatePoiViewModel @Inject constructor(
     getCategoriesUseCase: GetCategoriesUseCase
 ) : ViewModel() {
 
-    val finishScreen = MutableStateFlow(false)
-    val screenState = MutableStateFlow<CreatePoiScreenState>(CreatePoiScreenState.Loading)
-    val wizardSuggestionState = MutableStateFlow<WizardSuggestionUiState>(WizardSuggestionUiState.None)
+    private val _finishScreen = MutableSharedFlow<Boolean>()
+    val finishScreen = _finishScreen.asSharedFlow()
+
+    private val _screenState = MutableStateFlow<CreatePoiScreenState>(CreatePoiScreenState.Loading)
+    val screenState = _screenState.asStateFlow()
+
+    private val _wizardSuggestionState = MutableStateFlow<WizardSuggestionUiState>(WizardSuggestionUiState.None)
+    val wizardSuggestionState = _wizardSuggestionState.asStateFlow()
 
     val categoriesState = getCategoriesUseCase(Unit)
         .map { list -> list.map { it.toUiModel() }.groupBy { it.categoryType } }
@@ -45,7 +50,7 @@ class CreatePoiViewModel @Inject constructor(
 
     @OptIn(FlowPreview::class)
     private val searchState = queryState
-        .onEach { if (it.isEmpty()) wizardSuggestionState.value = WizardSuggestionUiState.None }
+        .onEach { if (it.isEmpty()) _wizardSuggestionState.value = WizardSuggestionUiState.None }
         .filter { it.isNotEmpty() }
         .debounce(500L)
         .distinctUntilChanged()
@@ -53,13 +58,13 @@ class CreatePoiViewModel @Inject constructor(
             channelFlow {
                 send(getWizardSuggestionUseCase(GetWizardSuggestionUseCase.Params(url)))
             }.onStart {
-                wizardSuggestionState.value = WizardSuggestionUiState.Loading
+                _wizardSuggestionState.value = WizardSuggestionUiState.Loading
             }.catch {
-                wizardSuggestionState.value = WizardSuggestionUiState.Error(it.toDisplayObject())
+                _wizardSuggestionState.value = WizardSuggestionUiState.Error(it.toDisplayObject())
             }
         }
         .onEach {
-            wizardSuggestionState.value = WizardSuggestionUiState.Success(it.toUiModel())
+            _wizardSuggestionState.value = WizardSuggestionUiState.Success(it.toUiModel())
         }
         .stateIn(
             scope = viewModelScope,
@@ -71,9 +76,9 @@ class CreatePoiViewModel @Inject constructor(
         .map { intent -> intent.fetchSharedContent() }
         .onEach {
             if (it.contentType == ContentType.MANUAL || it.contentType == ContentType.URL) {
-                screenState.value = CreatePoiScreenState.Wizard(it)
+                _screenState.value = CreatePoiScreenState.Wizard(it)
             } else {
-                screenState.value = CreatePoiScreenState.Form(it.toWizardSuggestion())
+                _screenState.value = CreatePoiScreenState.Form(it.toWizardSuggestion())
             }
         }
         .stateIn(
@@ -89,13 +94,13 @@ class CreatePoiViewModel @Inject constructor(
 
     fun onApplyWizardSuggestion() {
         (wizardSuggestionState.value as? WizardSuggestionUiState.Success)?.wizardSuggestionUiModel?.let { suggestionModel ->
-            screenState.value = CreatePoiScreenState.Form(suggestionModel)
+            _screenState.value = CreatePoiScreenState.Form(suggestionModel)
         }
     }
 
     fun onSkip() {
         val sharedContent = (screenState.value as CreatePoiScreenState.Wizard).sharedContent
-        screenState.value = CreatePoiScreenState.Form(WizardSuggestionUiModel(url = sharedContent.content))
+        _screenState.value = CreatePoiScreenState.Form(WizardSuggestionUiModel(url = sharedContent.content))
     }
 
     fun onSave(
@@ -116,7 +121,7 @@ class CreatePoiViewModel @Inject constructor(
 
             createPoiUseCase(CreatePoiUseCase.Params(payload))
 
-            finishScreen.value = true
+            _finishScreen.emit(true)
         }
     }
 

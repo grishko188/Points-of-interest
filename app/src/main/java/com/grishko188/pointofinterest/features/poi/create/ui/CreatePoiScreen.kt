@@ -59,10 +59,10 @@ fun CreatePoiScreen(
     onCloseScreen: () -> Unit,
     viewModel: CreatePoiViewModel = hiltViewModel()
 ) {
-    val finishScreenState = viewModel.finishScreen.collectAsStateWithLifecycle()
-
-    if(finishScreenState.value){
-        onCloseScreen()
+    LaunchedEffect(key1 = viewModel.finishScreen) {
+        viewModel.finishScreen.collect { state ->
+            if (state) onCloseScreen()
+        }
     }
 
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()

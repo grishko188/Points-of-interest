@@ -49,7 +49,12 @@ fun ViewPoiScreen(
     onCloseScreen: () -> Unit,
     viewModel: ViewPoiVm = hiltViewModel()
 ) {
-    val finishScreenState by viewModel.finishScreenState.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = viewModel.finishScreenState) {
+        viewModel.finishScreenState.collect { event ->
+            if (event) onCloseScreen()
+        }
+    }
+
     var showDeleteConfirmationState by remember { mutableStateOf(false) }
     var commentTextState by remember { mutableStateOf(TextFieldValue("")) }
     val onCloseDialog = { showDeleteConfirmationState = false }
@@ -62,11 +67,6 @@ fun ViewPoiScreen(
         chromeTabsIntent.launch(context, link)
     }
 
-    LaunchedEffect(key1 = finishScreenState) {
-        if (finishScreenState) {
-            onCloseScreen()
-        }
-    }
     LaunchedEffect(key1 = true) {
         appState.registerMenuItemClickObserver(MenuActionType.DELETE, object : OnMenuItemListener {
             override fun onMenuItemClicked(menuActionType: MenuActionType) {

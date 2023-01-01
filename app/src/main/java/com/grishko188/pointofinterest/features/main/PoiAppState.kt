@@ -89,7 +89,10 @@ class PoiAppState(
     fun onMenuItemClicked(actionType: MenuActionType) {
         when (actionType) {
             MenuActionType.BACK -> onBackClick()
-            MenuActionType.SEARCH -> showSearchBarState = true
+            MenuActionType.SEARCH -> {
+                navigateTo(Screen.Search)
+                showSearchBarState = true
+            }
             MenuActionType.ADD -> navigateTo(Screen.CategoriesDetailed)
             MenuActionType.SORT -> showSortDialog = true
             else -> menuItemClickObservers[actionType]?.onMenuItemClicked(actionType)
