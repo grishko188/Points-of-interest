@@ -8,12 +8,14 @@ import com.grishko188.data.features.categories.model.CategoryEntity
 import com.grishko188.data.features.poi.db.PoiDao
 import com.grishko188.data.features.poi.model.PoiCommentEntity
 import com.grishko188.data.features.poi.model.PoiEntity
+import com.grishko188.data.features.poi.model.PoiFtsEntity
 import com.grishko188.data.features.poi.model.PoiWithCategoriesCrossRef
 
 @Database(
     entities = [
         CategoryEntity::class,
         PoiEntity::class,
+        PoiFtsEntity::class,
         PoiWithCategoriesCrossRef::class,
         PoiCommentEntity::class
     ],

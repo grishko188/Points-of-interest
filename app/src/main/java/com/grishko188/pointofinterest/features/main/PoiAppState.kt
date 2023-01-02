@@ -55,6 +55,12 @@ class PoiAppState(
 
     private val menuItemClickObservers = mutableMapOf<MenuActionType, OnMenuItemListener>()
 
+    fun closeSearch() {
+        showSearchBarState = false
+        searchState.value = TextFieldValue("")
+        onBackClick()
+    }
+
     fun registerMenuItemClickObserver(actionType: MenuActionType, menuItemListener: OnMenuItemListener) {
         menuItemClickObservers[actionType] = menuItemListener
     }

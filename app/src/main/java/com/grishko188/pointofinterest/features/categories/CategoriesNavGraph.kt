@@ -33,7 +33,7 @@ fun NavGraphBuilder.categoriesGraph(appState: PoiAppState) {
             val parentViewModel = hiltViewModel<CategoriesViewModel>(parentEntry)
             val categoryId = backStackEntry.arguments?.getString(ARG_CATEGORY_ID)
 
-            CategoriesDetailedScreen(categoryId = categoryId, parentViewModel) { appState.onBackClick() }
+            CategoriesDetailedScreen(categoryId = categoryId, parentViewModel, appState::onBackClick)
         }
     }
 }

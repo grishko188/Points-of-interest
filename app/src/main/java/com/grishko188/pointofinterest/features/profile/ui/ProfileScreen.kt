@@ -42,7 +42,7 @@ import com.grishko188.pointofinterest.R
 import com.grishko188.pointofinterest.features.profile.models.ProfileSectionItem
 import com.grishko188.pointofinterest.features.profile.models.ProfileSectionType
 import com.grishko188.pointofinterest.features.profile.models.UserInfo
-import com.grishko188.pointofinterest.features.profile.vm.ProfileVm
+import com.grishko188.pointofinterest.features.profile.vm.ProfileViewModel
 import com.grishko188.pointofinterest.navigation.Screen
 import com.grishko188.pointofinterest.ui.composables.uikit.PulsingProgressBar
 import com.grishko188.pointofinterest.ui.theme.PointOfInterestTheme
@@ -50,7 +50,7 @@ import com.grishko188.pointofinterest.ui.theme.PointOfInterestTheme
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ProfileScreen(
-    vm: ProfileVm = hiltViewModel(),
+    vm: ProfileViewModel = hiltViewModel(),
     onNavigate: (Screen) -> Unit
 ) {
     val context = LocalContext.current

@@ -16,6 +16,9 @@ class PoiLocalDataSource @Inject constructor(
     override fun getUsedCategoriesIds(): Flow<List<Int>> =
         poiDao.getUsedCategoriesIds()
 
+    override suspend fun searchPoi(query: String): List<PoiDataModel> =
+        poiDao.searchPoi("*$query*").map { it.toDataModel() }
+
     override suspend fun getPoi(id: String): PoiDataModel {
         return poiDao.getPoi(id.toInt()).toDataModel()
     }

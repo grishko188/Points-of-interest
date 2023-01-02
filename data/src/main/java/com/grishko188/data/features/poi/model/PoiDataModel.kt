@@ -28,9 +28,9 @@ fun PoiWithCategoriesEntity.toDataModel() = entity.toDataModel(categories)
 
 fun PoiEntity.toDataModel(categories: List<CategoryEntity> = emptyList()) = PoiDataModel(
     id = id,
-    contentLink = contentLink,
+    contentLink = contentLink.takeIf { it.isNotEmpty() },
     title = title,
-    body = body,
+    body = body.takeIf { it.isNotEmpty() },
     imageUrl = imageUrl,
     creationDate = creationDateTime,
     severity = severity,
@@ -39,9 +39,9 @@ fun PoiEntity.toDataModel(categories: List<CategoryEntity> = emptyList()) = PoiD
 )
 
 fun PoiDataModel.toEntity() = PoiEntity(
-    contentLink = contentLink,
+    contentLink = contentLink ?: "",
     title = title,
-    body = body,
+    body = body ?: "",
     imageUrl = imageUrl,
     creationDateTime = creationDate,
     severity = severity,
@@ -72,7 +72,7 @@ fun PoiDataModel.toDomain() = PoiModel(
     categories = categories.map { it.toDomain() }
 )
 
-private fun String.extractSourceUrl() = Uri.parse(this).takeIf { it.scheme?.contains("http") == true}?.host
+private fun String.extractSourceUrl() = Uri.parse(this).takeIf { it.scheme?.contains("http") == true }?.host
 
 private fun Category?.toSeverityInt() = when (this?.title) {
     SEVERITY_HIGH -> 0

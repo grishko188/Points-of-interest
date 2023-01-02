@@ -9,6 +9,7 @@ interface PoiDataSource {
 
     fun getPoiList(orderByOption: OrderByColumns): Flow<List<PoiDataModel>>
     fun getUsedCategoriesIds(): Flow<List<Int>>
+    suspend fun searchPoi(query: String): List<PoiDataModel>
     suspend fun getPoi(id: String): PoiDataModel
     suspend fun insertPoi(dataModel: PoiDataModel)
     suspend fun deletePoi(id: String)

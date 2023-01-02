@@ -26,6 +26,9 @@ class PoiRepositoryImpl @Inject constructor(
     override fun getUsedCategories(): Flow<List<Int>> =
         localDataSource.getUsedCategoriesIds()
 
+    override suspend fun searchPoi(query: String): List<PoiModel> =
+        localDataSource.searchPoi(query).map { it.toDomain() }
+
     override suspend fun getDetailedPoi(id: String): PoiModel =
         localDataSource.getPoi(id).toDomain()
 

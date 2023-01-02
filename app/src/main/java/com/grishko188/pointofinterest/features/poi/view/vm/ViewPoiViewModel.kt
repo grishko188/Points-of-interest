@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ViewPoiVm @Inject constructor(
+class ViewPoiViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getDetailedPoiUseCase: GetDetailedPoiUseCase,
     private val deletePoiUseCase: DeletePoiUseCase,
@@ -44,7 +44,7 @@ class ViewPoiVm @Inject constructor(
         .flatMapLatest { poi ->
             getCommentsUseCase(GetCommentsUseCase.Params(poi.id))
                 .onEach { comments -> _uiState.value = poi.toUIModelWithComments(comments) }
-                .catch { error -> Log.e(ViewPoiVm::class.java.simpleName, error.message, error) }
+                .catch { error -> Log.e(ViewPoiViewModel::class.java.simpleName, error.message, error) }
         }
         .stateIn(
             scope = viewModelScope,

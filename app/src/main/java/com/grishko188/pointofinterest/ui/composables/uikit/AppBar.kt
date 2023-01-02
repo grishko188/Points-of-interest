@@ -107,10 +107,7 @@ fun SearchView(
         textStyle = MaterialTheme.typography.titleSmall,
         leadingIcon = {
             IconButton(
-                onClick = {
-                    appState.showSearchBarState = false
-                    appState.onBackClick()
-                }
+                onClick = { appState.closeSearch() }
             ) {
                 Icon(
                     Icons.Default.ArrowBack,

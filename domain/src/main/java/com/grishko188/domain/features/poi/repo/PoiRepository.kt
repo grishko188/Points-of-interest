@@ -9,6 +9,8 @@ interface PoiRepository {
 
     fun getUsedCategories(): Flow<List<Int>>
 
+    suspend fun searchPoi(query: String): List<PoiModel>
+
     suspend fun getDetailedPoi(id: String): PoiModel
 
     suspend fun createPoi(payload: PoiCreationPayload)

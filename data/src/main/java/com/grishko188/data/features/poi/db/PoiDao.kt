@@ -23,6 +23,16 @@ interface PoiDao {
     )
     fun getPoiList(column: String): Flow<List<PoiWithCategoriesEntity>>
 
+    @Transaction
+    @Query(
+        value = """
+               SELECT * FROM table_poi
+               JOIN table_poi_fts ON table_poi.id = table_poi_fts.rowid
+               WHERE table_poi_fts MATCH :query
+    """
+    )
+    suspend fun searchPoi(query: String): List<PoiWithCategoriesEntity>
+
     @Query(value = "SELECT DISTINCT category_id FROM table_poi_to_category")
     fun getUsedCategoriesIds(): Flow<List<Int>>
 

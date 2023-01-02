@@ -30,7 +30,7 @@ fun Navigation(appState: PoiAppState, paddingValues: PaddingValues) {
             )
         }
         categoriesGraph(appState)
-        composable(Screen.Search.route) { SearchScreen(appState, searchQuery = appState.searchState.value ) }
+        composable(Screen.Search.route) { SearchScreen(appState) }
         composable(Screen.Profile.route) { ProfileScreen { appState.navigateTo(it) } }
         composable(Screen.About.route) { AboutScreen() }
         composable(

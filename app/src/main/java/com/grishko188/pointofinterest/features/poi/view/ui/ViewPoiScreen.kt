@@ -36,7 +36,7 @@ import com.grishko188.pointofinterest.core.utils.launch
 import com.grishko188.pointofinterest.features.main.OnMenuItemListener
 import com.grishko188.pointofinterest.features.main.PoiAppState
 import com.grishko188.pointofinterest.features.poi.view.models.PoiDetailListItem
-import com.grishko188.pointofinterest.features.poi.view.vm.ViewPoiVm
+import com.grishko188.pointofinterest.features.poi.view.vm.ViewPoiViewModel
 import com.grishko188.pointofinterest.navigation.MenuActionType
 import com.grishko188.pointofinterest.ui.composables.uikit.ActionButton
 import com.grishko188.pointofinterest.ui.composables.uikit.PoiFilledTextField
@@ -47,9 +47,9 @@ import kotlinx.coroutines.launch
 fun ViewPoiScreen(
     appState: PoiAppState,
     onCloseScreen: () -> Unit,
-    viewModel: ViewPoiVm = hiltViewModel()
+    viewModel: ViewPoiViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(key1 = viewModel.finishScreenState) {
+    LaunchedEffect(key1 = true) {
         viewModel.finishScreenState.collect { event ->
             if (event) onCloseScreen()
         }
@@ -67,15 +67,12 @@ fun ViewPoiScreen(
         chromeTabsIntent.launch(context, link)
     }
 
-    LaunchedEffect(key1 = true) {
+    DisposableEffect(key1 = true) {
         appState.registerMenuItemClickObserver(MenuActionType.DELETE, object : OnMenuItemListener {
             override fun onMenuItemClicked(menuActionType: MenuActionType) {
                 showDeleteConfirmationState = true
             }
         })
-    }
-
-    DisposableEffect(key1 = true) {
         onDispose { appState.disposeMenuItemObserver(MenuActionType.DELETE) }
     }
 
