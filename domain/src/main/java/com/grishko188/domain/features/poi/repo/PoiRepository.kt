@@ -15,7 +15,7 @@ interface PoiRepository {
 
     suspend fun createPoi(payload: PoiCreationPayload)
 
-    suspend fun deletePoi(id: String)
+    suspend fun deletePoi(model: PoiModel)
 
     suspend fun addComment(targetId: String, payload: PoiCommentPayload)
 

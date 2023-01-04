@@ -21,7 +21,7 @@ class LocalImageDataSource @Inject constructor(
 
     suspend fun copyLocalImage(uri: String): String = suspendCoroutine { continuation ->
         val fileName = String.format(LOCAL_IMAGE_NAME, Clock.System.now().toEpochMilliseconds())
-        val imageFile = File(context.externalCacheDir, fileName)
+        val imageFile = File(context.cacheDir, fileName)
         imageFile.createNewFile()
         FileOutputStream(imageFile).use { outputStream ->
             context.contentResolver.openInputStream(Uri.parse(uri)).use { inputStream ->
@@ -36,6 +36,16 @@ class LocalImageDataSource @Inject constructor(
                 } ?: continuation.resumeWithException(NullPointerException("InputStream is null"))
             }
         }
+    }
+
+    suspend fun deleteImage(uri: String) = suspendCoroutine {
+        val imageName = Uri.parse(uri).lastPathSegment
+        if (imageName != null) {
+            val imageFile = File(context.cacheDir, imageName)
+            if (imageFile.exists())
+                imageFile.delete()
+        }
+        it.resume(Unit)
     }
 
     @Throws(IOException::class)

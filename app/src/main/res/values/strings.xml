@@ -7,7 +7,9 @@
 
 
     <string name="title_ui_state_empty">Wow, it is so empty here</string>
-    <string name="title_ui_state_error">Something went wrong</string>
+    <string name="title_ui_state_error">Oops…</string>
+    <string name="message_ui_state_error">Something went wrong</string>
+
 
     <string name="message_ui_state_empty_main_screen">Add your first point of interest</string>
     <string name="message_ui_state_empty_main_screen_no_filters">Items matching all selected filters were not found</string>
