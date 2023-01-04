@@ -37,15 +37,15 @@ android {
 }
 
 dependencies {
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation libs.hilt
+    kapt libs.hilt.compiler
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation libs.kotlinx.datetime
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    testImplementation libs.mockito.core
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
 }

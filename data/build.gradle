@@ -54,30 +54,30 @@ protobuf {
 
 dependencies {
     implementation(project(":domain"))
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
 
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation libs.hilt
+    kapt libs.hilt.compiler
 
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation libs.room.runtime
+    implementation libs.room.ktx
+    kapt libs.room.compiler
 
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-    implementation 'com.google.code.gson:gson:2.10'
+    implementation libs.retrofit
+    implementation libs.retrofit.converter.gson
+    implementation libs.okhttp.logging
+    implementation libs.okhttp
+    implementation libs.google.gson
 
-    implementation 'org.jsoup:jsoup:1.15.3'
+    implementation libs.jsoup
 
-    implementation "androidx.datastore:datastore:1.0.0"
-    implementation "com.google.protobuf:protobuf-kotlin-lite:3.21.9"
+    implementation libs.androidx.datastore
+    implementation libs.google.protobuf.kotlin
 
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation libs.kotlinx.datetime
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    testImplementation libs.mockito.core
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
 }
