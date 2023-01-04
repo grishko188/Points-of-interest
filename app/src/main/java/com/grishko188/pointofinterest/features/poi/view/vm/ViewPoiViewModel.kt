@@ -40,7 +40,6 @@ class ViewPoiViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val mainState = savedStateHandle.getStateFlow(Screen.ViewPoiDetailed.ARG_POI_ID, "")
         .filter { it.isNotEmpty() }
-
         .map { getDetailedPoiUseCase(GetDetailedPoiUseCase.Params(it)) }
         .onEach { model -> modelState.emit(model) }
         .flatMapLatest { poi ->

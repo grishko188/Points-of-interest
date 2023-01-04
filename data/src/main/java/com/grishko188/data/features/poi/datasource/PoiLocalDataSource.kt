@@ -20,7 +20,9 @@ class PoiLocalDataSource @Inject constructor(
         poiDao.searchPoi("*$query*").map { it.toDataModel() }
 
     override suspend fun getPoi(id: String): PoiDataModel {
-        return poiDao.getPoi(id.toInt()).toDataModel()
+        val fullEntity = poiDao.getPoi(id.toInt())
+        if (fullEntity.entity.viewed.not()) poiDao.updatePoiViewed(id.toInt(), true)
+        return fullEntity.toDataModel()
     }
 
     override suspend fun insertPoi(dataModel: PoiDataModel) {

@@ -45,7 +45,8 @@ fun PoiDataModel.toEntity() = PoiEntity(
     imageUrl = imageUrl,
     creationDateTime = creationDate,
     severity = severity,
-    commentsCount = commentsCount
+    commentsCount = commentsCount,
+    viewed = false
 ).apply { id = this@toEntity.id }
 
 fun PoiCreationPayload.creationDataModel() = PoiDataModel(

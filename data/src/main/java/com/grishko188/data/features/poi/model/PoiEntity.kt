@@ -20,7 +20,8 @@ data class PoiEntity(
     val creationDateTime: Instant,
     @ColumnInfo(name = "comments_count")
     val commentsCount: Int,
-    val severity: Int
+    val severity: Int,
+    val viewed: Boolean
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = UNSPECIFIED_ID

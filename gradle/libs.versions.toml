@@ -35,6 +35,8 @@ junitVersion = "4.13.2"
 androidXJunitVersion = "1.1.4"
 espressoVersion = "3.5.0"
 mockitoVersion = "4.11.0"
+kotlinTestVersion = "1.7.20"
+kotlinCoroutinesTestVersion = "1.6.4"
 
 [libraries]
 
@@ -83,5 +85,7 @@ androix-compose-debug-test-manifest = { group = "androidx.compose.ui", name = "u
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoVersion" }
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockitoVersion" }
 mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockitoVersion" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutinesTestVersion" }
+kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlinTestVersion" }
 
 [plugins]
