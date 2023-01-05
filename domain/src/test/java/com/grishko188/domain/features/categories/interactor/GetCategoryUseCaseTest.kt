@@ -32,7 +32,7 @@ class GetCategoryUseCaseTest {
     }
 
     @Test
-    fun `test get category use case invokes getCategory repo function`() = runTest {
+    fun `test GetCategoryUseCaseTest invokes getCategory repo function`() = runTest {
         val id = "someId"
         SUT.invoke(GetCategoryUseCase.Params(id))
         val captor = argumentCaptor<String>()
@@ -41,7 +41,7 @@ class GetCategoryUseCaseTest {
     }
 
     @Test
-    fun `test get category use case returns same value as getCategory repo function`() = runTest {
+    fun `test GetCategoryUseCaseTest returns same value as getCategory repo function`() = runTest {
         val id = "someId"
         val category = mock<Category>()
         whenever(repository.getCategory(anyNonNull())).thenReturn(category)
@@ -50,7 +50,7 @@ class GetCategoryUseCaseTest {
     }
 
     @Test(expected = Throwable::class)
-    fun `test get category use case throws exception when getCategory throws exception`() = runTest {
+    fun `test GetCategoryUseCaseTest throws exception when getCategory throws exception`() = runTest {
         val id = "someId"
         whenever(repository.getCategory(anyNonNull())).thenThrow(IllegalStateException())
         SUT.invoke(GetCategoryUseCase.Params(id))

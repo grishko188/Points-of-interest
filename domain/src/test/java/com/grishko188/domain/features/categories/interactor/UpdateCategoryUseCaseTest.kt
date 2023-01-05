@@ -31,7 +31,7 @@ class UpdateCategoryUseCaseTest {
     }
 
     @Test
-    fun `test update category use case invokes updateCategory repo function`() = runTest {
+    fun `test UpdateCategoryUseCase invokes updateCategory repo function`() = runTest {
         val category = mock<Category>()
         SUT.invoke(UpdateCategoryUseCase.Params(category))
         val captor = argumentCaptor<Category>()
@@ -40,7 +40,7 @@ class UpdateCategoryUseCaseTest {
     }
 
     @Test(expected = Throwable::class)
-    fun `test update category use case throws exception when updateCategory throws exception`() = runTest {
+    fun `test UpdateCategoryUseCase throws exception when updateCategory throws exception`() = runTest {
         val category = mock<Category>()
         MockitoHelper.whenever(repository.updateCategory(MockitoHelper.anyNonNull())).thenThrow(IllegalStateException())
         SUT.invoke(UpdateCategoryUseCase.Params(category))

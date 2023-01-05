@@ -31,7 +31,7 @@ class GetCategoriesUseCaseTest {
     }
 
     @Test
-    fun `test get categories use case invokes getCategories repo function`() = runTest {
+    fun `test GetCategoriesUseCase invokes getCategories repo function`() = runTest {
         val mockCategory1 = mock<Category>()
         val mockCategory2 = mock<Category>()
         val mockResult = arrayListOf(mockCategory1, mockCategory2)
@@ -43,7 +43,7 @@ class GetCategoriesUseCaseTest {
 
 
     @Test
-    fun `test get categories use case emits exception when flow in getCategories throws exception`() = runTest {
+    fun `test GetCategoriesUseCase emits exception when flow in getCategories throws exception`() = runTest {
         whenever(repository.getCategories()).thenReturn(flow { throw IllegalStateException() })
         var exception: Throwable = mock()
         SUT.invoke(Unit).catch { exception = it }.toList()

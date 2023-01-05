@@ -34,7 +34,7 @@ class GetCategoriesByIdsUseCaseTest {
     }
 
     @Test
-    fun `test get categories by ids use case invokes getCategories repo function`() = runTest {
+    fun `test GetCategoriesByIdsUseCaseTest invokes getCategories repo function`() = runTest {
         val ids = arrayListOf(1, 2, 3)
 
         val mockCategory1 = mock<Category>()
@@ -53,7 +53,7 @@ class GetCategoriesByIdsUseCaseTest {
 
 
     @Test
-    fun `test get categories by ids use case emits exception when flow in getCategories throws exception`() = runTest {
+    fun `test GetCategoriesByIdsUseCaseTest emits exception when flow in getCategories throws exception`() = runTest {
         val ids = arrayListOf(1, 2, 3)
         MockitoHelper.whenever(repository.getCategories(ids)).thenReturn(flow { throw IllegalStateException() })
         var exception: Throwable = mock()

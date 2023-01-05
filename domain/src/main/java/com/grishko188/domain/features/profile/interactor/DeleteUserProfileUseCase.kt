@@ -4,7 +4,7 @@ import com.grishko188.domain.core.UseCase
 import com.grishko188.domain.features.profile.repo.ProfileRepository
 import javax.inject.Inject
 
-class DeleteUseProfileUseCase @Inject constructor(
+class DeleteUserProfileUseCase @Inject constructor(
     private val repository: ProfileRepository
 ) : UseCase<Unit, Unit>() {
     override suspend fun operation(params: Unit) {

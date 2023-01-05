@@ -26,13 +26,13 @@ class SyncCategoriesUseCaseTest {
     }
 
     @Test
-    fun `test sync category use case invokes sync repo function`() = runTest {
+    fun `test SyncCategoriesUseCase invokes sync repo function`() = runTest {
         SUT.invoke(Unit)
         Mockito.verify(repository, Mockito.times(1)).sync()
     }
 
     @Test(expected = Throwable::class)
-    fun `test sync categories use case throws exception when sync throws exception`() = runTest {
+    fun `test SyncCategoriesUseCase throws exception when sync throws exception`() = runTest {
         MockitoHelper.whenever(repository.sync()).thenThrow(IllegalStateException())
         SUT.invoke(Unit)
     }

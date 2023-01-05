@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
-import com.grishko188.domain.features.profile.interactor.DeleteUseProfileUseCase
+import com.grishko188.domain.features.profile.interactor.DeleteUserProfileUseCase
 import com.grishko188.domain.features.profile.interactor.GetProfileUseCase
 import com.grishko188.domain.features.profile.interactor.SetUserProfileUseCase
 import com.grishko188.domain.features.profile.interactor.SetUserSettingStateUseCase
@@ -22,7 +22,7 @@ class ProfileViewModel @Inject constructor(
     getProfileUseCase: GetProfileUseCase,
     private val setUserSettingStateUseCase: SetUserSettingStateUseCase,
     private val setUserProfileUseCase: SetUserProfileUseCase,
-    private val deleteUseProfileUseCase: DeleteUseProfileUseCase
+    private val deleteUserProfileUseCase: DeleteUserProfileUseCase
 ) : ViewModel() {
 
     val profileState = getProfileUseCase(Unit).map {
@@ -57,7 +57,7 @@ class ProfileViewModel @Inject constructor(
 
     fun onSignOutClicked() {
         viewModelScope.launch {
-            deleteUseProfileUseCase(Unit)
+            deleteUserProfileUseCase(Unit)
         }
     }
 

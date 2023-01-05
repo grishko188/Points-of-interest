@@ -32,7 +32,7 @@ class AddCategoryUseCaseTest {
     }
 
     @Test
-    fun `test add category use case invokes addCategory repo function`() = runTest {
+    fun `test AddCategoryUseCaseTest invokes addCategory repo function`() = runTest {
         val categoryName = "Random name"
         val color = Color.WHITE
         SUT.invoke(AddCategoryUseCase.Params(categoryName, color))
@@ -42,7 +42,7 @@ class AddCategoryUseCaseTest {
     }
 
     @Test(expected = Throwable::class)
-    fun `test add category use case throws exception when addCategory throws exception`() = runTest {
+    fun `test AddCategoryUseCaseTest throws exception when addCategory throws exception`() = runTest {
         val categoryName = "Random name"
         val color = Color.WHITE
         whenever(repository.addCategory(anyNonNull())).thenThrow(IllegalStateException())
