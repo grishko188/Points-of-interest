@@ -83,6 +83,9 @@ dependencies {
     implementation libs.kotlinx.datetime
 
     testImplementation libs.mockito.core
+    testImplementation libs.mockito.inline
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.kotlin.test.junit
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
 }

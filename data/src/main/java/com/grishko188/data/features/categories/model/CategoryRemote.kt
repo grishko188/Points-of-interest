@@ -1,6 +1,7 @@
 package com.grishko188.data.features.categories.model
 
 import android.graphics.Color
+import androidx.annotation.VisibleForTesting
 import com.google.gson.annotations.SerializedName
 import com.grishko188.data.core.UNSPECIFIED_ID
 
@@ -18,4 +19,5 @@ fun CategoryRemote.toDataModel() = CategoryDataModel(
     isMutable = false
 )
 
-private fun String.toColorInt() = Color.parseColor(this)
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+fun String.toColorInt() = Color.parseColor(this)
