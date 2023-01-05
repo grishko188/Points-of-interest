@@ -11,9 +11,9 @@ import javax.inject.Inject
 
 class WizardRemoteDataSource @Inject constructor(
     private val api: WizardServiceApi
-) {
+) : WizardDataSource {
 
-    suspend fun getWizardSuggestion(url: String): WizardSuggestionDataModel {
+    override suspend fun getWizardSuggestion(url: String): WizardSuggestionDataModel {
         val responseBody = api.getUrlContent(url)
         val contentType = responseBody.contentType()
         return if (contentType.isImageContentType()) {

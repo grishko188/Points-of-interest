@@ -1,9 +1,8 @@
 package com.grishko188.data.features.poi.repository
 
 import com.grishko188.data.core.Local
-import com.grishko188.data.features.poi.datasource.LocalImageDataSource
-import com.grishko188.data.features.poi.datasource.PoiDataSource
-import com.grishko188.data.features.poi.datasource.WizardRemoteDataSource
+import com.grishko188.data.core.Remote
+import com.grishko188.data.features.poi.datasource.*
 import com.grishko188.data.features.poi.model.creationDataModel
 import com.grishko188.data.features.poi.model.toDomain
 import com.grishko188.data.features.poi.model.toOrderBy
@@ -15,8 +14,8 @@ import javax.inject.Inject
 
 class PoiRepositoryImpl @Inject constructor(
     @Local private val localDataSource: PoiDataSource,
-    private val imageDataSource: LocalImageDataSource,
-    private val wizardRemoteDataSource: WizardRemoteDataSource,
+    @Local private val imageDataSource: ImageDataSource,
+    @Remote private val wizardRemoteDataSource: WizardDataSource,
 ) : PoiRepository {
 
     override fun getPoiList(sortOption: PoiSortOption?): Flow<List<PoiModel>> =

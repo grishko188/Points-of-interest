@@ -5,8 +5,7 @@ import com.grishko188.data.core.Remote
 import com.grishko188.data.features.categories.datasource.CategoriesDataSource
 import com.grishko188.data.features.categories.datasource.CategoriesFakeRemoteDataSource
 import com.grishko188.data.features.categories.datasource.CategoriesLocalDataSource
-import com.grishko188.data.features.poi.datasource.PoiDataSource
-import com.grishko188.data.features.poi.datasource.PoiLocalDataSource
+import com.grishko188.data.features.poi.datasource.*
 import com.grishko188.data.features.profile.datasource.ProfileDataSource
 import com.grishko188.data.features.profile.datasource.ProfileLocalDataSource
 import dagger.Binds
@@ -33,4 +32,12 @@ interface DataSourceModule {
     @Binds
     @Local
     fun bindPoiLocalDataSource(dataSource: PoiLocalDataSource): PoiDataSource
+
+    @Binds
+    @Local
+    fun bindLocalImageDataSource(dataSource: LocalImageDataSource): ImageDataSource
+
+    @Binds
+    @Remote
+    fun bindWizardRemoteDataSource(dataSource: WizardRemoteDataSource): WizardDataSource
 }
