@@ -38,6 +38,7 @@ espressoVersion = "3.5.0"
 mockitoVersion = "4.11.0"
 kotlinTestVersion = "1.7.20"
 testRunner = "1.5.2"
+turbineVersion = "0.12.1"
 
 [libraries]
 
@@ -91,5 +92,6 @@ mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref =
 mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockitoVersion" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesVersion" }
 kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlinTestVersion" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbineVersion" }
 
 [plugins]

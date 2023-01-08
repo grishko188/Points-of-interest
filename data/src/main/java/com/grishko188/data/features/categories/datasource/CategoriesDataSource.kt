@@ -8,7 +8,9 @@ interface CategoriesDataSource {
 
     fun getCategories(): Flow<List<CategoryDataModel>>
     fun getCategories(type: String): Flow<List<CategoryDataModel>> = emptyFlow()
-    fun getCategories(ids: List<Int>):Flow<List<CategoryDataModel>> = emptyFlow()
+    fun getCategories(ids: List<Int>): Flow<List<CategoryDataModel>> = emptyFlow()
+
+    @Throws(java.lang.NullPointerException::class)
     suspend fun getCategory(id: Int): CategoryDataModel {
         return CategoryDataModel.EMPTY
     }
