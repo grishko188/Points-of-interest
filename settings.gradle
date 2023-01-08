@@ -16,3 +16,4 @@ rootProject.name = "Point of interest"
 include ':app'
 include ':domain'
 include ':data'
+include ':data-test'

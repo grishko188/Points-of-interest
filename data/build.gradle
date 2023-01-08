@@ -15,7 +15,7 @@ android {
         minSdk 24
         targetSdk 33
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.grishko188.data.PoiTestRunner"
         consumerProguardFiles "consumer-rules.pro"
 
         kapt {
@@ -61,8 +61,10 @@ protobuf {
 
 dependencies {
     implementation(project(":domain"))
+
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
+    implementation libs.coroutines
 
     implementation libs.hilt
     kapt libs.hilt.compiler
@@ -84,10 +86,21 @@ dependencies {
 
     implementation libs.kotlinx.datetime
 
+    implementation libs.androidx.test.runner
+
+    testImplementation(project(":data-test"))
     testImplementation libs.mockito.core
     testImplementation libs.mockito.inline
     testImplementation libs.kotlinx.coroutines.test
     testImplementation libs.kotlin.test.junit
     testImplementation libs.junit
+    testImplementation libs.hilt.testing
+    kaptTest libs.hilt.compiler
+
+    androidTestImplementation(project(":data-test"))
     androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.hilt.testing
+    androidTestImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation libs.kotlin.test.junit
+    kaptAndroidTest libs.hilt.compiler
 }
