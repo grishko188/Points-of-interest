@@ -37,7 +37,7 @@ interface PoiDao {
     fun getUsedCategoriesIds(): Flow<List<Int>>
 
     @Transaction
-    suspend fun insertPoiTransaction(entity: PoiEntity, categories: List<Int>) {
+    suspend fun insertPoiTransaction(entity: PoiEntity, categories: List<Int>): Long {
         val poiId = insertPoi(entity)
         val crossRefs = categories.map { categoryId ->
             PoiWithCategoriesCrossRef(
@@ -46,6 +46,7 @@ interface PoiDao {
             )
         }
         insertOrIgnoreCategoryCrossRefEntities(crossRefs)
+        return poiId
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -65,14 +66,15 @@ interface PoiDao {
     suspend fun updatePoiViewed(id: Int, isViewed: Boolean)
 
     @Transaction
-    suspend fun insertCommentTransaction(entity: PoiCommentEntity) {
-        insertComment(entity)
+    suspend fun insertCommentTransaction(entity: PoiCommentEntity): Long {
+        val id = insertComment(entity)
         val count = commentsCount(entity.parentId)
         updatePoiCommentsCount(entity.parentId, count)
+        return id
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertComment(entity: PoiCommentEntity)
+    suspend fun insertComment(entity: PoiCommentEntity): Long
 
     @Query(value = "UPDATE table_poi SET comments_count = :count WHERE id = :id")
     suspend fun updatePoiCommentsCount(id: Int, count: Int)
@@ -80,8 +82,19 @@ interface PoiDao {
     @Query("SELECT COUNT(*) FROM table_poi_comments WHERE parent_id = :parentId")
     suspend fun commentsCount(parentId: Int): Int
 
-    @Query(value = "SELECT * FROM table_poi_comments WHERE parent_id = :parentId")
+    @Query(value = "SELECT parent_id FROM table_poi_comments WHERE id = :commentId")
+    fun getParentCommentId(commentId: Int): Int
+
+    @Query(value = "SELECT * FROM table_poi_comments WHERE parent_id = :parentId ORDER BY creationDataTime DESC")
     fun getComments(parentId: Int): Flow<List<PoiCommentEntity>>
+
+    @Transaction
+    suspend fun deleteCommentTransaction(id: Int) {
+        val parentId = getParentCommentId(id)
+        deleteComment(id)
+        val count = commentsCount(parentId)
+        updatePoiCommentsCount(parentId, count)
+    }
 
     @Query(value = " DELETE FROM table_poi_comments WHERE id = :id")
     suspend fun deleteComment(id: Int)
