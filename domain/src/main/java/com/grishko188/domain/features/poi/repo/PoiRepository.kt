@@ -17,6 +17,8 @@ interface PoiRepository {
 
     suspend fun deletePoi(model: PoiModel)
 
+    suspend fun deleteGarbage()
+
     suspend fun addComment(targetId: String, payload: PoiCommentPayload)
 
     fun getComments(targetId: String): Flow<List<PoiComment>>

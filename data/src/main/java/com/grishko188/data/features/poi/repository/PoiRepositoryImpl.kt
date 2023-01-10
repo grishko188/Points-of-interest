@@ -48,6 +48,15 @@ class PoiRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteGarbage() {
+        val deletedItems = localDataSource.deletePoiOlderThen(GARBAGE_DAYS_THRESHOLD)
+        deletedItems.filter { item -> item.imageUrl?.startsWith(LOCAL_IMAGE_PREFIX) == true }.forEach { model ->
+            if (model.imageUrl != null) {
+                imageDataSource.deleteImage(model.imageUrl)
+            }
+        }
+    }
+
     override suspend fun addComment(targetId: String, payload: PoiCommentPayload) {
         localDataSource.addComment(payload.creationDataModel(targetId.toInt()))
     }
@@ -63,6 +72,7 @@ class PoiRepositoryImpl @Inject constructor(
         wizardRemoteDataSource.getWizardSuggestion(contentUrl).toDomain()
 
     companion object {
+        private const val GARBAGE_DAYS_THRESHOLD = 90
         private const val CONTENT_URI_PREFIX = "content://"
         private const val LOCAL_IMAGE_PREFIX = "file:///"
     }

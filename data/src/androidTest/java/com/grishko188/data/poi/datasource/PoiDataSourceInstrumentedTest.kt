@@ -2,14 +2,10 @@ package com.grishko188.data.poi.datasource
 
 import android.graphics.Color
 import com.grishko188.data.core.Local
-import com.grishko188.data.core.Remote
 import com.grishko188.data.core.UNSPECIFIED_ID
-import com.grishko188.data.di.ApiModule
 import com.grishko188.data.features.categories.datasource.CategoriesDataSource
 import com.grishko188.data.features.categories.model.CategoryDataModel
-import com.grishko188.data.features.poi.api.WizardServiceApi
 import com.grishko188.data.features.poi.datasource.PoiDataSource
-import com.grishko188.data.features.poi.datasource.WizardDataSource
 import com.grishko188.data.features.poi.model.OrderByColumns
 import com.grishko188.data.features.poi.model.PoiCommentDataModel
 import com.grishko188.data.features.poi.model.PoiDataModel
@@ -228,6 +224,48 @@ class PoiDataSourceInstrumentedTest {
         assertTrue(commentsListAfterDeleting.isEmpty())
     }
 
+    @Test
+    fun test_delete_poi_and_comments_older_then_5_days_success() = runTest {
+        categoriesDataSource.addCategories(testCategories)
+        testCreationPoiList.forEach { poi -> SUT.insertPoi(poi) }
+        SUT.addComment(
+            PoiCommentDataModel(
+                parentId = 1,
+                id = UNSPECIFIED_ID,
+                body = "Message 2",
+                creationDataTime = Clock.System.now()
+            )
+        )
+        SUT.addComment(
+            PoiCommentDataModel(
+                parentId = 3,
+                id = UNSPECIFIED_ID,
+                body = "Message 3",
+                creationDataTime = Clock.System.now()
+            )
+        )
+
+        val deletedPoi = SUT.deletePoiOlderThen(5)
+        assertEquals(2, deletedPoi.size)
+        deletedPoi.forEach {
+            val comments = SUT.getComments(it.id.toString()).first()
+            assertTrue(comments.isEmpty())
+        }
+
+        val poiList = SUT.getPoiList(OrderByColumns.DATE).first()
+        assertEquals(1, poiList.size)
+        val comments = SUT.getComments(poiList.first().id.toString()).first()
+        assertTrue(comments.isEmpty().not())
+    }
+
+    @Test
+    fun test_delete_poi_older_then_90_days_nothing_to_delete() = runTest {
+        categoriesDataSource.addCategories(testCategories)
+        testCreationPoiList.forEach { poi -> SUT.insertPoi(poi) }
+        val deletedPoi = SUT.deletePoiOlderThen(90)
+        assertTrue(deletedPoi.isEmpty())
+    }
+
     private val testCreationPoi by lazy {
         PoiDataModel(
             id = UNSPECIFIED_ID,
@@ -253,7 +291,7 @@ class PoiDataSourceInstrumentedTest {
                 body = "A Body",
                 imageUrl = "https://www.google.com/image",
                 contentLink = "https://www.google.com/somethingelse?query=1",
-                creationDate = Clock.System.now(),
+                creationDate = Clock.System.now() - 2.days,
                 commentsCount = 0,
                 severity = 0,
                 categories = listOf(
@@ -267,7 +305,7 @@ class PoiDataSourceInstrumentedTest {
                 body = "B Body",
                 imageUrl = "https://www.google.com/image",
                 contentLink = "https://www.google.com/somethingelse?query=1",
-                creationDate = Clock.System.now() - 1.days,
+                creationDate = Clock.System.now() - 7.days,
                 commentsCount = 0,
                 severity = 1,
                 categories = listOf(
@@ -281,7 +319,7 @@ class PoiDataSourceInstrumentedTest {
                 body = "C Body",
                 imageUrl = "https://www.google.com/image",
                 contentLink = "https://www.google.com/somethingelse?query=1",
-                creationDate = Clock.System.now() - 5.days,
+                creationDate = Clock.System.now() - 10.days,
                 commentsCount = 0,
                 severity = 1,
                 categories = listOf(

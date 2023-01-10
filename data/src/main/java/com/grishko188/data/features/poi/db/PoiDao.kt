@@ -66,6 +66,20 @@ interface PoiDao {
     suspend fun updatePoiViewed(id: Int, isViewed: Boolean)
 
     @Transaction
+    suspend fun deletePoiOlderThen(thresholdDate: Long): List<PoiEntity> {
+        val poiToDelete = getPoiIdsOlderThen(thresholdDate)
+        val idsToDelete = poiToDelete.map { it.id }
+        deletePoiList(idsToDelete)
+        return poiToDelete
+    }
+
+    @Query(value = "SELECT * FROM table_poi WHERE creation_date_time < :thresholdDate")
+    suspend fun getPoiIdsOlderThen(thresholdDate: Long): List<PoiEntity>
+
+    @Query(value = "DELETE FROM table_poi WHERE id IN (:ids)")
+    suspend fun deletePoiList(ids: List<Int>)
+
+    @Transaction
     suspend fun insertCommentTransaction(entity: PoiCommentEntity): Long {
         val id = insertComment(entity)
         val count = commentsCount(entity.parentId)
@@ -101,4 +115,7 @@ interface PoiDao {
 
     @Query(value = " DELETE FROM table_poi_comments WHERE parent_id = :parentId")
     suspend fun deleteCommentsForParent(parentId: Int)
+
+    @Query(value = " DELETE FROM table_poi_comments WHERE parent_id IN (:parentIds)")
+    suspend fun deleteCommentsForParents(parentIds: List<Int>)
 }

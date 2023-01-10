@@ -13,6 +13,7 @@ interface PoiDataSource {
     suspend fun getPoi(id: String): PoiDataModel
     suspend fun insertPoi(dataModel: PoiDataModel): Long
     suspend fun deletePoi(id: String)
+    suspend fun deletePoiOlderThen(daysCount: Int): List<PoiDataModel>
 
     fun getComments(parentId: String): Flow<List<PoiCommentDataModel>>
     suspend fun addComment(comment: PoiCommentDataModel)

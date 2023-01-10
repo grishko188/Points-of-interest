@@ -254,6 +254,51 @@ class PoiDaoInstrumentedTest {
         Assert.assertArrayEquals(sortedCopy.toTypedArray(), actual.toTypedArray())
     }
 
+    @Test
+    fun test_get_poi_list_older_then_threshold() = runTest {
+        categoriesDataSource.addCategories(testCategories)
+        testPoi.forEach {
+            SUT.insertPoiTransaction(it.first, it.second)
+        }
+        val testThreshold = (Clock.System.now() - 5.days).toEpochMilliseconds()
+        val result = SUT.getPoiIdsOlderThen(testThreshold)
+        assertEquals(2, result.size)
+        assert(result.all { entity -> Clock.System.now() - entity.creationDateTime > 5.days })
+    }
+
+    @Test
+    fun test_delete_poi_list_older_then_threshold() = runTest {
+        categoriesDataSource.addCategories(testCategories)
+        testPoi.forEach {
+            SUT.insertPoiTransaction(it.first, it.second)
+        }
+        val testThreshold = (Clock.System.now() - 5.days).toEpochMilliseconds()
+        SUT.deletePoiOlderThen(testThreshold)
+        val result = SUT.getPoiList(OrderByColumns.DATE.columnName).first()
+        assertEquals(2, result.size)
+        assert(result.all { entity -> Clock.System.now() - entity.entity.creationDateTime < 5.days })
+    }
+
+    @Test
+    fun test_delete_comments_for_poi_list() = runTest {
+        val comments = arrayListOf(
+            PoiCommentEntity(1, "Test Test", creationDataTime = Clock.System.now()),
+            PoiCommentEntity(1, "Some Test Test", creationDataTime = Clock.System.now()),
+            PoiCommentEntity(2, "Some Test Test 2", creationDataTime = Clock.System.now()),
+            PoiCommentEntity(3, "Test Test 2", creationDataTime = Clock.System.now())
+        )
+        comments.forEach {
+            SUT.insertComment(it)
+        }
+        SUT.deleteCommentsForParents(listOf(1, 3))
+        val commentsForDeletedPoi1 = SUT.getComments(1).first()
+        assertTrue(commentsForDeletedPoi1.isEmpty())
+        val commentsForDeletedPoi2 = SUT.getComments(3).first()
+        assertTrue(commentsForDeletedPoi2.isEmpty())
+        val commentsForExistingPoi = SUT.getComments(2).first()
+        assertTrue(commentsForExistingPoi.isEmpty().not())
+    }
+
     private val singlePoi = PoiEntity(
         title = "Title",
         body = "Body",
@@ -293,7 +338,7 @@ class PoiDaoInstrumentedTest {
             body = "Test body for poi",
             imageUrl = "https://www.android.com/image",
             contentLink = "https://www.android.com/somethingelse?query=1",
-            creationDateTime = Clock.System.now() - 5.days,
+            creationDateTime = Clock.System.now() - 8.days,
             commentsCount = 0,
             severity = 2,
             viewed = false

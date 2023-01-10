@@ -52,7 +52,7 @@ class PoiRepositoryTest {
     @Mock
     private lateinit var localImageDataSource: ImageDataSource
 
-    private lateinit var uriMockStatic : MockedStatic<Uri>
+    private lateinit var uriMockStatic: MockedStatic<Uri>
 
     private lateinit var SUT: PoiRepository
 
@@ -68,7 +68,7 @@ class PoiRepositoryTest {
     }
 
     @After
-    fun dispose(){
+    fun dispose() {
         uriMockStatic.close()
     }
 
@@ -171,7 +171,7 @@ class PoiRepositoryTest {
                     )
                 )
             )
-            whenever(localPoiDataSource.insertPoi(anyNonNull())).thenReturn(Unit)
+            whenever(localPoiDataSource.insertPoi(anyNonNull())).thenReturn(1)
 
             SUT.createPoi(payload)
             val captor = argumentCaptor<PoiDataModel>()
@@ -209,7 +209,7 @@ class PoiRepositoryTest {
 
             val fileImagePath = "file:///storage/poi_1235.jpg"
 
-            whenever(localPoiDataSource.insertPoi(anyNonNull())).thenReturn(Unit)
+            whenever(localPoiDataSource.insertPoi(anyNonNull())).thenReturn(1)
             whenever(localImageDataSource.copyLocalImage(anyNonNull())).thenReturn(fileImagePath)
 
             SUT.createPoi(payload)
@@ -282,6 +282,50 @@ class PoiRepositoryTest {
 
             assertEquals(poiModel.id, captor.value)
             assertEquals(poiModel.imageUrl, captorImageUri.value)
+        }
+
+    @Test
+    fun `test deleteGarbage invokes local data source deletePoiOlderThen function and  invoke local image data source deleteImage for local uris`() =
+        runTest {
+            val fileImagePath = "file:///storage/poi_1235.jpg"
+            val deletedPoiList = arrayListOf(
+                PoiDataModel(
+                    id = 1,
+                    title = "Title",
+                    body = "Body",
+                    imageUrl = fileImagePath,
+                    contentLink = "https://www.google.com/somethingelse?query=1",
+                    creationDate = Clock.System.now(),
+                    commentsCount = 2,
+                    severity = 0,
+                    categories = arrayListOf(CategoryDataModel(1, "Name", Color.WHITE, type = CategoryType.PERSONAL.name, isMutable = true))
+                ),
+                PoiDataModel(
+                    id = 2,
+                    title = "Title 2",
+                    body = "Body 3",
+                    imageUrl = "https://www.google.com/somethingelse?query=1",
+                    contentLink = "https://www.google.com/somethingelse?query=1",
+                    creationDate = Clock.System.now(),
+                    commentsCount = 2,
+                    severity = 0,
+                    categories = arrayListOf(CategoryDataModel(1, "Name", Color.WHITE, type = CategoryType.PERSONAL.name, isMutable = true))
+                )
+            )
+
+            whenever(localPoiDataSource.deletePoiOlderThen(90)).thenReturn(deletedPoiList)
+            whenever(localImageDataSource.deleteImage(anyNonNull())).thenReturn(Unit)
+
+            val captor = argumentCaptor<Int>()
+            val captorImageUri = argumentCaptor<String>()
+
+            SUT.deleteGarbage()
+
+            verify(localPoiDataSource, times(1)).deletePoiOlderThen(capture(captor))
+            verify(localImageDataSource, times(1)).deleteImage(capture(captorImageUri))
+
+            assertEquals(fileImagePath, captorImageUri.value)
+            assertEquals(90, captor.value)
         }
 
     @Test
