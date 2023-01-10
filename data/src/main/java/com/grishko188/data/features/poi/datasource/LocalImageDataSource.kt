@@ -2,6 +2,7 @@ package com.grishko188.data.features.poi.datasource
 
 import android.content.Context
 import android.net.Uri
+import com.grishko188.data.core.CacheFolder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.datetime.Clock
 import java.io.File
@@ -14,17 +15,17 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-
-class LocalImageDataSource @Inject constructor(
-    @ApplicationContext private val context: Context
+open class LocalImageDataSource @Inject constructor(
+    @ApplicationContext private val context: Context,
+    @CacheFolder protected val cacheDir: File
 ) : ImageDataSource {
 
     override suspend fun copyLocalImage(uri: String): String = suspendCoroutine { continuation ->
         val fileName = String.format(LOCAL_IMAGE_NAME, Clock.System.now().toEpochMilliseconds())
-        val imageFile = File(context.cacheDir, fileName)
+        val imageFile = File(cacheDir, fileName)
         imageFile.createNewFile()
         FileOutputStream(imageFile).use { outputStream ->
-            context.contentResolver.openInputStream(Uri.parse(uri)).use { inputStream ->
+            getImage(uri).use { inputStream ->
                 inputStream?.let { steam ->
                     kotlin.runCatching {
                         copy(steam, outputStream)
@@ -41,12 +42,15 @@ class LocalImageDataSource @Inject constructor(
     override suspend fun deleteImage(uri: String) = suspendCoroutine {
         val imageName = Uri.parse(uri).lastPathSegment
         if (imageName != null) {
-            val imageFile = File(context.cacheDir, imageName)
+            val imageFile = File(cacheDir, imageName)
             if (imageFile.exists())
                 imageFile.delete()
         }
         it.resume(Unit)
     }
+
+    override fun getImage(uri: String): InputStream? =
+        context.contentResolver.openInputStream(Uri.parse(uri))
 
     @Throws(IOException::class)
     private fun copy(inputStream: InputStream, outputStream: OutputStream) {

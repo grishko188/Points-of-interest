@@ -36,3 +36,8 @@ annotation class UserSettings
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
 annotation class UserProfile
+
+@Qualifier
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+annotation class CacheFolder

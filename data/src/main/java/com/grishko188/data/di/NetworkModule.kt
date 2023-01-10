@@ -1,14 +1,11 @@
 package com.grishko188.data.di
 
-import android.content.Context
 import com.google.gson.Gson
 import com.grishko188.data.core.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Authenticator
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -23,9 +20,6 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Provides
-    fun cacheFolder(@ApplicationContext context: Context): File = context.cacheDir
-
-    @Provides
     @Singleton
     fun gson(): Gson = GsonFactory.create()
 
@@ -37,7 +31,7 @@ class NetworkModule {
     @Provides
     @Singleton
     fun okHttpClient(
-        cacheFolder: File,
+        @CacheFolder cacheFolder: File,
         @Interceptors interceptors: List<Interceptor>,
         @NetworkInterceptors networkInterceptors: List<Interceptor>
     ): OkHttpClient = OkHttpClientFactory.create(
