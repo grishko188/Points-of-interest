@@ -19,7 +19,8 @@ class WizardRemoteDataSource @Inject constructor(
         return if (contentType.isImageContentType()) {
             WizardSuggestionDataModel(contentUrl = url, imageUrl = url)
         } else {
-            val document = Jsoup.parse(responseBody.string())
+            val content = responseBody.string()
+            val document = Jsoup.parse(content)
             val suggestion = document.toSuggestion(url)
             suggestion
         }
@@ -54,9 +55,9 @@ class WizardRemoteDataSource @Inject constructor(
 
         return WizardSuggestionDataModel(
             contentUrl = originalUrl,
-            title = title,
-            body = body,
-            imageUrl = image
+            title = title?.takeIf { it.isNotEmpty() },
+            body = body?.takeIf { it.isNotEmpty() },
+            imageUrl = image?.takeIf { it.isNotEmpty() }
         )
     }
 

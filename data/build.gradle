@@ -102,5 +102,7 @@ dependencies {
     androidTestImplementation libs.hilt.testing
     androidTestImplementation libs.kotlinx.coroutines.test
     androidTestImplementation libs.kotlin.test.junit
+
+    androidTestImplementation libs.mockito.android
     kaptAndroidTest libs.hilt.compiler
 }

@@ -25,7 +25,7 @@ class ImageDataSourceInstrumentedTest {
 
     @Inject
     @Local
-    lateinit var imageDataSource: ImageDataSource
+    lateinit var SUT: ImageDataSource
 
     @Before
     fun setup() {
@@ -34,23 +34,23 @@ class ImageDataSourceInstrumentedTest {
 
     @Test
     fun test_data_source_is_test_double() {
-        assert(imageDataSource is TestLocalImageDataSource)
+        assert(SUT is TestLocalImageDataSource)
     }
 
     @Test
     fun test_add_image_creates_new_image_file_in_cache_dir() = runTest {
         val mockUri = "content:///data/image/some.png"
-        val cachedImagePath = imageDataSource.copyLocalImage(mockUri)
+        val cachedImagePath = SUT.copyLocalImage(mockUri)
         assertNotNull(cachedImagePath)
-        assertTrue((imageDataSource as TestLocalImageDataSource).assertImageExist(cachedImagePath))
+        assertTrue((SUT as TestLocalImageDataSource).assertImageExist(cachedImagePath))
     }
 
     @Test
     fun test_delete_image_deletes_file_from_cache_dir() = runTest {
         val mockUri = "content:///data/image/some.png"
-        val cachedImagePath = imageDataSource.copyLocalImage(mockUri)
+        val cachedImagePath = SUT.copyLocalImage(mockUri)
         assertNotNull(cachedImagePath)
-        imageDataSource.deleteImage(cachedImagePath)
-        assertFalse((imageDataSource as TestLocalImageDataSource).assertImageExist(cachedImagePath))
+        SUT.deleteImage(cachedImagePath)
+        assertFalse((SUT as TestLocalImageDataSource).assertImageExist(cachedImagePath))
     }
 }
