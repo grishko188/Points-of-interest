@@ -11,7 +11,7 @@ interface PoiDataSource {
     fun getUsedCategoriesIds(): Flow<List<Int>>
     suspend fun searchPoi(query: String): List<PoiDataModel>
     suspend fun getPoi(id: String): PoiDataModel
-    suspend fun insertPoi(dataModel: PoiDataModel)
+    suspend fun insertPoi(dataModel: PoiDataModel): Long
     suspend fun deletePoi(id: String)
 
     fun getComments(parentId: String): Flow<List<PoiCommentDataModel>>

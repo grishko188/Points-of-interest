@@ -1,5 +1,6 @@
 package com.grishko188.data_test
 
+import com.grishko188.data.core.FakeRemote
 import com.grishko188.data.core.Local
 import com.grishko188.data.core.Remote
 import com.grishko188.data.di.DataSourceModule

@@ -25,14 +25,15 @@ class PoiLocalDataSource @Inject constructor(
         return fullEntity.toDataModel()
     }
 
-    override suspend fun insertPoi(dataModel: PoiDataModel) {
+    override suspend fun insertPoi(dataModel: PoiDataModel): Long {
         val entity = dataModel.toEntity()
         val categories = dataModel.categories.map { it.id }
-        poiDao.insertPoiTransaction(entity, categories)
+        return poiDao.insertPoiTransaction(entity, categories)
     }
 
     override suspend fun deletePoi(id: String) {
         poiDao.deletePoi(id.toInt())
+        poiDao.deleteCommentsForParent(id.toInt())
     }
 
     override fun getComments(parentId: String): Flow<List<PoiCommentDataModel>> =

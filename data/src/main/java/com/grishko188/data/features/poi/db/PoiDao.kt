@@ -98,4 +98,7 @@ interface PoiDao {
 
     @Query(value = " DELETE FROM table_poi_comments WHERE id = :id")
     suspend fun deleteComment(id: Int)
+
+    @Query(value = " DELETE FROM table_poi_comments WHERE parent_id = :parentId")
+    suspend fun deleteCommentsForParent(parentId: Int)
 }

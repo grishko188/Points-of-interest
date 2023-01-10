@@ -34,7 +34,7 @@ import kotlin.test.assertNull
 @UninstallModules(ApiModule::class)
 @HiltAndroidTest
 @RunWith(MockitoJUnitRunner::class)
-class WizardSuggestionDataSourceTest {
+class WizardSuggestionDataSourceInstrumentedTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)

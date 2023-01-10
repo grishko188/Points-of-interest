@@ -41,3 +41,8 @@ annotation class UserProfile
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
 annotation class CacheFolder
+
+@Qualifier
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+annotation class FakeRemote

@@ -44,4 +44,6 @@ dependencies {
     implementation libs.hilt
     implementation libs.hilt.testing
     kapt libs.hilt.compiler
+
+    api libs.okhttp
 }
