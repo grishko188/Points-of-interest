@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class DeleteGarbageUseCase @Inject constructor(
     private val repository: PoiRepository
-) : UseCase<Unit, Unit>() {
-    override suspend fun operation(params: Unit) {
-        repository.deleteGarbage()
+) : UseCase<Unit, Int>() {
+    override suspend fun operation(params: Unit): Int {
+        return repository.deleteGarbage()
     }
 }

@@ -8,10 +8,12 @@ androidBrowserVersion = "1.4.0"
 kotlinDateTimeVersion = "0.4.0"
 dataStoreVersion = "1.0.0"
 coroutinesVersion = "1.6.4"
+workManagerVersion = "2.7.1"
 
 hiltVersion = "2.44"
 hiltJetpackVersion = "1.0.0-alpha02"
 hiltNavigationComposeVersion = "1.0.0"
+hiltAndroixVersion = "1.0.0"
 
 roomVersion = "2.4.3"
 retrofitVersion = "2.9.0"
@@ -56,6 +58,7 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "composeLifecycleRuntimeVersion" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidBrowserVersion" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "dataStoreVersion" }
+androidx-work-manager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManagerVersion" }
 
 accompanist-flowlayout = { group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "googleAccompanistVersion" }
 google-gms-play-service-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googleServicesAuthVersion" }
@@ -66,6 +69,8 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltVersion" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hiltVersion" }
 hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hiltVersion" }
+hilt-work-manager = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltAndroixVersion" }
+hilt-compiler-androidx = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltAndroixVersion" }
 
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilVersion" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinDateTimeVersion" }
@@ -93,5 +98,6 @@ mockito-android = { group = "org.mockito", name = "mockito-android", version.ref
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesVersion" }
 kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlinTestVersion" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbineVersion" }
+androidx-work-manager-testing = { group = "androidx.work", name = "work-testing", version.ref = "workManagerVersion" }
 
 [plugins]

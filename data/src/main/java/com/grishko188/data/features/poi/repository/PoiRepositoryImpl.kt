@@ -48,13 +48,14 @@ class PoiRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteGarbage() {
+    override suspend fun deleteGarbage(): Int {
         val deletedItems = localDataSource.deletePoiOlderThen(GARBAGE_DAYS_THRESHOLD)
         deletedItems.filter { item -> item.imageUrl?.startsWith(LOCAL_IMAGE_PREFIX) == true }.forEach { model ->
             if (model.imageUrl != null) {
                 imageDataSource.deleteImage(model.imageUrl)
             }
         }
+        return deletedItems.size
     }
 
     override suspend fun addComment(targetId: String, payload: PoiCommentPayload) {

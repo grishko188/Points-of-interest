@@ -62,6 +62,9 @@ interface PoiDao {
     @Query(value = "DELETE FROM table_poi WHERE id = :id")
     suspend fun deletePoi(id: Int)
 
+    @Query(value = "DELETE FROM table_poi_to_category WHERE poi_id IN (:ids)")
+    suspend fun deleteUsedCategories(ids: List<Int>)
+
     @Query(value = "UPDATE table_poi SET viewed = :isViewed WHERE id = :id")
     suspend fun updatePoiViewed(id: Int, isViewed: Boolean)
 
@@ -70,6 +73,7 @@ interface PoiDao {
         val poiToDelete = getPoiIdsOlderThen(thresholdDate)
         val idsToDelete = poiToDelete.map { it.id }
         deletePoiList(idsToDelete)
+        deleteUsedCategories(idsToDelete)
         return poiToDelete
     }
 

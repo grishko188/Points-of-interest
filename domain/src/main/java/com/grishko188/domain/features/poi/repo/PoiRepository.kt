@@ -17,7 +17,7 @@ interface PoiRepository {
 
     suspend fun deletePoi(model: PoiModel)
 
-    suspend fun deleteGarbage()
+    suspend fun deleteGarbage(): Int
 
     suspend fun addComment(targetId: String, payload: PoiCommentPayload)
 

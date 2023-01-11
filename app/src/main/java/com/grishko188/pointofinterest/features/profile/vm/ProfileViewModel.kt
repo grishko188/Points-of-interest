@@ -2,6 +2,7 @@ package com.grishko188.pointofinterest.features.profile.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.grishko188.domain.features.profile.interactor.DeleteUserProfileUseCase
@@ -12,9 +13,11 @@ import com.grishko188.domain.features.profile.model.ManualSettings
 import com.grishko188.domain.features.profile.model.Profile
 import com.grishko188.domain.features.profile.model.UserProfile
 import com.grishko188.pointofinterest.features.profile.models.*
+import com.grishko188.pointofinterest.garbagecollector.GCWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.Duration
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +25,8 @@ class ProfileViewModel @Inject constructor(
     getProfileUseCase: GetProfileUseCase,
     private val setUserSettingStateUseCase: SetUserSettingStateUseCase,
     private val setUserProfileUseCase: SetUserProfileUseCase,
-    private val deleteUserProfileUseCase: DeleteUserProfileUseCase
+    private val deleteUserProfileUseCase: DeleteUserProfileUseCase,
+    private val workManager: WorkManager
 ) : ViewModel() {
 
     val profileState = getProfileUseCase(Unit).map {
@@ -38,6 +42,7 @@ class ProfileViewModel @Inject constructor(
         type.toManualSetting()?.let { setting ->
             viewModelScope.launch {
                 setUserSettingStateUseCase(SetUserSettingStateUseCase.Params(setting, currentState.not()))
+                if (setting is ManualSettings.UseAutoGc) onToggleGarbageCollector(currentState.not())
             }
         }
     }
@@ -61,6 +66,17 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    private fun onToggleGarbageCollector(newState: Boolean) {
+        if (newState) {
+            val gcWorkRequest = PeriodicWorkRequestBuilder<GCWorker>(Duration.ofDays(1))
+                .setInitialDelay(Duration.ofDays(1))
+                .addTag(GCWorker.TAG_GC)
+                .build()
+            workManager.enqueue(gcWorkRequest)
+        } else {
+            workManager.cancelAllWorkByTag(GCWorker.TAG_GC)
+        }
+    }
 
     private fun ProfileSectionType.toManualSetting() = when (this) {
         ProfileSectionType.GARBAGE_COLLECTOR -> ManualSettings.UseAutoGc
@@ -81,7 +97,7 @@ class ProfileViewModel @Inject constructor(
                 ProfileSectionItem.NavigationItem(icon, title, subtitle, true, it)
 
             ProfileSectionType.GARBAGE_COLLECTOR ->
-                ProfileSectionItem.BooleanSettingsItem(icon, title, subtitle, userSettings.isAutoGcEnabled, false, it)
+                ProfileSectionItem.BooleanSettingsItem(icon, title, subtitle, userSettings.isAutoGcEnabled, true, it)
             ProfileSectionType.SYSTEM_THEME ->
                 ProfileSectionItem.BooleanSettingsItem(icon, title, subtitle, userSettings.isUseSystemTheme, true, it)
             ProfileSectionType.DARK_THEME ->

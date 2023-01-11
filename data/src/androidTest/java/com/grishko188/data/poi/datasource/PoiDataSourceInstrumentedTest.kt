@@ -225,7 +225,7 @@ class PoiDataSourceInstrumentedTest {
     }
 
     @Test
-    fun test_delete_poi_and_comments_older_then_5_days_success() = runTest {
+    fun test_deletePoiOlderThen_deletes_poi__comments_and_used_categories_for_pois_older_then_5_days_success() = runTest {
         categoriesDataSource.addCategories(testCategories)
         testCreationPoiList.forEach { poi -> SUT.insertPoi(poi) }
         SUT.addComment(
@@ -245,6 +245,9 @@ class PoiDataSourceInstrumentedTest {
             )
         )
 
+        val usedCategoriesCount = SUT.getUsedCategoriesIds().first().size
+        assertEquals(testCreationPoiList.flatMap { it.categories.map { it.id } }.toSet().size, usedCategoriesCount)
+
         val deletedPoi = SUT.deletePoiOlderThen(5)
         assertEquals(2, deletedPoi.size)
         deletedPoi.forEach {
@@ -256,6 +259,8 @@ class PoiDataSourceInstrumentedTest {
         assertEquals(1, poiList.size)
         val comments = SUT.getComments(poiList.first().id.toString()).first()
         assertTrue(comments.isEmpty().not())
+        val usedCategoriesCount2 = SUT.getUsedCategoriesIds().first().size
+        assertEquals(poiList.first().categories.map { it.id }.size, usedCategoriesCount2)
     }
 
     @Test
@@ -264,6 +269,18 @@ class PoiDataSourceInstrumentedTest {
         testCreationPoiList.forEach { poi -> SUT.insertPoi(poi) }
         val deletedPoi = SUT.deletePoiOlderThen(90)
         assertTrue(deletedPoi.isEmpty())
+    }
+
+    @Test
+    fun test_delete_poi_also_deletes_used_categories() = runTest {
+        categoriesDataSource.addCategories(testCategories)
+        val poiId = SUT.insertPoi(testCreationPoi)
+        val useCategoriesCount = SUT.getUsedCategoriesIds().first().size
+        assertEquals(testCreationPoi.categories.size, useCategoriesCount)
+
+        SUT.deletePoi(poiId.toString())
+        val useCategoriesCount2 = SUT.getUsedCategoriesIds().first().size
+        assertEquals(0, useCategoriesCount2)
     }
 
     private val testCreationPoi by lazy {

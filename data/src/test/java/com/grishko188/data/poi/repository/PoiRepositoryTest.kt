@@ -319,11 +319,12 @@ class PoiRepositoryTest {
             val captor = argumentCaptor<Int>()
             val captorImageUri = argumentCaptor<String>()
 
-            SUT.deleteGarbage()
+            val count = SUT.deleteGarbage()
 
             verify(localPoiDataSource, times(1)).deletePoiOlderThen(capture(captor))
             verify(localImageDataSource, times(1)).deleteImage(capture(captorImageUri))
 
+            assertEquals(2, count)
             assertEquals(fileImagePath, captorImageUri.value)
             assertEquals(90, captor.value)
         }

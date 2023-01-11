@@ -23,7 +23,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.grishko188.pointofinterest.PoiTestRunner"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -114,11 +114,12 @@ dependencies {
     implementation libs.androidx.compose.ui
     implementation libs.androidx.compose.ui.preview
     implementation libs.androidx.activity.compose
-
+    implementation libs.androidx.work.manager
 
     implementation libs.androidx.navigation.compose
     implementation libs.hilt.navigation.compose
     implementation libs.androidx.core.splashscreen
+    implementation libs.androidx.test.runner
 
     implementation libs.androidx.lifecycle.runtime.compose
     implementation libs.androidx.compose.material.icons
@@ -126,7 +127,9 @@ dependencies {
     implementation libs.accompanist.flowlayout
 
     implementation libs.hilt
+    implementation libs.hilt.work.manager
     kapt libs.hilt.compiler
+    kapt libs.hilt.compiler.androidx
 
     implementation libs.google.gms.play.service.auth
     implementation libs.androidx.browser
@@ -134,9 +137,17 @@ dependencies {
     implementation libs.kotlinx.datetime
 
     testImplementation libs.junit
+
+    androidTestImplementation(project(":data-test"))
     androidTestImplementation libs.androidx.junit
-    androidTestImplementation libs.androidx.espresso
+    androidTestImplementation libs.hilt.testing
+    androidTestImplementation libs.kotlinx.coroutines.test
+    androidTestImplementation libs.kotlin.test.junit
     androidTestImplementation libs.androix.compose.junit
+    androidTestImplementation libs.androidx.work.manager.testing
+    kaptAndroidTest libs.hilt.compiler
+    kaptAndroidTest libs.hilt.compiler.androidx
+
     debugImplementation libs.androix.compose.debug.ui.tooling
     debugImplementation libs.androix.compose.debug.test.manifest
 }
