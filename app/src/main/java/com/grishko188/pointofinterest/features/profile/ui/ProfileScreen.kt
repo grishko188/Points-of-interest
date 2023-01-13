@@ -85,8 +85,25 @@ fun ProfileScreen(
         getGoogleLoginAuth(context).signOut()
     }
 
+    ProfileScreenContent(
+        profileSections = profileSectionsState,
+        onSignInClicked = onSignInClicked,
+        onSignOutClicked = onSignOutClicked,
+        onNavigateInternal = onNavigateInternal,
+        onSettingsToggled = vm::onSettingsToggled
+    )
+}
+
+@Composable
+fun ProfileScreenContent(
+    profileSections: List<ProfileSectionItem>,
+    onSignInClicked: () -> Unit,
+    onSignOutClicked: () -> Unit,
+    onNavigateInternal: (ProfileSectionType) -> Unit,
+    onSettingsToggled: (ProfileSectionType, Boolean) -> Unit
+) {
     LazyColumn {
-        items(profileSectionsState, key = { item -> item.type }) { item ->
+        items(profileSections, key = { item -> item.type }) { item ->
             if (item is ProfileSectionItem.AccountSectionItem) {
                 AccountSection(userInfo = item.userInfo, onSignInClicked, onSignOutClicked)
             }
@@ -94,7 +111,7 @@ fun ProfileScreen(
                 NavigationSection(item = item, onNavigationClicked = onNavigateInternal)
             }
             if (item is ProfileSectionItem.BooleanSettingsItem) {
-                BooleanSettingsSection(item = item, onToggleBooleanSettings = vm::onSettingsToggled)
+                BooleanSettingsSection(item = item, onToggleBooleanSettings = onSettingsToggled)
             }
             Divider(
                 Modifier

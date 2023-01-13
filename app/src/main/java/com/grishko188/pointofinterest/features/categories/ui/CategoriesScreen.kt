@@ -41,10 +41,12 @@ fun CategoriesScreen(
 
     Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         CategoriesContent(
-            viewModel = viewModel,
+            onNavigate = onNavigate,
+            onDeleteItem = viewModel::onDeleteItem,
+            onCommitDeleteItem = viewModel::onCommitDeleteItem,
+            onUndoDeleteItem = viewModel::onUndoDeleteItem,
             coroutineScope = coroutineScope,
             snackbarHostState = snackbarHostState,
-            onNavigate = onNavigate,
             categories = categoriesState,
             itemsToDelete = itemToDelete
         )
@@ -55,7 +57,9 @@ fun CategoriesScreen(
 @Composable
 fun CategoriesContent(
     onNavigate: (Screen, List<Pair<String, Any>>) -> Unit,
-    viewModel: CategoriesViewModel,
+    onDeleteItem: (String) -> Unit,
+    onCommitDeleteItem: (String) -> Unit,
+    onUndoDeleteItem: (String) -> Unit,
     coroutineScope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
     categories: Map<Int, List<CategoryUiModel>>,
@@ -78,7 +82,7 @@ fun CategoriesContent(
                         EditableCategoryView(Modifier.animateItemPlacement(), item) { action, model, displayData ->
                             when (action) {
                                 CategoryAction.DELETE -> {
-                                    viewModel.onDeleteItem(item.id)
+                                    onDeleteItem(item.id)
                                     displayData?.let { snackbarDisplayData ->
                                         coroutineScope.launch {
                                             val snackBarResult = snackbarHostState.showSnackbar(
@@ -87,8 +91,8 @@ fun CategoriesContent(
                                                 duration = SnackbarDuration.Short
                                             )
                                             when (snackBarResult) {
-                                                SnackbarResult.Dismissed -> viewModel.onCommitDeleteItem(model.id)
-                                                SnackbarResult.ActionPerformed -> viewModel.onUndoDeleteItem(model.id)
+                                                SnackbarResult.Dismissed -> onCommitDeleteItem(model.id)
+                                                SnackbarResult.ActionPerformed -> onUndoDeleteItem(model.id)
                                             }
                                         }
                                     }
