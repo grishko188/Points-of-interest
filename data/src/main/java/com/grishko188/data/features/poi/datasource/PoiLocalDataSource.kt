@@ -4,7 +4,7 @@ import com.grishko188.data.features.poi.db.PoiDao
 import com.grishko188.data.features.poi.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
+import kotlinx.datetime.*
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.days
 
@@ -46,6 +46,19 @@ class PoiLocalDataSource @Inject constructor(
             poiDao.deleteCommentsForParents(deletedItems.map { it.id })
         }
         return deletedItems.map { it.toDataModel() }
+    }
+
+    override suspend fun getStatistics(): PoiStatisticsDataModel {
+        val usage = poiDao.getUsedCategoriesCount()
+        val viewed = poiDao.getViewedPoiCount()
+        val unViewed = poiDao.getUnViewedPoiCount()
+        val history = poiDao.getAdditionHistory()
+        return PoiStatisticsDataModel(
+            categoriesUsage = usage.associate { it.categoryId.toString() to it.count },
+            viewedCount = viewed,
+            unViewedCount = unViewed,
+            history = history.associate { it.date.toLocalDate().atStartOfDayIn(TimeZone.currentSystemDefault()) to it.count }
+        )
     }
 
     override fun getComments(parentId: String): Flow<List<PoiCommentDataModel>> =

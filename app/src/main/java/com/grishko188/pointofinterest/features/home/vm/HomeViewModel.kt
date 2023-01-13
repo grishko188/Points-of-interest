@@ -30,7 +30,8 @@ class HomeViewModel @Inject constructor(
     private val getPoiListUseCase: GetPoiListUseCase
 ) : ViewModel() {
 
-    val categoriesState = getUsedCategoriesUseCase(Unit).flatMapConcat { ids ->
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val categoriesState = getUsedCategoriesUseCase(Unit).flatMapLatest { ids ->
         getCategoriesUseCase(GetCategoriesByIdsUseCase.Params(ids))
             .map { list -> list.map { it.toUiModel() } }
     }.stateIn(

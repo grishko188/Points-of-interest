@@ -299,6 +299,49 @@ class PoiDaoInstrumentedTest {
         assertTrue(commentsForExistingPoi.isEmpty().not())
     }
 
+    @Test
+    fun test_get_viewed_and_unviewed_poi_count() = runTest {
+        val poiIds = arrayListOf<Long>()
+        categoriesDataSource.addCategories(testCategories)
+        testPoi.forEach {
+            poiIds += SUT.insertPoiTransaction(it.first, it.second)
+        }
+
+        for (i in 0..(poiIds.size - 1) / 2) {
+            SUT.updatePoiViewed(poiIds[i].toInt(), true)
+        }
+
+        val viewedCount = SUT.getViewedPoiCount()
+        val unViewedCount = SUT.getUnViewedPoiCount()
+        assertEquals(poiIds.size / 2, viewedCount)
+        assertEquals(poiIds.size / 2, unViewedCount)
+    }
+
+    @Test
+    fun test_get_used_categories_count_returns_amount_of_poi_that_is_using_each_used_category() = runTest {
+        val poiIds = arrayListOf<Long>()
+        categoriesDataSource.addCategories(testCategories)
+        testPoi.forEach {
+            poiIds += SUT.insertPoiTransaction(it.first, it.second)
+        }
+        val usedCategoriesStats = SUT.getUsedCategoriesCount()
+
+        val expectedCategoriesAmount = testPoi.flatMap { it.second }.toMutableList().toSet()
+        assertEquals(expectedCategoriesAmount.size, usedCategoriesStats.size)
+        assertEquals(2, usedCategoriesStats.find { it.categoryId == 5 }?.count)
+    }
+
+    @Test
+    fun test_get_addition_data_returns_amount_of_poi_grouped_by_creation_date_without_time() = runTest {
+        categoriesDataSource.addCategories(testCategories)
+        testPoi.forEach {
+            SUT.insertPoiTransaction(it.first, it.second)
+        }
+        SUT.insertPoiTransaction(singlePoi.first, singlePoi.second)
+        val additionHistory = SUT.getAdditionHistory()
+        assertEquals(4, additionHistory.size)
+    }
+
     private val singlePoi = PoiEntity(
         title = "Title",
         body = "Body",

@@ -358,6 +358,23 @@ class PoiRepositoryTest {
     }
 
     @Test
+    fun `test getStatistics invokes local data source getStatistics function`() = runTest {
+        val model = PoiStatisticsDataModel(
+            categoriesUsage = emptyMap(),
+            viewedCount = 0,
+            unViewedCount = 0,
+            history = emptyMap()
+        )
+        whenever(localPoiDataSource.getStatistics()).thenReturn(model)
+        val result = SUT.getStatistics()
+        verify(localPoiDataSource, times(1)).getStatistics()
+        assertEquals(model.viewedCount, result.viewedPoiCount)
+        assertEquals(model.unViewedCount, result.unViewedPoiCount)
+        assertEquals(model.categoriesUsage.size, result.categoriesUsageCount.size)
+        assertEquals(model.history.size, result.poiAdditionsHistory.size)
+    }
+
+    @Test
     fun `test getComments invokes local data source getComments function`() = runTest {
         val parentId = "105"
         val fakeComments = arrayListOf(

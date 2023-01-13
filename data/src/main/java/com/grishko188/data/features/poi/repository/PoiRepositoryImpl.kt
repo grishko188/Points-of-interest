@@ -72,6 +72,9 @@ class PoiRepositoryImpl @Inject constructor(
     override suspend fun getWizardSuggestion(contentUrl: String): WizardSuggestion =
         wizardRemoteDataSource.getWizardSuggestion(contentUrl).toDomain()
 
+    override suspend fun getStatistics(): PoiStatisticsSnapshot =
+        localDataSource.getStatistics().toDomain()
+
     companion object {
         private const val GARBAGE_DAYS_THRESHOLD = 90
         private const val CONTENT_URI_PREFIX = "content://"

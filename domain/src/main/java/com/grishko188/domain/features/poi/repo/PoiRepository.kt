@@ -26,4 +26,6 @@ interface PoiRepository {
     suspend fun deleteComment(id: String)
 
     suspend fun getWizardSuggestion(contentUrl: String): WizardSuggestion
+
+    suspend fun getStatistics(): PoiStatisticsSnapshot
 }

@@ -283,6 +283,30 @@ class PoiDataSourceInstrumentedTest {
         assertEquals(0, useCategoriesCount2)
     }
 
+    @Test
+    fun test_get_statistics_returns_statistics_values_based_on_test_input() = runTest {
+        categoriesDataSource.addCategories(testCategories)
+        testCreationPoiList.forEach { poi -> SUT.insertPoi(poi) }
+        SUT.insertPoi(testCreationPoi)
+        SUT.insertPoi(testCreationPoi)
+
+        SUT.getPoi("1")
+        SUT.getPoi("2")
+
+        val statistics = SUT.getStatistics()
+
+        assertEquals(2, statistics.viewedCount)
+        assertEquals(3, statistics.unViewedCount)
+
+        assertEquals(4, statistics.categoriesUsage.size)
+        assertEquals(2, statistics.categoriesUsage["2"])
+        assertEquals(2, statistics.categoriesUsage["6"])
+        assertEquals(3, statistics.categoriesUsage["1"])
+        assertEquals(3, statistics.categoriesUsage["5"])
+
+        assertEquals(4, statistics.history.size)
+    }
+
     private val testCreationPoi by lazy {
         PoiDataModel(
             id = UNSPECIFIED_ID,

@@ -122,4 +122,16 @@ interface PoiDao {
 
     @Query(value = " DELETE FROM table_poi_comments WHERE parent_id IN (:parentIds)")
     suspend fun deleteCommentsForParents(parentIds: List<Int>)
+
+    @Query(value = "SELECT category_id AS categoryId, COUNT(poi_id) AS count FROM table_poi_to_category GROUP BY category_id")
+    suspend fun getUsedCategoriesCount(): List<UsedCategoriesStatisticsEntity>
+
+    @Query(value = "SELECT COUNT(*) FROM table_poi WHERE viewed = 1")
+    suspend fun getViewedPoiCount(): Int
+
+    @Query(value = "SELECT COUNT(*) FROM table_poi WHERE viewed = 0")
+    suspend fun getUnViewedPoiCount(): Int
+
+    @Query(value = "SELECT date(creation_date_time/1000, 'unixepoch') AS date, COUNT(id) AS count FROM table_poi GROUP BY date")
+    suspend fun getAdditionHistory(): List<PoiHistoryEntity>
 }
