@@ -21,6 +21,7 @@ okHttpVersion = "4.10.0"
 gsonVersion = "2.10"
 jsoupVersion = "1.15.3"
 coilVersion = "2.2.2"
+chartVersion = "0.2.4-alpha"
 
 composeVersion = "1.3.2"
 composeMaterial3Version = "1.0.1"
@@ -83,6 +84,7 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHtt
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okHttpVersion" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitVersion" }
+charts = { group = "com.github.tehras", name = "charts", version.ref = "chartVersion" }
 
 
 #testing dependencies
@@ -100,6 +102,6 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlinTestVersion" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbineVersion" }
 androidx-work-manager-testing = { group = "androidx.work", name = "work-testing", version.ref = "workManagerVersion" }
-robolectric = {group = "org.robolectric", name = "robolectric", version.ref = "robolectricVersion"}
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectricVersion" }
 
 [plugins]

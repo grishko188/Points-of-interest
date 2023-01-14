@@ -85,7 +85,7 @@ class ProfileViewModel @Inject constructor(
         else -> null
     }
 
-    private fun Profile.toProfileUiModels(): List<ProfileSectionItem> = ProfileSectionType.values().map {
+    private fun Profile.toProfileUiModels(): List<ProfileSectionItem> = ProfileSectionType.values().filter { it !in wipSections }.map {
         val title = it.toTitle()
         val subtitle = it.toSubTitle()
         val icon = it.toIcon()

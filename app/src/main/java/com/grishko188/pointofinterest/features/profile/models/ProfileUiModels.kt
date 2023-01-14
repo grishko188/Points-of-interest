@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.grishko188.pointofinterest.R
 
+
 sealed class ProfileSectionItem(val type: ProfileSectionType) {
     data class AccountSectionItem(val userInfo: UserInfo?) : ProfileSectionItem(ProfileSectionType.ACCOUNT)
     data class NavigationItem(
@@ -27,6 +28,8 @@ sealed class ProfileSectionItem(val type: ProfileSectionType) {
 enum class ProfileSectionType {
     ACCOUNT, STATISTICS, CATEGORIES, SYSTEM_THEME, DARK_THEME, GARBAGE_COLLECTOR, ABOUT
 }
+
+val wipSections = arrayListOf(ProfileSectionType.STATISTICS)
 
 data class UserInfo(
     val fullName: String,
