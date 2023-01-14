@@ -8,6 +8,7 @@ import com.grishko188.data.features.categories.datasource.CategoriesDataSource
 import com.grishko188.data.features.categories.model.CategoryDataModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestDispatcher
@@ -17,6 +18,9 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import javax.inject.Inject
 import kotlin.random.Random
 import kotlin.test.assertEquals
@@ -25,6 +29,8 @@ import kotlin.test.assertNull
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
+@Config(application = HiltTestApplication::class)
+@RunWith(RobolectricTestRunner::class)
 class CategoriesLocalDataSourceInstrumentedTest {
 
     @get:Rule

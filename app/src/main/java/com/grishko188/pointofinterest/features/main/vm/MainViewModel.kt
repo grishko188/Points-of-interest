@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getUserSettingsUseCase: GetUserSettingsUseCase,
+    getUserSettingsUseCase: GetUserSettingsUseCase,
     private val syncCategoriesUseCase: SyncCategoriesUseCase
 ) : ViewModel(), DefaultLifecycleObserver {
 

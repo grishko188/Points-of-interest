@@ -11,6 +11,12 @@ android {
     namespace 'com.grishko188.data'
     compileSdk 33
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     defaultConfig {
         minSdk 24
         targetSdk 33
@@ -95,14 +101,6 @@ dependencies {
     testImplementation libs.kotlin.test.junit
     testImplementation libs.junit
     testImplementation libs.hilt.testing
+    testImplementation libs.robolectric
     kaptTest libs.hilt.compiler
-
-    androidTestImplementation(project(":data-test"))
-    androidTestImplementation libs.androidx.junit
-    androidTestImplementation libs.hilt.testing
-    androidTestImplementation libs.kotlinx.coroutines.test
-    androidTestImplementation libs.kotlin.test.junit
-
-    androidTestImplementation libs.mockito.android
-    kaptAndroidTest libs.hilt.compiler
 }

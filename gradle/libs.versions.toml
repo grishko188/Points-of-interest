@@ -41,6 +41,7 @@ mockitoVersion = "4.11.0"
 kotlinTestVersion = "1.7.20"
 testRunner = "1.5.2"
 turbineVersion = "0.12.1"
+robolectricVersion = "4.9"
 
 [libraries]
 
@@ -99,5 +100,6 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlinTestVersion" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbineVersion" }
 androidx-work-manager-testing = { group = "androidx.work", name = "work-testing", version.ref = "workManagerVersion" }
+robolectric = {group = "org.robolectric", name = "robolectric", version.ref = "robolectricVersion"}
 
 [plugins]

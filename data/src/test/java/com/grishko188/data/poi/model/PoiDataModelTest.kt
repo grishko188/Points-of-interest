@@ -13,7 +13,9 @@ import com.grishko188.domain.features.categories.models.CategoryType
 import com.grishko188.domain.features.poi.models.PoiCreationPayload
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.datetime.Clock
+import org.junit.After
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.MockedStatic
@@ -27,13 +29,24 @@ import kotlin.test.assertTrue
 @RunWith(MockitoJUnitRunner::class)
 class PoiDataModelTest {
 
-    @Test
-    fun `test PoiDataModel_toDomain() function returns PoiModel model with correct fields`() {
+    private lateinit var uriMockStatic: MockedStatic<Uri>
+
+    @Before
+    fun setup() {
         val mockUri = mock<Uri>()
-        val uriMockStatic: MockedStatic<Uri> = Mockito.mockStatic(Uri::class.java)
+        uriMockStatic = Mockito.mockStatic(Uri::class.java)
         uriMockStatic.`when`<Uri> { Uri.parse("https://www.google.com/somethingelse?query=1") }.thenReturn(mockUri)
         whenever(mockUri.scheme).thenReturn("http")
         whenever(mockUri.host).thenReturn("www.google.com")
+    }
+
+    @After
+    fun dispose() {
+        uriMockStatic.close()
+    }
+
+    @Test
+    fun `test PoiDataModel_toDomain() function returns PoiModel model with correct fields`() {
 
         val dataModel = PoiDataModel(
             id = 1,

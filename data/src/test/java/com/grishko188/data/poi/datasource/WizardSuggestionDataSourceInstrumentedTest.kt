@@ -8,21 +8,23 @@ import com.grishko188.data.di.ApiModule
 import com.grishko188.data.features.poi.api.WizardServiceApi
 import com.grishko188.data.features.poi.datasource.WizardDataSource
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.testing.BindValue
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
+import dagger.hilt.android.testing.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnit
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -30,14 +32,19 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
+
 @OptIn(ExperimentalCoroutinesApi::class)
 @UninstallModules(ApiModule::class)
 @HiltAndroidTest
-@RunWith(MockitoJUnitRunner::class)
+@Config(application = HiltTestApplication::class)
+@RunWith(RobolectricTestRunner::class)
 class WizardSuggestionDataSourceInstrumentedTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    var mockRule = MockitoJUnit.rule()
 
     @BindValue
     @Mock
@@ -53,7 +60,13 @@ class WizardSuggestionDataSourceInstrumentedTest {
 
     @Before
     fun setup() {
+        MockitoAnnotations.openMocks(this)
         hiltRule.inject()
+    }
+
+    @After
+    fun shutdown() {
+        Mockito.validateMockitoUsage()
     }
 
     @Test
