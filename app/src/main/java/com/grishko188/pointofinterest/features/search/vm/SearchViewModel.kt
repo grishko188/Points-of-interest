@@ -1,6 +1,5 @@
 package com.grishko188.pointofinterest.features.search.vm
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grishko188.domain.features.poi.interactor.SearchPoiUseCase
