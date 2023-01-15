@@ -34,6 +34,7 @@ android {
 
 dependencies {
     api(project(":data"))
+    api(project(":domain"))
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
 
@@ -44,6 +45,9 @@ dependencies {
     implementation libs.hilt
     implementation libs.hilt.testing
     kapt libs.hilt.compiler
+
+    implementation libs.kotlinx.coroutines.test
+    implementation libs.kotlinx.datetime
 
     api libs.androidx.datastore
     api libs.google.protobuf.kotlin

@@ -7,8 +7,13 @@ import com.grishko188.domain.MockitoHelper.capture
 import com.grishko188.domain.MockitoHelper.whenever
 import com.grishko188.domain.features.categories.models.CreateCategoryPayload
 import com.grishko188.domain.features.categories.repo.CategoriesRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,7 +33,13 @@ class AddCategoryUseCaseTest {
 
     @Before
     fun setup() {
-        SUT = AddCategoryUseCase(repository)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        SUT = AddCategoryUseCase(repository, UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun teardown() {
+        Dispatchers.resetMain()
     }
 
     @Test

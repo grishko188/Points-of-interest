@@ -8,9 +8,14 @@ import com.grishko188.domain.MockitoHelper.whenever
 import com.grishko188.domain.features.poi.models.PoiModel
 import com.grishko188.domain.features.poi.models.PoiSortOption
 import com.grishko188.domain.features.poi.repo.PoiRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -32,7 +37,13 @@ class GetPoiListUseCaseTest {
 
     @Before
     fun setup() {
-        SUT = GetPoiListUseCase(repository)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        SUT = GetPoiListUseCase(repository, UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun teardown() {
+        Dispatchers.resetMain()
     }
 
     @Test

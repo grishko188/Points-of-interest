@@ -2,8 +2,13 @@ package com.grishko188.domain.features.categories.interactor
 
 import com.grishko188.domain.MockitoHelper
 import com.grishko188.domain.features.categories.repo.CategoriesRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,7 +27,13 @@ class SyncCategoriesUseCaseTest {
 
     @Before
     fun setup() {
-        SUT = SyncCategoriesUseCase(repository)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        SUT = SyncCategoriesUseCase(repository, UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun teardown() {
+        Dispatchers.resetMain()
     }
 
     @Test

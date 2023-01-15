@@ -5,8 +5,13 @@ import com.grishko188.domain.MockitoHelper.argumentCaptor
 import com.grishko188.domain.MockitoHelper.capture
 import com.grishko188.domain.features.profile.model.ManualSettings
 import com.grishko188.domain.features.profile.repo.ProfileRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,7 +33,13 @@ class SetUserSettingsStateUseCaseTest {
 
     @Before
     fun setup() {
-        SUT = SetUserSettingStateUseCase(repository)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        SUT = SetUserSettingStateUseCase(repository, UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun teardown() {
+        Dispatchers.resetMain()
     }
 
     @Test

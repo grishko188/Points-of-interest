@@ -30,7 +30,7 @@ class SearchVm @Inject constructor(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
-            SearchScreenUiState.NothingFound
+            SearchScreenUiState.None
         )
 
     fun onSearch(query: String) {
@@ -40,5 +40,6 @@ class SearchVm @Inject constructor(
 
 sealed class SearchScreenUiState {
     object NothingFound : SearchScreenUiState()
+    object None : SearchScreenUiState()
     data class SearchResult(val result: List<PoiListItem>) : SearchScreenUiState()
 }

@@ -2,8 +2,13 @@ package com.grishko188.domain.features.profile.interactor
 
 import com.grishko188.domain.MockitoHelper
 import com.grishko188.domain.features.profile.repo.ProfileRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +28,13 @@ class DeleteUserProfileUseCaseTest {
 
     @Before
     fun setup() {
-        SUT = DeleteUserProfileUseCase(repository)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        SUT = DeleteUserProfileUseCase(repository, UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun teardown() {
+        Dispatchers.resetMain()
     }
 
     @Test

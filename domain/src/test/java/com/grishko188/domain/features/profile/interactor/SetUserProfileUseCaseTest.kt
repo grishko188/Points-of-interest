@@ -5,8 +5,13 @@ import com.grishko188.domain.MockitoHelper.capture
 import com.grishko188.domain.MockitoHelper.mock
 import com.grishko188.domain.features.profile.model.UserProfile
 import com.grishko188.domain.features.profile.repo.ProfileRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,7 +31,13 @@ class SetUserProfileUseCaseTest {
 
     @Before
     fun setup() {
-        SUT = SetUserProfileUseCase(repository)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        SUT = SetUserProfileUseCase(repository, UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun teardown() {
+        Dispatchers.resetMain()
     }
 
     @Test

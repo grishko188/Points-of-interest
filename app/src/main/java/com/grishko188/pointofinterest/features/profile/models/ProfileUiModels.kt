@@ -4,6 +4,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.grishko188.pointofinterest.R
 
+sealed class ProfileScreenUiState {
+    object Empty : ProfileScreenUiState()
+    data class Result(val sections: List<ProfileSectionItem>) : ProfileScreenUiState()
+}
 
 sealed class ProfileSectionItem(val type: ProfileSectionType) {
     data class AccountSectionItem(val userInfo: UserInfo?) : ProfileSectionItem(ProfileSectionType.ACCOUNT)

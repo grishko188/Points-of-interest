@@ -30,12 +30,12 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
 
     val profileState = getProfileUseCase(Unit).map {
-        it.toProfileUiModels()
+        ProfileScreenUiState.Result(it.toProfileUiModels())
     }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList()
+            initialValue = ProfileScreenUiState.Empty
         )
 
     fun onSettingsToggled(type: ProfileSectionType, currentState: Boolean) {

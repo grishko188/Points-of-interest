@@ -5,8 +5,13 @@ import com.grishko188.domain.MockitoHelper.argumentCaptor
 import com.grishko188.domain.MockitoHelper.capture
 import com.grishko188.domain.MockitoHelper.whenever
 import com.grishko188.domain.features.poi.repo.PoiRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +32,13 @@ class DeleteCommentUseCaseTest {
 
     @Before
     fun setup() {
-        SUT = DeleteCommentUseCase(repository)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        SUT = DeleteCommentUseCase(repository, UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun teardown() {
+        Dispatchers.resetMain()
     }
 
     @Test

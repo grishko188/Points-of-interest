@@ -39,6 +39,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.grishko188.pointofinterest.R
+import com.grishko188.pointofinterest.features.profile.models.ProfileScreenUiState
 import com.grishko188.pointofinterest.features.profile.models.ProfileSectionItem
 import com.grishko188.pointofinterest.features.profile.models.ProfileSectionType
 import com.grishko188.pointofinterest.features.profile.models.UserInfo
@@ -85,13 +86,15 @@ fun ProfileScreen(
         getGoogleLoginAuth(context).signOut()
     }
 
-    ProfileScreenContent(
-        profileSections = profileSectionsState,
-        onSignInClicked = onSignInClicked,
-        onSignOutClicked = onSignOutClicked,
-        onNavigateInternal = onNavigateInternal,
-        onSettingsToggled = vm::onSettingsToggled
-    )
+    if (profileSectionsState is ProfileScreenUiState.Result) {
+        ProfileScreenContent(
+            profileSections = (profileSectionsState as ProfileScreenUiState.Result).sections,
+            onSignInClicked = onSignInClicked,
+            onSignOutClicked = onSignOutClicked,
+            onNavigateInternal = onNavigateInternal,
+            onSettingsToggled = vm::onSettingsToggled
+        )
+    }
 }
 
 @Composable

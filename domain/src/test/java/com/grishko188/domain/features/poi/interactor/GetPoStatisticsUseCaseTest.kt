@@ -9,9 +9,14 @@ import com.grishko188.domain.features.categories.models.CategoryType
 import com.grishko188.domain.features.categories.repo.CategoriesRepository
 import com.grishko188.domain.features.poi.models.PoiStatisticsSnapshot
 import com.grishko188.domain.features.poi.repo.PoiRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -36,7 +41,13 @@ class GetPoStatisticsUseCaseTest {
 
     @Before
     fun setup() {
-        SUT = GetPoiStatisticsUseCase(categoriesRepository, repository)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        SUT = GetPoiStatisticsUseCase(categoriesRepository, repository, UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun teardown() {
+        Dispatchers.resetMain()
     }
 
     @Test
