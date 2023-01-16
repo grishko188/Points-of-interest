@@ -19,7 +19,7 @@ class MainViewModel @Inject constructor(
     private val syncCategoriesUseCase: SyncCategoriesUseCase
 ) : ViewModel(), DefaultLifecycleObserver {
 
-    private val _syncState = MutableStateFlow<SyncStateState>(SyncStateState.Loading)
+    private val _syncState = MutableStateFlow<SyncState>(SyncState.Loading)
     val syncState = _syncState.asStateFlow()
 
     val mainScreenState = getUserSettingsUseCase(Unit)
@@ -34,14 +34,14 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             delay(500)
             syncCategoriesUseCase(Unit)
-            _syncState.value = SyncStateState.Success
+            _syncState.value = SyncState.Success
         }
     }
 }
 
-sealed class SyncStateState {
-    object Loading : SyncStateState()
-    object Success : SyncStateState()
+sealed class SyncState {
+    object Loading : SyncState()
+    object Success : SyncState()
 }
 
 sealed class MainScreenState {

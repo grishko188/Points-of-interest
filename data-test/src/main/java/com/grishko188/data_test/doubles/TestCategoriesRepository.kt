@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TestCategoriesRepository @Inject constructor() : CategoriesRepository {
-    override suspend fun sync() {
-        TODO("Not yet implemented")
-    }
+    override suspend fun sync() {}
 
     override fun getCategories(): Flow<List<Category>> {
         TODO("Not yet implemented")

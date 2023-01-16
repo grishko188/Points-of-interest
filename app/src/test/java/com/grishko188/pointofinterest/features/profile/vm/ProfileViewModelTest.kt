@@ -10,7 +10,6 @@ import com.grishko188.domain.features.profile.interactor.DeleteUserProfileUseCas
 import com.grishko188.domain.features.profile.interactor.GetProfileUseCase
 import com.grishko188.domain.features.profile.interactor.SetUserProfileUseCase
 import com.grishko188.domain.features.profile.interactor.SetUserSettingStateUseCase
-import com.grishko188.domain.features.profile.repo.ProfileRepository
 import com.grishko188.pointofinterest.MockitoHelper.anyNonNull
 import com.grishko188.pointofinterest.MockitoHelper.mock
 import com.grishko188.pointofinterest.MockitoHelper.whenever
@@ -58,9 +57,6 @@ class ProfileViewModelTest {
 
     @Mock
     lateinit var workManager: WorkManager
-
-    @Inject
-    lateinit var repository: ProfileRepository
 
     @Inject
     lateinit var setUserProfileUseCase: SetUserProfileUseCase
@@ -199,7 +195,7 @@ class ProfileViewModelTest {
     }
 
     @Test
-    fun `test ProfileViewModel onSettingsToggled GARBAGE_COLLECTOR updates profileState with updated user settings and triggers workmanager`() = runTest {
+    fun `test ProfileViewModel onSettingsToggled GARBAGE_COLLECTOR updates profileState with updated user settings and triggers work manager`() = runTest {
         val resultOperationMock = mock<Operation>()
         whenever(workManager.enqueue(anyNonNull<WorkRequest>())).thenReturn(resultOperationMock)
         whenever(workManager.cancelAllWorkByTag(anyNonNull())).thenReturn(resultOperationMock)

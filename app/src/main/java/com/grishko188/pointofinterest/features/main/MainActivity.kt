@@ -16,7 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.grishko188.pointofinterest.features.main.vm.MainScreenState
-import com.grishko188.pointofinterest.features.main.vm.SyncStateState
+import com.grishko188.pointofinterest.features.main.vm.SyncState
 import com.grishko188.pointofinterest.features.main.vm.MainViewModel
 import com.grishko188.pointofinterest.ui.theme.PointOfInterestTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
         }
 
         splashScreen.setKeepOnScreenCondition {
-            mainViewModel.syncState.value == SyncStateState.Loading && mainState == MainScreenState.Loading
+            mainViewModel.syncState.value == SyncState.Loading && mainState == MainScreenState.Loading
         }
 
         lifecycle.addObserver(mainViewModel)
