@@ -3,9 +3,8 @@ package com.grishko188.data_test.doubles
 import com.grishko188.domain.features.profile.model.UserProfile
 import com.grishko188.domain.features.profile.model.UserSettings
 import com.grishko188.domain.features.profile.repo.ProfileRepository
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 val emptyUserData = UserProfile(
@@ -24,13 +23,8 @@ val defaultUserSettings = UserSettings(
 
 class TestProfileRepository @Inject constructor() : ProfileRepository {
 
-    private val userProfileState = MutableSharedFlow<UserProfile>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-    private val userSettingsState = MutableSharedFlow<UserSettings>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-
-    init {
-        userProfileState.tryEmit(emptyUserData)
-        userSettingsState.tryEmit(defaultUserSettings)
-    }
+    private val userProfileState = MutableStateFlow(emptyUserData)
+    private val userSettingsState = MutableStateFlow(defaultUserSettings)
 
     override fun getUserProfile(): Flow<UserProfile> = userProfileState
 
@@ -39,24 +33,28 @@ class TestProfileRepository @Inject constructor() : ProfileRepository {
     }
 
     override suspend fun deleteUserProfile() {
-        TODO("Not yet implemented")
+        userProfileState.tryEmit(emptyUserData)
     }
 
     override fun getUserSetting(): Flow<UserSettings> = userSettingsState
 
     override suspend fun setUseSystemTheme(state: Boolean) {
-        TODO("Not yet implemented")
+        val updated = userSettingsState.value.copy(isUseSystemTheme = state)
+        userSettingsState.tryEmit(updated)
     }
 
     override suspend fun setUseDarkTheme(state: Boolean) {
-        TODO("Not yet implemented")
+        val updated = userSettingsState.value.copy(isDarkMode = state)
+        userSettingsState.tryEmit(updated)
     }
 
     override suspend fun setUseAutoGc(state: Boolean) {
-        TODO("Not yet implemented")
+        val updated = userSettingsState.value.copy(isAutoGcEnabled = state)
+        userSettingsState.tryEmit(updated)
     }
 
     override suspend fun setShowOnBoarding(state: Boolean) {
-        TODO("Not yet implemented")
+        val updated = userSettingsState.value.copy(isShowOnBoarding = state)
+        userSettingsState.tryEmit(updated)
     }
 }
