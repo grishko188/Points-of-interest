@@ -31,7 +31,8 @@ class CategoriesViewModel @Inject constructor(
         initialValue = emptyMap()
     )
 
-    val itemsToDelete = MutableStateFlow<List<String>>(emptyList())
+    private val _itemsToDelete = MutableStateFlow<List<String>>(emptyList())
+    val itemsToDelete = _itemsToDelete.asStateFlow()
 
     fun onFetchDetailedState(categoryId: String?) {
         viewModelScope.launch {
@@ -61,13 +62,13 @@ class CategoriesViewModel @Inject constructor(
     fun onDeleteItem(id: String) {
         val updatedList = itemsToDelete.value.toMutableList()
         updatedList.add(id)
-        itemsToDelete.value = updatedList
+        _itemsToDelete.value = updatedList
     }
 
     fun onUndoDeleteItem(id: String) {
         val updatedList = itemsToDelete.value.toMutableList()
         updatedList.remove(id)
-        itemsToDelete.value = updatedList
+        _itemsToDelete.value = updatedList
     }
 
     fun onCommitDeleteItem(id: String) {
