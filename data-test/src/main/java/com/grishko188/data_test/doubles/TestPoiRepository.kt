@@ -75,7 +75,7 @@ class TestPoiRepository @Inject constructor() : PoiRepository {
         poiState.replayCache.firstOrNull()?.find { it.id == id }!!
 
     override suspend fun createPoi(payload: PoiCreationPayload) {
-        TODO("Not yet implemented")
+        throw IllegalStateException("Use mock for this function")
     }
 
     override suspend fun deletePoi(model: PoiModel) {
@@ -104,7 +104,7 @@ class TestPoiRepository @Inject constructor() : PoiRepository {
     }
 
     override suspend fun getWizardSuggestion(contentUrl: String): WizardSuggestion {
-        TODO("Not yet implemented")
+        throw IllegalStateException("Use mock for this function")
     }
 
     override suspend fun getStatistics(): PoiStatisticsSnapshot =

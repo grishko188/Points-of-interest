@@ -17,6 +17,7 @@ import com.grishko188.pointofinterest.features.categories.ui.models.toUiModel
 import com.grishko188.pointofinterest.features.poi.create.models.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,7 +30,7 @@ class CreatePoiViewModel @Inject constructor(
     getCategoriesUseCase: GetCategoriesUseCase
 ) : ViewModel() {
 
-    private val _finishScreen = MutableSharedFlow<Boolean>()
+    private val _finishScreen = MutableSharedFlow<Boolean>(replay = 1, onBufferOverflow = BufferOverflow.DROP_LATEST)
     val finishScreen = _finishScreen.asSharedFlow()
 
     private val _screenState = MutableStateFlow<CreatePoiScreenState>(CreatePoiScreenState.Loading)
