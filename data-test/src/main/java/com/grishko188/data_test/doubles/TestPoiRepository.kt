@@ -5,12 +5,12 @@ import com.grishko188.domain.features.categories.models.Category
 import com.grishko188.domain.features.categories.models.CategoryType
 import com.grishko188.domain.features.poi.models.*
 import com.grishko188.domain.features.poi.repo.PoiRepository
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import javax.inject.Inject
+import kotlin.random.Random
 
 val testPoiModels = arrayListOf(
     PoiModel(
@@ -50,13 +50,16 @@ val testPoiModels = arrayListOf(
     )
 )
 
+val testComments = mutableListOf(
+    PoiComment("1", "Comment 1", Clock.System.now()),
+    PoiComment("2", "Comment 2", Clock.System.now()),
+    PoiComment("3", "Comment 3", Clock.System.now())
+)
+
 class TestPoiRepository @Inject constructor() : PoiRepository {
 
-    private val poiState = MutableSharedFlow<List<PoiModel>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-
-    init {
-        poiState.tryEmit(testPoiModels)
-    }
+    private val poiState = MutableStateFlow<List<PoiModel>>(testPoiModels)
+    private val commentsState = MutableStateFlow(testComments)
 
     override fun getPoiList(sortOption: PoiSortOption?): Flow<List<PoiModel>> = poiState
 
@@ -76,7 +79,9 @@ class TestPoiRepository @Inject constructor() : PoiRepository {
     }
 
     override suspend fun deletePoi(model: PoiModel) {
-        TODO("Not yet implemented")
+        val updatedPoiList = poiState.value.toMutableList()
+        updatedPoiList.remove(model)
+        poiState.tryEmit(updatedPoiList)
     }
 
     override suspend fun deleteGarbage(): Int {
@@ -84,15 +89,18 @@ class TestPoiRepository @Inject constructor() : PoiRepository {
     }
 
     override suspend fun addComment(targetId: String, payload: PoiCommentPayload) {
-        TODO("Not yet implemented")
+        val commentToAdd = PoiComment(Random.nextInt().toString(), payload.body, Clock.System.now())
+        val updatedList = commentsState.value.toMutableList()
+        updatedList.add(commentToAdd)
+        commentsState.tryEmit(updatedList)
     }
 
-    override fun getComments(targetId: String): Flow<List<PoiComment>> {
-        TODO("Not yet implemented")
-    }
+    override fun getComments(targetId: String): Flow<List<PoiComment>> = commentsState
 
     override suspend fun deleteComment(id: String) {
-        TODO("Not yet implemented")
+        val commentsToUpdate = commentsState.value.toMutableList()
+        commentsToUpdate.removeIf { it.id == id }
+        commentsState.tryEmit(commentsToUpdate)
     }
 
     override suspend fun getWizardSuggestion(contentUrl: String): WizardSuggestion {

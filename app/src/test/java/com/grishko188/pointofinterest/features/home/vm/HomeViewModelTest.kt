@@ -18,9 +18,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.junit.MockitoJUnit
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import javax.inject.Inject
@@ -35,9 +32,6 @@ class HomeViewModelTest {
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
-
-    @get:Rule(order = 1)
-    var mockRule = MockitoJUnit.rule()
 
     private val savedStateHandle = SavedStateHandle()
 
@@ -54,9 +48,7 @@ class HomeViewModelTest {
 
     @Before
     fun setup() {
-        MockitoAnnotations.openMocks(this)
         hiltRule.inject()
-
         Dispatchers.setMain(UnconfinedTestDispatcher())
         SUT = HomeViewModel(
             savedStateHandle,
@@ -68,7 +60,6 @@ class HomeViewModelTest {
 
     @After
     fun teardown() {
-        Mockito.validateMockitoUsage()
         Dispatchers.resetMain()
     }
 

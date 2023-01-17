@@ -12,6 +12,7 @@ import com.grishko188.pointofinterest.features.poi.view.models.toUIModelWithComm
 import com.grishko188.pointofinterest.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class ViewPoiViewModel @Inject constructor(
 
     private val modelState = MutableStateFlow(PoiModel.EMPTY)
 
-    private val _finishScreenState = MutableSharedFlow<Boolean>()
+    private val _finishScreenState = MutableSharedFlow<Boolean>(replay = 1, onBufferOverflow = BufferOverflow.DROP_LATEST)
     val finishScreenState = _finishScreenState.asSharedFlow()
 
     private val _uiState = MutableStateFlow<List<PoiDetailListItem>>(emptyList())
