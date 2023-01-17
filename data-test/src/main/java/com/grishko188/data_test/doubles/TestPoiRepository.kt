@@ -8,6 +8,7 @@ import com.grishko188.domain.features.poi.repo.PoiRepository
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ val testPoiModels = arrayListOf(
         source = "test",
         creationDate = Clock.System.now(),
         commentsCount = 2,
-        categories = arrayListOf(Category("1", "Name", Color.WHITE, categoryType = CategoryType.PERSONAL, isMutable = true))
+        categories = arrayListOf(Category("1", "Title", Color.WHITE, categoryType = CategoryType.PERSONAL, isMutable = true))
     ),
 
     PoiModel(
@@ -33,7 +34,7 @@ val testPoiModels = arrayListOf(
         creationDate = Clock.System.now(),
         source = "test",
         commentsCount = 0,
-        categories = arrayListOf(Category("2", "Name 2", Color.GRAY, categoryType = CategoryType.PERSONAL, isMutable = true))
+        categories = arrayListOf(Category("2", "Title 2", Color.BLACK, categoryType = CategoryType.PERSONAL, isMutable = true))
     ),
 
     PoiModel(
@@ -45,7 +46,7 @@ val testPoiModels = arrayListOf(
         creationDate = Clock.System.now(),
         commentsCount = 10,
         source = "test",
-        categories = arrayListOf(Category("3", "Name 3", Color.GREEN, categoryType = CategoryType.PERSONAL, isMutable = true))
+        categories = arrayListOf(Category("3", "Title 3", Color.RED, categoryType = CategoryType.PERSONAL, isMutable = true))
     )
 )
 
@@ -59,9 +60,8 @@ class TestPoiRepository @Inject constructor() : PoiRepository {
 
     override fun getPoiList(sortOption: PoiSortOption?): Flow<List<PoiModel>> = poiState
 
-    override fun getUsedCategories(): Flow<List<Int>> {
-        TODO("Not yet implemented")
-    }
+    override fun getUsedCategories(): Flow<List<Int>> =
+        poiState.map { list -> list.map { it.categories }.flatten().map { it.id.toInt() } }
 
     override suspend fun searchPoi(query: String): List<PoiModel> {
         return if (query == "Test query") poiState.replayCache.firstOrNull() ?: emptyList()

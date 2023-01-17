@@ -51,17 +51,19 @@ class HomeViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private val mainPoiState =
         savedStateHandle.getStateFlow(KEY_SORT_OPTION, PoiSortByUiOption.DATE)
+            .onStart { _homeUiContentState.value = HomeUiContentState.Loading }
             .onEach { _displaySortOptionUiState.value = it }
             .flatMapLatest { sortOption ->
                 retryableFlow(retryTrigger) {
                     getPoiListUseCase(GetPoiListUseCase.Params(sortOption.toDomain()))
+                        .onStart { _homeUiContentState.value = HomeUiContentState.Loading }
+                        .debounce(100)
                         .map { list -> list.map { it.toListUiModel() } }
                         .onEach {
                             if (it.isEmpty()) _homeUiContentState.value = HomeUiContentState.Empty
                             else _homeUiContentState.value = HomeUiContentState.Result(it)
                         }
                         .catch { _homeUiContentState.value = HomeUiContentState.Error(it.toDisplayObject()) }
-                        .onStart { _homeUiContentState.value = HomeUiContentState.Loading }
                 }
             }
             .stateIn(
