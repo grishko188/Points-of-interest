@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -105,7 +106,9 @@ fun ProfileScreenContent(
     onNavigateInternal: (ProfileSectionType) -> Unit,
     onSettingsToggled: (ProfileSectionType, Boolean) -> Unit
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier.testTag("profile_section_content_lazy_list")
+    ) {
         items(profileSections, key = { item -> item.type }) { item ->
             if (item is ProfileSectionItem.AccountSectionItem) {
                 AccountSection(userInfo = item.userInfo, onSignInClicked, onSignOutClicked)
@@ -134,7 +137,8 @@ fun BooleanSettingsSection(
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background, shape = RectangleShape)
-            .clickable(item.isEnabled) { onToggleBooleanSettings(item.type, item.state) },
+            .clickable(item.isEnabled) { onToggleBooleanSettings(item.type, item.state) }
+            .testTag("boolean_settings_section:${item.type.name}"),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -173,6 +177,7 @@ fun NavigationSection(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background, shape = RectangleShape)
             .clickable(item.isEnabled) { onNavigationClicked(item.type) }
+            .testTag("navigation_section:${item.type.name}")
     ) {
         BaseSettingContent(
             modifier = Modifier
@@ -197,7 +202,8 @@ fun AccountSection(
         modifier = Modifier
             .fillMaxWidth()
             .height(128.dp)
-            .padding(start = 16.dp, end = 16.dp),
+            .padding(start = 16.dp, end = 16.dp)
+            .testTag("account_section"),
         contentAlignment = Alignment.Center
     ) {
 
@@ -208,7 +214,8 @@ fun AccountSection(
                 ElevatedButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 48.dp, vertical = 16.dp),
+                        .padding(horizontal = 48.dp, vertical = 16.dp)
+                        .testTag("account_sign_in_container"),
                     shape = RoundedCornerShape(6.dp),
                     elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 2.dp),
                     colors = ButtonDefaults.elevatedButtonColors(
@@ -222,7 +229,7 @@ fun AccountSection(
                     Image(
                         modifier = Modifier.size(20.dp),
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_google_icon),
-                        contentDescription = ""
+                        contentDescription = "Google sign icon"
                     )
                     Text(
                         modifier = Modifier.padding(6.dp),
@@ -233,7 +240,9 @@ fun AccountSection(
                 }
             } else if (userInfo != null) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("account_user_information"),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -248,7 +257,7 @@ fun AccountSection(
                             Icon(
                                 modifier = Modifier.size(80.dp),
                                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_account_placeholder),
-                                contentDescription = "",
+                                contentDescription = "User image placeholder",
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -276,7 +285,8 @@ fun AccountSection(
                     IconButton(
                         modifier = Modifier
                             .size(48.dp)
-                            .clip(CircleShape),
+                            .clip(CircleShape)
+                            .testTag("account_sign_out_button"),
                         onClick = onSignOutClicked
                     ) {
                         Icon(

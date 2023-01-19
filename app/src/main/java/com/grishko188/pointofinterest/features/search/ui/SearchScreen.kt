@@ -12,13 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.grishko188.pointofinterest.R
-import com.grishko188.pointofinterest.features.home.ui.HomeScreenContent
+import com.grishko188.pointofinterest.features.home.ui.PoiListContent
 import com.grishko188.pointofinterest.features.main.PoiAppState
 import com.grishko188.pointofinterest.features.search.vm.SearchScreenUiState
 import com.grishko188.pointofinterest.features.search.vm.SearchVm
@@ -70,7 +71,7 @@ fun SearchContent(
         } else if (state.second is SearchScreenUiState.NothingFound) {
             EmptySearch(stringResource(id = R.string.message_search_empty_result))
         } else if (state.second is SearchScreenUiState.SearchResult) {
-            HomeScreenContent((state.second as SearchScreenUiState.SearchResult).result) { id ->
+            PoiListContent((state.second as SearchScreenUiState.SearchResult).result) { id ->
                 onNavigate(
                     Screen.ViewPoiDetailed,
                     listOf(Screen.ViewPoiDetailed.ARG_POI_ID to id)
@@ -86,6 +87,7 @@ fun EmptySearch(message: String) {
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
+            .testTag("empty_search")
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),

@@ -98,6 +98,11 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
     namespace 'com.grishko188.pointofinterest'
 }
 
@@ -145,6 +150,7 @@ dependencies {
     testImplementation libs.hilt.testing
     testImplementation libs.robolectric
     testImplementation libs.turbine
+    testImplementation libs.androix.compose.junit
     kaptTest libs.hilt.compiler
 
     androidTestImplementation(project(":data-test"))

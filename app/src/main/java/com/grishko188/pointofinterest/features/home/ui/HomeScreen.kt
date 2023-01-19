@@ -11,7 +11,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -36,7 +38,7 @@ import com.grishko188.pointofinterest.ui.composables.uistates.EmptyView
 import com.grishko188.pointofinterest.ui.composables.uistates.ErrorView
 import com.grishko188.pointofinterest.ui.composables.uistates.ProgressView
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalLifecycleComposeApi::class)
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun HomeScreen(
     showSortDialogState: Boolean,
@@ -50,6 +52,32 @@ fun HomeScreen(
     val selectedSortByOption by viewModel.displaySortOptionUiState.collectAsStateWithLifecycle()
     val selectedFiltersState = remember { mutableStateListOf<String>() }
 
+    HomeScreenContent(
+        homeContentState = homeContentState,
+        categoriesState = categoriesState,
+        selectedSortByOption = selectedSortByOption,
+        selectedFiltersState = selectedFiltersState,
+        showSortDialogState = showSortDialogState,
+        onRetry = viewModel::onRetry,
+        onApplySortByOption = viewModel::onApplySortBy,
+        onCloseSortDialog = onCloseSortDialog,
+        onNavigate = onNavigate
+    )
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun HomeScreenContent(
+    homeContentState: HomeViewModel.HomeUiContentState,
+    categoriesState: List<CategoryUiModel>,
+    selectedSortByOption: PoiSortByUiOption,
+    selectedFiltersState: MutableList<String>,
+    showSortDialogState: Boolean,
+    onRetry: () -> Unit,
+    onApplySortByOption: (PoiSortByUiOption) -> Unit,
+    onCloseSortDialog: () -> Unit,
+    onNavigate: (Screen, List<Pair<String, Any>>) -> Unit
+) {
     Column(
         Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -80,7 +108,7 @@ fun HomeScreen(
 
                 is HomeViewModel.HomeUiContentState.Error -> {
                     val errorState = homeContentState as HomeViewModel.HomeUiContentState.Error
-                    ErrorView(displayObject = errorState.displayObject) { viewModel.onRetry() }
+                    ErrorView(displayObject = errorState.displayObject, onRetryClick = onRetry)
                 }
 
                 else -> {
@@ -91,7 +119,7 @@ fun HomeScreen(
                         if (targetState) {
                             EmptyView(message = stringResource(id = R.string.message_ui_state_empty_main_screen_no_filters))
                         } else {
-                            HomeScreenContent(filteredList) { id ->
+                            PoiListContent(filteredList) { id ->
                                 onNavigate(
                                     Screen.ViewPoiDetailed,
                                     listOf(Screen.ViewPoiDetailed.ARG_POI_ID to id)
@@ -107,7 +135,8 @@ fun HomeScreen(
                     onDismissRequest = onCloseSortDialog,
                     content = {
                         Card(
-                            modifier = Modifier.fillMaxWidth(1f),
+                            modifier = Modifier
+                                .fillMaxWidth(1f),
                             shape = RoundedCornerShape(8.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.background,
@@ -130,9 +159,10 @@ fun HomeScreen(
                                 PoiSortByUiOption.values().forEach { option ->
                                     Row(
                                         modifier = Modifier
+                                            .testTag("sort_selector${option.name}")
                                             .fillMaxWidth()
                                             .clickable {
-                                                viewModel.onApplySortBy(option)
+                                                onApplySortByOption(option)
                                                 onCloseSortDialog()
                                             },
                                         verticalAlignment = Alignment.CenterVertically,
@@ -193,13 +223,16 @@ fun HomeScreen(
     }
 }
 
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreenContent(
+fun PoiListContent(
     poiItems: List<PoiListItem>,
     onPoiSelected: (String) -> Unit
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier.testTag("poi_content_list")
+    ) {
         items(poiItems, key = { item -> item.id }) { item ->
             Column(modifier = Modifier.animateItemPlacement()) {
                 PoiCard(poiListItem = item, onClick = onPoiSelected)
@@ -216,22 +249,22 @@ fun HomeScreenFilterContent(
     selectedFilters: List<String>,
     onClick: (String) -> Unit
 ) {
-    Column {
-        LazyRow {
-            itemsIndexed(categories, key = { _, item -> item.id }) { index, item ->
-                if (index == 0) Spacer(modifier = Modifier.width(16.dp))
+    LazyRow(
+        modifier = Modifier.testTag("filters_horizontal_collection")
+    ) {
+        itemsIndexed(categories, key = { _, item -> item.id }) { index, item ->
+            if (index == 0) Spacer(modifier = Modifier.width(16.dp))
 
-                CategoryFilterChips(
-                    categoryListItem = item,
-                    onClick = onClick,
-                    isSelected = item.id in selectedFilters
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-            }
-            item(key = "AddMoreButton") {
-                AddMoreButton(onClick = onAddCategories)
-            }
+            CategoryFilterChips(
+                categoryListItem = item,
+                onClick = onClick,
+                isSelected = item.id in selectedFilters
+            )
+            Spacer(modifier = Modifier.width(8.dp))
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        item(key = "AddMoreButton") {
+            AddMoreButton(onClick = onAddCategories)
+        }
     }
+    Spacer(modifier = Modifier.height(8.dp))
 }

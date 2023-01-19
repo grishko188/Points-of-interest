@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -60,6 +61,7 @@ fun AboutScreen() {
             )
             Spacer(modifier = Modifier.size(8.dp))
             Text(
+                modifier = Modifier.testTag("App description"),
                 textAlign = TextAlign.Center,
                 text = stringResource(id = R.string.about_screen_descriprion),
                 style = MaterialTheme.typography.bodyMedium,
@@ -94,7 +96,8 @@ fun AboutScreen() {
                         .background(MaterialTheme.colorScheme.background, RoundedCornerShape(4.dp))
                         .border(width = 2.dp, color = MaterialTheme.colorScheme.onBackground, shape = RoundedCornerShape(4.dp))
                         .clip(RoundedCornerShape(4.dp))
-                        .clickable { chromeTabsIntent.launch(context, profileUrl) },
+                        .clickable { chromeTabsIntent.launch(context, profileUrl) }
+                        .testTag("Git hub profile link"),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
