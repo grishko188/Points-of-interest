@@ -19,11 +19,11 @@ The app also allows for easy searching and filtering of stored information, maki
 
 ## Screenshots
 
-# Architecture
+## Architecture
 
-# Modularization
+## Modularization
 
-# Features
+## Features
 
 # License
 **Points of interest* is distributed under the terms of the Apache License (Version 2.0). See the
