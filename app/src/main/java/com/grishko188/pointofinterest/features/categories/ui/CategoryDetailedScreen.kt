@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextRange
@@ -132,7 +133,11 @@ fun CategoriesDetailedSuccessContent(
         focusRequester.requestFocus()
     }
 
-    Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .testTag("detailed_category_content")
+    ) {
 
         Column(
             modifier = Modifier
@@ -165,14 +170,15 @@ fun CategoriesDetailedSuccessContent(
                 trailingIcon = {
                     if (textFieldValue.text.isNotEmpty()) {
                         IconButton(
-                            onClick = { onTextChanged(TextFieldValue("")) }
+                            onClick = { onTextChanged(TextFieldValue("")) },
+
                         ) {
                             Icon(
                                 modifier = Modifier
                                     .size(20.dp)
                                     .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f), shape = CircleShape),
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = "",
+                                contentDescription = "Clear text icon",
                                 tint = MaterialTheme.colorScheme.background
                             )
                         }
@@ -193,7 +199,9 @@ fun CategoriesDetailedSuccessContent(
             )
 
             GridColorPalette(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .testTag("grid_color_pallete"),
                 onColorSelected = onColorSelected,
                 originalColor = selectedCategory?.color,
                 selectedColor = selectedColor

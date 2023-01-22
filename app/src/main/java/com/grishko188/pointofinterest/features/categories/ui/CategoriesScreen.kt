@@ -12,6 +12,7 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
@@ -24,7 +25,6 @@ import com.grishko188.pointofinterest.features.categories.ui.models.CategoryUiMo
 import com.grishko188.pointofinterest.features.categories.vm.CategoriesViewModel
 import com.grishko188.pointofinterest.navigation.Screen
 import kotlinx.coroutines.CoroutineScope
-
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
@@ -67,7 +67,11 @@ fun CategoriesContent(
 ) {
 
     Column {
-        LazyColumn(Modifier.weight(1f)) {
+        LazyColumn(
+            Modifier
+                .weight(1f)
+                .testTag("categories_screen_full_list")
+        ) {
             categories.entries.forEach { group ->
                 stickyHeader(key = group.key) {
                     CategoryTypeHeader(type = stringResource(id = group.key))
