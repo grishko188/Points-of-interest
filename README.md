@@ -1,4 +1,4 @@
-![Alt text](../screenshot/playstore.png?raw=true "Screen shot")
+![Alt text](screenshots/playstore.jpg?raw=true "Screen shot")
 
 # Points of interest
 
