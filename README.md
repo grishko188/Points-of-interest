@@ -25,6 +25,6 @@ The app also allows for easy searching and filtering of stored information, maki
 
 ## Features
 
-# License
-**Points of interest* is distributed under the terms of the Apache License (Version 2.0). See the
+## License
+**Points of interest** is distributed under the terms of the Apache License (Version 2.0). See the
 [license](LICENSE) for more information.
