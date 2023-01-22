@@ -5,14 +5,6 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
-def CREDENTIALS_DEBUG = '../keystore/credentials-debug.properties'
-def CREDENTIALS_RELEASE = '../keystore/credentials-release.properties'
-
-def STORE_FILE = 'keystore.file'
-def STORE_PASSWORD = 'keystore.password'
-def KEY_ALIAS = 'key.alias'
-def KEY_PASSWORD = 'key.password'
-
 android {
     compileSdk 33
 
@@ -32,20 +24,20 @@ android {
     signingConfigs {
 
         def credentialsDebug = new Properties()
-        file(CREDENTIALS_DEBUG).withInputStream {
+        file('../keystore/credentials-debug.properties').withInputStream {
             credentialsDebug.load(it)
         }
 
         debug {
-            storeFile file(credentialsDebug[STORE_FILE])
-            storePassword credentialsDebug[STORE_PASSWORD]
-            keyAlias credentialsDebug[KEY_ALIAS]
-            keyPassword credentialsDebug[KEY_PASSWORD]
+            storeFile file(credentialsDebug['keystore.file'])
+            storePassword credentialsDebug['keystore.password']
+            keyAlias credentialsDebug['key.alias']
+            keyPassword credentialsDebug['key.password']
         }
 
         release {
             def credentialsRelease = new Properties()
-            def credentialsReleaseFile = file(CREDENTIALS_RELEASE)
+            def credentialsReleaseFile = file('../keystore/credentials-release.properties')
             if (credentialsReleaseFile.exists()) {
                 credentialsReleaseFile.withInputStream { credentialsRelease.load(it) }
                 println("credentials-release.properties is exist")
@@ -54,10 +46,10 @@ android {
                 credentialsRelease = credentialsDebug
             }
 
-            storeFile file(credentialsRelease[STORE_FILE])
-            storePassword credentialsRelease[STORE_PASSWORD]
-            keyAlias credentialsRelease[KEY_ALIAS]
-            keyPassword credentialsRelease[KEY_PASSWORD]
+            storeFile file(credentialsRelease['keystore.file'])
+            storePassword credentialsRelease['keystore.password']
+            keyAlias credentialsRelease['key.alias']
+            keyPassword credentialsRelease['key.password']
         }
     }
 
@@ -70,6 +62,7 @@ android {
 
         debug {
             signingConfig signingConfigs.debug
+            applicationIdSuffix ".develop"
         }
     }
 
