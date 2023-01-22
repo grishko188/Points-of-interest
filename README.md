@@ -14,6 +14,9 @@ The app also allows for easy searching and filtering of stored information, maki
 
 **Current version of application is offline only. It is a work in progress. So stay tuned for future updates.**
 
+This app was created to showcase the latest technology in android development.
+This application is implemented entirely using **Kotlin and Jetpack Compose.**
+
 ## APK
 [Debug v1.0](app/debug/poi-debug.apk)
 
