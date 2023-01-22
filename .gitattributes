@@ -1,0 +1,3 @@
+*.html linguist-detectable=false
+*.kt linguist-detectable=true
+*.jave linguist-detectable=false
