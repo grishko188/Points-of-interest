@@ -1,4 +1,4 @@
-![Alt text](screenshots/playstore.jpg?raw=true "Screen shot")
+![Alt text](screenshots/playstore.jpg?raw=true "Bannert")
 
 Points of interest
 ==================
@@ -21,6 +21,8 @@ This application is implemented entirely using **Kotlin and Jetpack Compose.**
 [Debug v1.0](app/debug/poi-debug.apk)
 
 ## Screenshots
+
+![Alt text](screenshots/screenshots.jpg?raw=true "Screen shots")
 
 ## Architecture
 

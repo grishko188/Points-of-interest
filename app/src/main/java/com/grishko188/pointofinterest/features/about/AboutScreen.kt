@@ -55,6 +55,7 @@ fun AboutScreen() {
             )
             Spacer(modifier = Modifier.size(32.dp))
             Text(
+                modifier = Modifier.testTag("about app title"),
                 text = stringResource(id = R.string.app_name).uppercase(),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground

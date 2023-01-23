@@ -36,7 +36,7 @@ class AboutScreenUiTest {
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("POINT OF INTEREST", ignoreCase = true)
+            .onNodeWithTag("about app title")
             .assertIsDisplayed()
 
         composeTestRule
