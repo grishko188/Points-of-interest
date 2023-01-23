@@ -92,13 +92,13 @@ Features:
   [provide datastore using Hilt](/data/src/main/java/com/grishko188/data/di/DatastoreModule.kt),
   [create serializers](/data/src/main/java/com/grishko188/data/features/profile/datastore/Serializers.kt)
   and finally how to [use data store](/data/src/main/java/com/grishko188/data/features/profile/datasource/ProfileLocalDataSource.kt)
-  - [How to test using Hilt and Robolectric](/data/src/test/com/grishko188/data/poi/datasource/PoiDataSourceInstrumentedTest.kt)
-  - [How to test using Hilt and Robolectric and Mockito for maximum flexibility](/data/src/test/com/grishko188/data/poi/datasource/WizardSuggestionDataSourceInstrumentedTest.kt)
-  - [How to test Room database](/data/src/test/com/grishko188/data/poi/db/PoiDaoInstrumentedTest.kt)
+  - [How to test using Hilt and Robolectric](/data/src/test/java/com/grishko188/data/poi/datasource/PoiDataSourceInstrumentedTest.kt)
+  - [How to test using Hilt and Robolectric and Mockito for maximum flexibility](/data/src/test/java/com/grishko188/data/poi/datasource/WizardSuggestionDataSourceInstrumentedTest.kt)
+  - [How to test Room database](/data/src/test/java/com/grishko188/data/poi/db/PoiDaoInstrumentedTest.kt)
   using [Hilt's @TestInstallIn and Room's inMemoryDatabaseBuilder](/data-test/src/main/java/com/grishko188/data_test/di/TestDatabaseModule.kt)
-  - [How to test Jetpack DataStore based datasource](/data/src/test/com/grishko188/data/profile/datasource/ProfileDataSourceInstrumentedTest.kt)
+  - [How to test Jetpack DataStore based datasource](/data/src/test/java/com/grishko188/data/profile/datasource/ProfileDataSourceInstrumentedTest.kt)
     using [Hilt's @TestInstallIn and TemporaryFolder](/data-test/src/main/java/com/grishko188/data_test/di/TestDataStoreModule.kt)
-  - [How to test operations with files](/data/src/test/com/grishko188/data/poi/datasource/ImageDataSourceInstrumentedTest.kt)
+  - [How to test operations with files](/data/src/test/java/com/grishko188/data/poi/datasource/ImageDataSourceInstrumentedTest.kt)
   using [TemporaryFolder](/data-test/src/main/java/com/grishko188/data_test/di/TestCacheFolderModule.kt)
 
 
