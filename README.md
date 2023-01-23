@@ -25,10 +25,29 @@ This application is implemented entirely using **Kotlin and Jetpack Compose.**
 ![Alt text](screenshots/screenshots.jpg?raw=true "Screen shots")
 
 ## Architecture
+This application follows the classic SOLID based clean architecture approach. This approach differs from
+[official architecture guidance](https://developer.android.com/topic/architecture), иut it is actively used by many developers.
+With this approach, the amount of boilerplate code increases, in favor of standardization and scalability.
 
 ## Modularization
+The Points of interests application follows modularization strategy know as **"by layer"**.
+*Note*: For larger projects i would recommend using **by layer and by feature** strategy.
+For more details about modularization: [By layer or feature? Why not both?! Guide to Android app modularization](https://www.youtube.com/watch?v=16SwTvzDO0A)
 
 ## Features
+In this project i tried to cover as many interesting learning cases as i could.
+So this section will describe interesting features and use cases, as well as used technologies
+
+### domain module
+3rd party libraries:
+ - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) for dependencies injection
+ - [Mockito](https://site.mockito.org/) for unit testing of UseCases
+Features
+ - [Use cases](/domain/src/main/java/com/grishko188/domain/features/poi/interactor)
+ - [Domain level models](/domain/src/main/java/com/grishko188/domain/features/poi/models)
+ - [Repository interface](/domain/src/main/java/com/grishko188/domain/features/poi/repo)
+ - [Unit tests](/domain/src/test)
+
 
 ## License
 **Points of interest** is distributed under the terms of the Apache License (Version 2.0). See the
