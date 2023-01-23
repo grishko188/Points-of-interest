@@ -51,7 +51,7 @@ Features:
  - [Repository interface](/domain/src/main/java/com/grishko188/domain/features/poi/repo)
  - [Unit tests](/domain/src/test)
 
- ### :data
+### :data
 
  3rd party libraries and technologies used:
   - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) for dependencies injection
@@ -82,24 +82,23 @@ Features:
  Learning cases:
   - [Room + Kotlin flows](/data/src/main/java/com/grishko188/data/features/poi/db/PoiDao.kt)
   - [Room and Dynamic ORDER BY](/data/src/main/java/com/grishko188/data/features/poi/db/PoiDao.kt)
-  - [Room and Dynamic ORDER BY](/data/src/main/java/com/grishko188/data/features/poi/db/PoiDao.kt)
   - Room and FTS (full test search): Look how to [define models](/data/src/main/java/com/grishko188/data/features/poi/model/PoiEntity.kt),
-  [add entities to the data base](/data/src/main/java/com/grishko188/data/database/PoiDatabase.kt)
+  [add entities to the data base](/data/src/main/java/com/grishko188/data/database/PoiDatabase.kt),
   [create search query function](/data/src/main/java/com/grishko188/data/features/poi/db/PoiDao.kt)
   and [perform the search](/data/src/main/java/com/grishko188/data/features/poi/datasource/PoiLocalDataSource.kt)
   - [How to parse HTML page with Jsoup](/data/src/main/java/com/grishko188/data/features/poi/datasource/WizardRemoteDataSource.kt)
-  - [How to use implement Proto DataStore](https://developer.android.com/codelabs/android-proto-datastore#0):
+  - [How to use Proto DataStore](https://developer.android.com/codelabs/android-proto-datastore#0):
   Look how to [setup gradle file: protobuf {} section](/data/build.gradle), [define proto models](/data/src/main/proto),
   [provide datastore using Hilt](/data/src/main/java/com/grishko188/data/di/DatastoreModule.kt),
   [create serializers](/data/src/main/java/com/grishko188/data/features/profile/datastore/Serializers.kt)
   and finally how to [use data store](/data/src/main/java/com/grishko188/data/features/profile/datasource/ProfileLocalDataSource.kt)
-  - [How to test using Hilt and Robolectric](/data/src/test/poi/db/PoiDataSourceInstrumentedTest.kt)
-  - [How to test using Hilt and Robolectric and Mockito for maximum flexibility](/data/src/test/poi/db/WizardSuggestionDataSourceInstrumentedTest.kt)
-  - [How to test Room database](/data/src/test/poi/db/PoiDaoInstrumentedTest.kt)
+  - [How to test using Hilt and Robolectric](/data/src/test/com/grishko188/data/poi/datasource/PoiDataSourceInstrumentedTest.kt)
+  - [How to test using Hilt and Robolectric and Mockito for maximum flexibility](/data/src/test/com/grishko188/data/poi/datasource/WizardSuggestionDataSourceInstrumentedTest.kt)
+  - [How to test Room database](/data/src/test/com/grishko188/data/poi/db/PoiDaoInstrumentedTest.kt)
   using [Hilt's @TestInstallIn and Room's inMemoryDatabaseBuilder](/data-test/src/main/java/com/grishko188/data_test/di/TestDatabaseModule.kt)
-  - [How to test Jetpack DataStore based datasource](/data/src/test/poi/db/ProfileDataSourceInstrumentedTest.kt)
+  - [How to test Jetpack DataStore based datasource](/data/src/test/com/grishko188/data/profile/datasource/ProfileDataSourceInstrumentedTest.kt)
     using [Hilt's @TestInstallIn and TemporaryFolder](/data-test/src/main/java/com/grishko188/data_test/di/TestDataStoreModule.kt)
-  - [How to test operations with files](/data/src/test/poi/db/ImageDataSourceInstrumentedTest.kt)
+  - [How to test operations with files](/data/src/test/com/grishko188/data/poi/datasource/ImageDataSourceInstrumentedTest.kt)
   using [TemporaryFolder](/data-test/src/main/java/com/grishko188/data_test/di/TestCacheFolderModule.kt)
 
 
