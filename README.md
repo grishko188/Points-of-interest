@@ -38,10 +38,12 @@ For more details about modularization: [By layer or feature? Why not both?! Guid
 In this project i tried to cover as many interesting learning cases as i could.
 So this section will describe interesting features and use cases, as well as used technologies
 
-### domain module
+### :domain
+
 3rd party libraries:
  - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) for dependencies injection
  - [Mockito](https://site.mockito.org/) for unit testing of UseCases
+
 Features
  - [Use cases](/domain/src/main/java/com/grishko188/domain/features/poi/interactor)
  - [Domain level models](/domain/src/main/java/com/grishko188/domain/features/poi/models)
