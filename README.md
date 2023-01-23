@@ -95,11 +95,11 @@ Features:
   - [How to test using Hilt and Robolectric](/data/src/test/java/com/grishko188/data/poi/datasource/PoiDataSourceInstrumentedTest.kt)
   - [How to test using Hilt and Robolectric and Mockito for maximum flexibility](/data/src/test/java/com/grishko188/data/poi/datasource/WizardSuggestionDataSourceInstrumentedTest.kt)
   - [How to test Room database](/data/src/test/java/com/grishko188/data/poi/db/PoiDaoInstrumentedTest.kt)
-  using [Hilt's @TestInstallIn and Room's inMemoryDatabaseBuilder](/data-test/src/main/java/com/grishko188/data_test/di/TestDatabaseModule.kt)
+  using [Hilt's @TestInstallIn and Room's inMemoryDatabaseBuilder](/data-test/src/main/java/com/grishko188/data_test/TestDatabaseModule.kt)
   - [How to test Jetpack DataStore based datasource](/data/src/test/java/com/grishko188/data/profile/datasource/ProfileDataSourceInstrumentedTest.kt)
-    using [Hilt's @TestInstallIn and TemporaryFolder](/data-test/src/main/java/com/grishko188/data_test/di/TestDataStoreModule.kt)
+    using [Hilt's @TestInstallIn and TemporaryFolder](/data-test/src/main/java/com/grishko188/data_test/TestDataStoreModule.kt)
   - [How to test operations with files](/data/src/test/java/com/grishko188/data/poi/datasource/ImageDataSourceInstrumentedTest.kt)
-  using [TemporaryFolder](/data-test/src/main/java/com/grishko188/data_test/di/TestCacheFolderModule.kt)
+  using [TemporaryFolder](/data-test/src/main/java/com/grishko188/data_test/TestCacheFolderModule.kt)
 
 
 ## License
