@@ -26,7 +26,7 @@ This application is implemented entirely using **Kotlin and Jetpack Compose.**
 
 ## Architecture
 This application follows the classic SOLID based clean architecture approach. This approach differs from
-[official architecture guidance](https://developer.android.com/topic/architecture), иut it is actively used by many developers.
+[official architecture guidance](https://developer.android.com/topic/architecture), but it is actively used by many developers.
 With this approach, the amount of boilerplate code increases, in favor of standardization and scalability.
 
 ## Modularization
@@ -101,6 +101,30 @@ Features:
   - [How to test operations with files](/data/src/test/java/com/grishko188/data/poi/datasource/ImageDataSourceInstrumentedTest.kt)
   using [TemporaryFolder](/data-test/src/main/java/com/grishko188/data_test/TestCacheFolderModule.kt)
 
+### :app (presentation layer)
+
+3rd party libraries and technologies used:
+  - [Compose](https://developer.android.com/jetpack/compose?gclid=CjwKCAiAoL6eBhA3EiwAXDom5uovlfrS1-2xp88b8zKsFzkiW36VKaFC01x9UM7zCvrIpCnRptZGJhoCq90QAvD_BwE&gclsrc=aw.ds)
+  - [Android ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel?gclid=CjwKCAiAoL6eBhA3EiwAXDom5oKABL8-HMrHV2XjQTCwKqtV-iMS4fTKJwgFsJDnzSwuNmDy0vEHyxoCqwkQAvD_BwE&gclsrc=aw.ds0)
+  - [Navigation Compose](https://developer.android.com/jetpack/compose/navigation)
+  - [Splash Screen Api](https://developer.android.com/develop/ui/views/launch/splash-screen)
+  - [Coil for Compose](https://coil-kt.github.io/coil/compose/) image loading library
+  - [Flow layout](https://google.github.io/accompanist/flowlayout/)
+  - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) for dependencies injection
+  - [Work Manager](https://site.mockito.org/) for unit testing of UseCases
+  - [Kotlin flows](https://developer.android.com/kotlin/flow)
+  - [Google Sign In](https://developers.google.com/identity/sign-in/android/start-integrating)
+
+Testing:
+  - [Hilt testing](https://developer.android.com/training/dependency-injection/hilt-testing)
+  - [Mockito](https://site.mockito.org/)
+  - [Robolectric](https://robolectric.org/)
+  - [Work Manager testing](https://developer.android.com/guide/background/testing/persistent/integration-testing)
+  - [Compose testing](https://developer.android.com/jetpack/compose/testing)
+
+Learning cases:
+
+  **Work in progress**, please stay tuned for this section =)
 
 ## License
 **Points of interest** is distributed under the terms of the Apache License (Version 2.0). See the
