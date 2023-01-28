@@ -17,8 +17,9 @@ The app also allows for easy searching and filtering of stored information, maki
 This app was created to showcase the latest technology in android development.
 This application is implemented entirely using **Kotlin and Jetpack Compose.**
 
-## APK
-[Debug v1.0](app/debug/poi-debug.apk)
+## APK / BUILD
+APK - [Debug v1.0](app/debug/poi-debug.apk)
+You can also clone project and build debug version. Note: Google Sign-In will not be fully functional in this case
 
 ## Screenshots
 

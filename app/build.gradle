@@ -22,34 +22,33 @@ android {
     }
 
     signingConfigs {
-
-        def credentialsDebug = new Properties()
-        file('../keystore/credentials-debug.properties').withInputStream {
-            credentialsDebug.load(it)
-        }
-
         debug {
-            storeFile file(credentialsDebug['keystore.file'])
-            storePassword credentialsDebug['keystore.password']
-            keyAlias credentialsDebug['key.alias']
-            keyPassword credentialsDebug['key.password']
+            def credentialsDebug = new Properties()
+            def debugCredentialsFile = file('../keystore/credentials-debug.properties')
+            if (debugCredentialsFile.exists())
+                debugCredentialsFile.withInputStream { credentialsDebug.load(it) }
+
+            if (!credentialsDebug.isEmpty()) {
+                storeFile file(credentialsDebug['keystore.file'])
+                storePassword credentialsDebug['keystore.password']
+                keyAlias credentialsDebug['key.alias']
+                keyPassword credentialsDebug['key.password']
+            }
         }
 
         release {
             def credentialsRelease = new Properties()
             def credentialsReleaseFile = file('../keystore/credentials-release.properties')
-            if (credentialsReleaseFile.exists()) {
-                credentialsReleaseFile.withInputStream { credentialsRelease.load(it) }
-                println("credentials-release.properties is exist")
-            } else {
-                println("credentials-release.properties isn't exist - credentials-debug.properties will be used")
-                credentialsRelease = credentialsDebug
-            }
 
-            storeFile file(credentialsRelease['keystore.file'])
-            storePassword credentialsRelease['keystore.password']
-            keyAlias credentialsRelease['key.alias']
-            keyPassword credentialsRelease['key.password']
+            if (credentialsReleaseFile.exists())
+                credentialsReleaseFile.withInputStream { credentialsRelease.load(it) }
+
+            if(!credentialsRelease.isEmpty()) {
+                storeFile file(credentialsRelease['keystore.file'])
+                storePassword credentialsRelease['keystore.password']
+                keyAlias credentialsRelease['key.alias']
+                keyPassword credentialsRelease['key.password']
+            }
         }
     }
 
