@@ -125,6 +125,8 @@ Testing:
 
 Learning cases:
 
+  - [Make your Android app a share target. Receive simple data from other applications with Hilt and Compose](https://proandroiddev.com/android-make-your-app-a-share-target-a4c7e81e5a50) 
+
   **Work in progress**, please stay tuned for this section =)
 
 ## License
