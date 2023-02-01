@@ -1,4 +1,4 @@
-![Alt text](screenshots/playstore.jpg?raw=true "Bannert")
+![Alt text](screenshots/playstore.jpg?raw=true "Banner")
 
 Points of interest
 ==================
