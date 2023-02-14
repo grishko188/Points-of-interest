@@ -30,9 +30,7 @@ object TestDataStoreModule {
         temporaryFolder: TemporaryFolder,
         serializer: UserSettingsSerializer
     ): DataStore<UserSettingsProto> =
-        DataStoreFactory.create(
-            serializer = serializer
-        ) {
+        DataStoreFactory.create(serializer = serializer) {
             temporaryFolder.newFile("poi_user_settings.pb")
         }
 
@@ -43,9 +41,7 @@ object TestDataStoreModule {
         temporaryFolder: TemporaryFolder,
         serializer: UserProfileSerializer
     ): DataStore<UserProfileProto> =
-        DataStoreFactory.create(
-            serializer = serializer
-        ) {
+        DataStoreFactory.create(serializer = serializer) {
             temporaryFolder.newFile("poi_user_profile.pb")
         }
 }

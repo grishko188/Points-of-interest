@@ -9,9 +9,11 @@ import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -26,16 +28,24 @@ import kotlin.test.assertTrue
 @RunWith(RobolectricTestRunner::class)
 class ProfileDataSourceInstrumentedTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
     @Local
     lateinit var SUT: ProfileDataSource
 
+    @Inject
+    lateinit var temporaryFolder: TemporaryFolder
+
     @Before
     fun setup() {
         hiltRule.inject()
+    }
+
+    @After
+    fun teardown() {
+        temporaryFolder.delete()
     }
 
     @Test
@@ -49,7 +59,12 @@ class ProfileDataSourceInstrumentedTest {
 
     @Test
     fun test_setProfile_and_getUserProfile_returns_consistent_data() = runTest {
-        val testProfile = UserProfileDataModel(token = "Token", name = "Name", email = "email", profileImage = "imageUrl")
+        val testProfile = UserProfileDataModel(
+            token = "Token",
+            name = "Name",
+            email = "email",
+            profileImage = "imageUrl"
+        )
         SUT.setUserProfile(testProfile)
 
         val profile = SUT.getUserProfile().first()
@@ -58,7 +73,12 @@ class ProfileDataSourceInstrumentedTest {
 
     @Test
     fun test_deleteUserProfile_returns_empty_profile() = runTest {
-        val testProfile = UserProfileDataModel(token = "Token", name = "Name", email = "email", profileImage = "imageUrl")
+        val testProfile = UserProfileDataModel(
+            token = "Token",
+            name = "Name",
+            email = "email",
+            profileImage = "imageUrl"
+        )
         SUT.setUserProfile(testProfile)
         SUT.deleteUserProfile()
 

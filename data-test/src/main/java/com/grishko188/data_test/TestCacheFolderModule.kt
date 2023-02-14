@@ -18,7 +18,6 @@ import javax.inject.Singleton
 object TestCacheFolderModule {
 
     @Provides
-    @Singleton
     fun provideTemporaryFolder(): TemporaryFolder {
         val tempFolder = TemporaryFolder.builder().assureDeletion().build()
         tempFolder.create()
